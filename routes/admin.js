@@ -30,8 +30,13 @@ router.post("/turmas/nova", (req,res) => {
     }
 
     new Turmas(novaTurma).save().then(() => {
-        console.log("Turma Salva comSucesso!")
+        req.flash("success_msg", "Turma criada com sucesso!")
+        //console.log("Turma Salva com Sucesso!")
         res.redirect("/admin/turmas")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao salvar a Turma. Tente novamente!")
+           // console.log("Erro ao inserir categoria: "+err)
+           res.redirect("/admin")
     })
 })
 

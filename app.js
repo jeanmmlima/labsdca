@@ -28,8 +28,37 @@ const Turma = mongoose.model("turmas")
 //1.5 data base
 const db = require("./config/db")
 
+//1.6 Sessin and flash for messages
+const session = require("express-session")
+const flash = require("connect-flash")
+
 
 //2. Settings
+
+//2.0 Session
+app.use(session({
+    secret: "labsdca",
+    resave: true,
+    saveUninitialized: true
+
+}))
+//app.use(passport.initialize())
+//app.use(passport.session())
+
+app.use(flash())
+
+//2.0.1 Middleware para trabalhar com sessoes
+app.use((req,res,next) => {
+    //possível guardar variaveis globias
+    //res.locals.nome = "Meu nome"
+    //flash - sessao temporaria
+    res.locals.success_msg = req.flash("success_msg")
+    res.locals.error_msg = req.flash("error_msg")
+    res.locals.error = req.flash("error")
+    //passport implementa user com dados do usuario autenticado
+   // res.locals.user = req.user || null
+    next()
+})
 
 //2.1 Body Parsers
 app.use(bodyParsers.urlencoded({extended: true}))
@@ -47,6 +76,8 @@ mongoose.connect(db.mongoURI,{useUnifiedTopology: true, useNewUrlParser: true })
     console.log("Erro ao se conectar: "+err)
 })
 
+//2.4  files - arquivos estaticos em public
+app.use(express.static(path.join(__dirname,"public")))
 
 //3. Routes
 app.use('/admin',admin)
