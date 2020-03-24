@@ -1,0 +1,14 @@
+<h2>Horários</h2>
+<hr>
+<a href="/admin/horarios/add"><button class="btn btn-success">Novo Horário</button></a>
+
+{{#each horarios}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>{{descricao}}</h4>
+        </div>
+    </div>
+{{else}}
+<h4 class="mt-3">Nenhuma Horário Cadastrado</h4>
+
+{{/each}}

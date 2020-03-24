@@ -1,0 +1,14 @@
+<h2>Bancadas</h2>
+<hr>
+<a href="/admin/bancadas/add"><button class="btn btn-success">Nova Bancada</button></a>
+
+{{#each bancadas}}
+    <div class="card mt-4">
+        <div class="card-body">
+            <h4>{{descricao}}</h4>
+        </div>
+    </div>
+{{else}}
+<h4 class="mt-3">Nenhuma Bancada Cadastrada</h4>
+
+{{/each}}
