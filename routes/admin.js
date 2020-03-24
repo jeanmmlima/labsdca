@@ -51,6 +51,34 @@ router.post("/turmas/nova", (req,res) => {
     })
 })
 
+router.get("/turmas/edit/:id", (req,res) => {
+    
+    Turmas.findOne({_id: req.params.id}).then((turma) => {
+        res.render("admin/editturmas",{turma: turma})
+    }).catch((err) => {
+        req.flash("error_msg", "A turma não existe!")
+        res.redirect("/admin/turmas")
+    })
+})
+
+router.post("/turmas/edit", (req,res) => {
+    Turmas.findOne({_id: req.body.id}).then((turma) => {
+        turma.descricao = req.body.descricao
+        turma.subturma = req.body.subturma
+
+        turma.save().then(() => {
+            req.flash("success_msg", "Turma editada com sucesso!")
+            res.redirect("/admin/turmas")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao salvar a edição da turma")
+            res.redirect("/admin/turmas")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao editar turma")
+        res.redirect("/admin/turmas")
+    })
+})
+
 //2. BANCADAS
 
 router.get('/bancadas', (req, res) => {
