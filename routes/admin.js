@@ -25,8 +25,8 @@ router.get('/turmas/add', (req,res) => {
 router.post("/turmas/nova", (req,res) => {
     
     const novaTurma = {
-        nome: req.body.nome,
-        horario: req.body.horario
+        descricao: req.body.descricao,
+        subturma: req.body.subturma
     }
 
     new Turmas(novaTurma).save().then(() => {
@@ -35,8 +35,8 @@ router.post("/turmas/nova", (req,res) => {
         res.redirect("/admin/turmas")
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao salvar a Turma. Tente novamente!")
-           // console.log("Erro ao inserir categoria: "+err)
-           res.redirect("/admin")
+        //console.log("Erro ao inserir categoria: "+err)
+        res.redirect("/admin")
     })
 })
 

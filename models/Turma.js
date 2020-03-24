@@ -2,11 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const Turma = new Schema({
-    nome: {
+    descricao: {
         type: String,
         required: true
     },
-    horario: {
+    subturma: {
         type: String,
         required: true
     }
