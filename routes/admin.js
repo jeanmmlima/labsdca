@@ -79,6 +79,16 @@ router.post("/turmas/edit", (req,res) => {
     })
 })
 
+router.post("/turmas/deletar", (req, res) => {
+    Turmas.deleteOne({_id: req.body.id}).then(() => {
+        req.flash("success_msg", "Turma deletada com sucesso!")
+        res.redirect("/admin/turmas")
+    }).catch((err) => {
+        req.flash("error_msg", "Erro ao deletar a turma!")
+        res.redirect("/admin/turmas")
+    })
+})
+
 //2. BANCADAS
 
 router.get('/bancadas', (req, res) => {
