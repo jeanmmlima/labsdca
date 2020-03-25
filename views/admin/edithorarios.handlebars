@@ -1,0 +1,12 @@
+<h2>Editar Horários</h2>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/horarios/edit" method="POST">
+        <input type="hidden" name="id" value="{{horario._id}}">
+            <label for="nome">Descrição</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Horário" class="form-control" value="{{horario.descricao}}">
+                <br>
+            <button type="submit" class="btn btn-success">Editar Horário</button>
+        </form>
+    </div>
+</div>

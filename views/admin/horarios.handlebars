@@ -6,6 +6,11 @@
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{descricao}}</h4>
+            <a href="/admin/horarios/edit/{{_id}}"><button class="btn btn-success mt-4">Editar Horário</button></a>
+            <form action="/admin/horarios/deletar" method="POST">
+                <input type="hidden" name="id" value="{{_id}}">
+                <button type="submit" class="btn btn-danger mt-2">Deletar Horário</button>
+            </form>
         </div>
     </div>
 {{else}}

@@ -183,5 +183,41 @@ router.post("/horarios/novo", (req,res) => {
     })
 })
 
+router.get('/horarios/edit/:id', (req, res) => {
+    Horarios.findOne({_id: req.params.id}).then((horario) => {
+        res.render("admin/edithorarios", {horario: horario})
+    }).catch((err) => {
+        req.flash("error_msg", "Este horário não existe")
+        res.redirect("/admin/horarios")
+    })
+})
+
+router.post("/horarios/edit", (req, res) => {
+    Horarios.findOne({_id: req.body.id}).then((horario) => {
+        horario.descricao = req.body.descricao
+
+        horario.save().then(() => {
+            req.flash("success_msg", "Horário alterada com sucesso!")
+            res.redirect("/admin/horarios")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao salvar horário")
+            res.redirect("/admin/horarios")
+        }).catch((err) => {
+            req.flash("error_msg","Houve erro ao editar Horários")
+            res.redirect("/admin/horarios")
+        })
+    })
+})
+
+router.post("/horarios/deletar", (req, res) => {
+    Horarios.deleteOne({_id: req.body.id}).then(() => {
+        req.flash("success_msg", "Horário excluída com sucesso!")
+        res.redirect("/admin/horarios")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao excluir horário!")
+        res.redirect("/admin/horarios")
+    })
+})
+
 
 module.exports = router
