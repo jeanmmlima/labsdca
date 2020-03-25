@@ -118,6 +118,42 @@ router.post("/bancadas/nova", (req,res)=> {
     })
 })
 
+router.get('/bancadas/edit/:id', (req, res) => {
+    Bancadas.findOne({_id: req.params.id}).then((bancada) => {
+        res.render("admin/editbancadas", {bancada: bancada})
+    }).catch((err) => {
+        req.flash("error_msg", "Esta bancada nao existe")
+        res.redirect("/admin/bancadas")
+    })
+})
+
+router.post("/bancadas/edit", (req, res) => {
+    Bancadas.findOne({_id: req.body.id}).then((bancada) => {
+        bancada.descricao = req.body.descricao
+
+        bancada.save().then(() => {
+            req.flash("success_msg", "Bancada alterada com sucesso!")
+            res.redirect("/admin/bancadas")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao salvar bancada")
+            res.redirect("/admin/bancadas")
+        }).catch((err) => {
+            req.flash("error_msg","Houve erro ao editar bancada")
+            res.redirect("/admin/bancadas")
+        })
+    })
+})
+
+router.post("/bancadas/deletar", (req, res) => {
+    Bancadas.deleteOne({_id: req.body.id}).then(() => {
+        req.flash("success_msg", "Bancada excluída com sucesso!")
+        res.redirect("/admin/bancadas")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao excluir bancada!")
+        res.redirect("/admin/bancadas")
+    })
+})
+
 //3. HORARIOS
 router.get('/horarios', (req,res) => {
     Horarios.find().then((horarios) => {

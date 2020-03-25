@@ -1,0 +1,12 @@
+<h2>Editar Turmas</h2>
+<div class="card">
+    <div class="card-body">
+        <form action="/admin/bancadas/edit" method="POST">
+        <input type="hidden" name="id" value="{{bancada._id}}">
+            <label for="nome">Descrição</label>
+                <input type="text" id="descricao" name="descricao" placeholder="Nome da Turma" class="form-control" value="{{bancada.descricao}}">
+                <br>
+            <button type="submit" class="btn btn-success">Editar Bancada</button>
+        </form>
+    </div>
+</div>
