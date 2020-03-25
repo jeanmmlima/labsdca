@@ -266,4 +266,58 @@ router.post("/grupos/novo", (req,res) => {
 
 })
 
+router.get("/grupos/edit/:id", (req,res) => {
+    Grupos.findOne({_id: req.params.id}).then((grupo) => {
+        Bancadas.find().then((bancadas) => {
+            Turmas.find().then((turmas) => {
+                res.render("admin/editgrupos", 
+                {grupo: grupo, 
+                 bancadas: bancadas, 
+                 turmas: turmas})
+            }).catch((err) => {
+                req.flash("error_msg", "Não conseguiu listar turmas")
+                console.log("Erro: "+err)
+                res.redirect("/admin/grupos")
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Não conseguiu listar bancadas")
+            res.redirect("/admin/grupos")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Não conseguiu encontrar o grupo")
+        res.redirect("/admin/postagens")
+    })
+})
+
+router.post("/grupos/edit/", (req, res) => {
+    Grupos.findOne({_id: req.body.id}).then((grupo) => {
+
+        grupo.descricao = req.body.descricao,
+        grupo.bancada = req.body.bancada,
+        grupo.turma = req.body.turma
+
+        grupo.save().then(() => {
+            req.flash("success_msg", "Grupo editado com sucesso!")
+            res.redirect("/admin/grupos")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao editar o grupo")
+            res.redirect("/admin/grupos")
+        })
+    }).catch((err) => {
+        console.log("Erro: "+err)
+        req.flash("error_msg", "Houve erro ao editar grupo")
+        res.redirect("/admin/grupos")
+    })
+})
+
+router.get("/grupos/deletar/:id", (req,res) => {
+    Grupos.remove({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Grupo deletado com sucesso!")
+        res.redirect("/admin/grupos")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao deletar grupo")
+        res.redirect("/admin/grupos")
+    })
+})
+
 module.exports = router

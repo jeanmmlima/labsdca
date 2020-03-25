@@ -1,0 +1,27 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Editar Grupo</h4>
+        <form action="/admin/grupos/edit" method="POST">
+            <input type="hidden" name="id" value="{{grupo._id}}">
+            <label for="descricao">Nome: </label>
+            <input type="text" name="descricao" class="form-control" value="{{grupo.descricao}}">
+            <label for="bancada">Bancada: </label>
+            <select name="bancada" class="custom-select">
+                {{#each bancadas}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Bancada Registrada</option>
+                {{/each}}
+            </select>
+            <label for="turma">Turma: </label>
+            <select name="turma" class="custom-select">
+                {{#each turmas}}
+                <option value="{{_id}}">{{descricao}} - {{subturma}}</option>
+                {{else}}
+                <option value="0">Nenhuma Turma Registrada</option>
+                {{/each}}
+            </select>
+            <button class="btn btn-success mt-4" type="submit">Editar Grupo</button>
+        </form>
+    </div>
+</div>
