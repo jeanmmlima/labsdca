@@ -1,0 +1,20 @@
+<h2>Lista de Grupos</h2>
+<hr>
+<a href="/admin/grupos/add"><button class="btn btn-success">Novo Grupo</button></a>
+
+{{#each grupos}}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <p>{{descricao}}</p>
+        <small>{{bancada.descricao}}</small><br>
+        <small>Turma: {{turma.descricao}} - {{turma.subturma}}</small><br>
+        <a href="/admin/grupos/edit/{{_id}}"><button class="btn btn-success mt-2">Editar Grupo</button></a>
+        <a href="/admin/grupos/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar Grupo</button></a>
+    </div>
+</div>
+
+{{else}}
+<h4>Nenhuma grupo criado!</h4>
+
+{{/each}}

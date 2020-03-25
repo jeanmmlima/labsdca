@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Novo Grupo</h4>
+        <form action="/admin/grupos/novo" method="POST">
+            <label for="titulo">Nome: </label>
+            <input type="text" name="descricao" class="form-control">
+            <label for="categoria">Bancada: </label>
+            <select name="bancada" class="custom-select">
+                {{#each bancadas}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Bancada Registrada</option>
+                {{/each}}
+            </select>
+            <label for="categoria">Turma: </label>
+            <select name="turma" class="custom-select">
+                {{#each turmas}}
+                <option value="{{_id}}">{{descricao}} - {{subturma}}</option>
+                {{else}}
+                <option value="0">Nenhuma Turma Registrada</option>
+                {{/each}}
+            </select>
+
+
+            <button class="btn btn-success mt-4" type="submit">Criar Grupo</button>
+        </form>
+    </div>
+</div>

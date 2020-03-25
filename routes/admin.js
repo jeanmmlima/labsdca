@@ -13,6 +13,9 @@ const Bancadas = mongoose.model("bancadas")
 require("../models/Horario")
 const Horarios = mongoose.model("horarios")
 
+require("../models/Grupo")
+const Grupos = mongoose.model("grupos")
+
 router.get('/', (req, res) => {
     res.render("admin/index")
 })
@@ -219,5 +222,48 @@ router.post("/horarios/deletar", (req, res) => {
     })
 })
 
+router.get("/grupos", (req,res) => {
+
+    Grupos.find().populate("bancada").populate("turma").then((grupos) => {
+        res.render("admin/grupos",{grupos: grupos})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao listar Grupos!")
+        res.redirect("/admin")
+    })
+
+})
+
+router.get("/grupos/add", (req,res) => {
+    
+    Bancadas.find().then((bancadas) => {
+        Turmas.find().then((turmas) => {
+            res.render("admin/addgrupos",{bancadas: bancadas, turmas: turmas})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro carregar Turmas")
+            res.redirect("/admin")    
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro carregar Bancadas")
+        res.redirect("/admin")
+    })
+})
+
+router.post("/grupos/novo", (req,res) => {
+
+    const novoGrupo = {
+        descricao: req.body.descricao,
+        bancada: req.body.bancada,
+        turma: req.body.turma
+    } 
+    
+    new Grupos(novoGrupo).save().then(() => {
+        req.flash("success_msg", "Grupo criado com sucesso!")
+        res.redirect("/admin/grupos")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao salvar o grupo. Tente novamente!")
+        res.redirect("/admin/grupos")
+    })
+
+})
 
 module.exports = router
