@@ -1,0 +1,28 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Nova Reserva</h4>
+        <form action="/usuario/reservaslabcon/novo" method="POST">
+            <label for="grupo">Grupo: </label>
+            <select name="grupo" class="custom-select">
+                {{#each grupos}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Grupo Registrada</option>
+                {{/each}}
+            </select>
+            <label for="horario">Horário: </label>
+            <select name="horario" class="custom-select">
+                {{#each horarios}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Horário Registrado</option>
+                {{/each}}
+            </select>
+            <br>
+            <input type="date" id="data" name="data" min="2020-01-01" max="2020-12-31">
+            <br>
+
+            <button class="btn btn-success mt-4" type="submit">Cadastrar</button>
+        </form>
+    </div>
+</div>
