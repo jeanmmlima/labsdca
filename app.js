@@ -14,6 +14,7 @@ const utf8 = require('utf8')
 
 //1.1 Riqueres routes
 const admin = require('./routes/admin')
+const usuario = require('./routes/usuario')
 
 //1.2 path para diretorios
 const path = require("path")
@@ -81,6 +82,7 @@ app.use(express.static(path.join(__dirname,"public")))
 
 //3. Routes
 app.use('/admin',admin)
+app.use('/usuario',usuario)
 
 app.get('/', function(req, res) {
     res.render('home')

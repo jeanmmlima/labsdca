@@ -1,0 +1,21 @@
+<h2>Reservas</h2>
+<hr>
+<a href="/usuario/reservaslabcon/add"><button class="btn btn-success">Nova Reserva</button></a>
+
+{{#each reservas}}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <p>{{grupo.descricao}}</p>
+        <small>{{grupo.turma.descricao}} - {{grupo.turma.subturma}}</small><br>
+        <small>{{horario.descricao}}</small><br>
+        <small>{{data}}</small><br>
+        <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-success mt-2">Editar Reserva</button></a>
+        <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar Reserva</button></a>
+    </div>
+</div>
+
+{{else}}
+<h4>Nenhuma reserva criada!</h4>
+
+{{/each}}
