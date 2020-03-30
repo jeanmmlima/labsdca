@@ -14,8 +14,12 @@ require("../models/Grupo")
 const Grupos = mongoose.model("grupos")
 
 router.get("/reservaslabcon",(req, res) => {
-    
-    ReservaLabCon.find().populate("horario").populate("grupo").then((reservas) => {
+    //population em multiniveis de relacionamento
+    //population across multi-level 
+    ReservaLabCon.find().populate("horario").populate({
+        path: "grupo",
+        populate: {path: "turma"}
+    }).then((reservas) => {
         res.render("usuario/reservaslabcon", {reservas: reservas})
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao listar reservas!")
@@ -26,7 +30,7 @@ router.get("/reservaslabcon",(req, res) => {
 
 router.get("/reservaslabcon/add", (req,res) => {
     
-    Grupos.find().then((grupos) => {
+    Grupos.find().populate("turma").then((grupos) => {
         Horarios.find().then((horarios) => {
             res.render("usuario/addreservalabcon",{grupos: grupos,horarios: horarios})
         }).catch((err) => {
@@ -39,6 +43,26 @@ router.get("/reservaslabcon/add", (req,res) => {
     })
 
 })
+
+router.post("/reservaslabcon/novo", (req,res) => {
+
+    const novaReservaLabCon = {
+        grupo: req.body.grupo,
+        horario: req.body.horario,
+        data: req.body.data
+    }
+    new ReservaLabCon(novaReservaLabCon).save().then(() => {
+        req.flash("success_msg", "Reserva realizada com sucesso!")
+        res.redirect("/usuario/reservaslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
+        console.log("Erro ao inserir dado: "+err)
+        res.redirect("/usuario/reservaslabcon")
+    })
+
+})
+
+
 
 
 

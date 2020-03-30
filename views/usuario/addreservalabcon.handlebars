@@ -5,9 +5,10 @@
             <label for="grupo">Grupo: </label>
             <select name="grupo" class="custom-select">
                 {{#each grupos}}
-                <option value="{{_id}}">{{descricao}}</option>
+                <option value="{{_id}}">{{descricao}} 
+                    - {{turma.descricao}} {{turma.subturma}}</option>
                 {{else}}
-                <option value="0">Nenhuma Grupo Registrada</option>
+                <option value="0">Nenhum Grupo Registrada</option>
                 {{/each}}
             </select>
             <label for="horario">Horário: </label>
