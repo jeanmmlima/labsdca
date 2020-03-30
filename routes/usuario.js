@@ -68,7 +68,7 @@ router.post("/reservaslabcon/novo", (req,res) => {
 
 router.get("/reservaslabcon/deletar/:id", (req, res) => {
 
-    ReservaLabCon.findOneAndRemove({_id: req.params.id}).then(() => {
+    ReservaLabCon.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Reserva excluída com sucesso!")
         res.redirect("/usuario/reservaslabcon")
     }).catch((err) => {
@@ -78,8 +78,53 @@ router.get("/reservaslabcon/deletar/:id", (req, res) => {
 
 })
 
+router.get("/reservaslabcon/edit/:id", (req, res) => {
+    ReservaLabCon.findOne({_id: req.params.id}).then((reservalabcon) => {
+        Grupos.find().populate("turma").then((grupos) => {
+            Horarios.find().then((horarios) => {
+                res.render("usuario/editreservaslabcon",{
+                    reservalabcon: reservalabcon,
+                    grupos: grupos,
+                    horarios: horarios
+                })
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao listar horários")
+                res.redirect("/usuario/reservaslabcon")
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro ao grupos")
+            res.redirect("/usuario/reservaslabcon")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "A reserva não foi encontrada!")
+        res.redirect("/usuario/reservaslabcon")
+    })
+})
 
+router.post("/reservaslabcon/edit", (req, res) => {
 
+    ReservaLabCon.findOne({_id: req.body.id}).then((reservalabcon) => {
 
+        var d = new Date(req.body.data);
+        d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
+        
+        reservalabcon.grupo = req.body.grupo,
+        reservalabcon.horario = req.body.horario,
+        reservalabcon.data = d
+
+        reservalabcon.save().then(() => {
+            req.flash("success_msg", "Reserva editada com sucesso!")
+            res.redirect("/usuario/reservaslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "erro interno ao salvar edição da reserva!")
+            res.redirect("/usuario/reservaslabcon")    
+        })
+
+    }).catch((err) => {
+        req.flash("error_msg", "A reserva não foi encontrada!")
+        res.redirect("/usuario/reservaslabcon")
+    })
+
+})
 
 module.exports = router
