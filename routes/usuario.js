@@ -46,10 +46,14 @@ router.get("/reservaslabcon/add", (req,res) => {
 
 router.post("/reservaslabcon/novo", (req,res) => {
 
+    //corrige time zone offset
+    var d = new Date(req.body.data);
+    d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
+
     const novaReservaLabCon = {
         grupo: req.body.grupo,
         horario: req.body.horario,
-        data: req.body.data
+        data: d
     }
     new ReservaLabCon(novaReservaLabCon).save().then(() => {
         req.flash("success_msg", "Reserva realizada com sucesso!")
@@ -57,6 +61,18 @@ router.post("/reservaslabcon/novo", (req,res) => {
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
         console.log("Erro ao inserir dado: "+err)
+        res.redirect("/usuario/reservaslabcon")
+    })
+
+})
+
+router.get("/reservaslabcon/deletar/:id", (req, res) => {
+
+    ReservaLabCon.findOneAndRemove({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Reserva excluída com sucesso!")
+        res.redirect("/usuario/reservaslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao excluir a reserva! Tente novamente!")
         res.redirect("/usuario/reservaslabcon")
     })
 
