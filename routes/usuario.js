@@ -47,22 +47,40 @@ router.get("/reservaslabcon/add", (req,res) => {
 router.post("/reservaslabcon/novo", (req,res) => {
 
     //corrige time zone offset
-    var d = new Date(req.body.data);
-    d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
 
-    const novaReservaLabCon = {
-        grupo: req.body.grupo,
-        horario: req.body.horario,
-        data: d
-    }
-    new ReservaLabCon(novaReservaLabCon).save().then(() => {
-        req.flash("success_msg", "Reserva realizada com sucesso!")
+    //var d = new Date(req.body.data);
+    //  var picked_data = new Date(r);
+    var d = new Date(req.body.data);
+    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
+    d.setHours(0);
+    d.setMinutes(0);
+    d.setMilliseconds(0);
+    d.setSeconds(0);
+
+    //verifica condições de reserva:
+
+    ReservaLabCon.findOne({data: d}).then((reserva) => {
+        console.log("Reserva na mesma data!: "+reserva.data)
+        req.flash("error_msg", "Reserva para a data: "+d+" já existe. Escolher uma nova data!")
         res.redirect("/usuario/reservaslabcon")
     }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
-        console.log("Erro ao inserir dado: "+err)
-        res.redirect("/usuario/reservaslabcon")
+        console.log("Reserva em OUTRA data!")
+        const novaReservaLabCon = {
+            grupo: req.body.grupo,
+            horario: req.body.horario,
+            data: d
+        }
+        new ReservaLabCon(novaReservaLabCon).save().then(() => {
+            req.flash("success_msg", "Reserva realizada com sucesso!")
+            res.redirect("/usuario/reservaslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
+            console.log("Erro ao inserir dado: "+err)
+            res.redirect("/usuario/reservaslabcon")
+        })
     })
+
+   
 
 })
 
