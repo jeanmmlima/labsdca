@@ -59,10 +59,31 @@ router.post("/reservaslabcon/novo", (req,res) => {
 
     //verifica condições de reserva:
 
-    ReservaLabCon.findOne({data: d}).then((reserva) => {
-        console.log("Reserva na mesma data!: "+reserva.data)
-        req.flash("error_msg", "Reserva para a data: "+d+" já existe. Escolher uma nova data!")
-        res.redirect("/usuario/reservaslabcon")
+    ReservaLabCon.find({data: d, horario: req.body.horario}).populate("grupo").then((reservas) => {
+        //console.log("Reserva na mesma data!: "+reserva.data)
+        //console.log("Bancada reservada: "+reserva.grupo.bancada);
+       // console.log(reservas.length);
+
+        Grupos.findOne({_id: req.body.grupo}).then((grupo) => {
+
+            for(reserva in reservas){
+                if(grupo.bancada.equals(reserva.grupo.bancada)){
+                    req.flash("error_msg", "Bancada já reservada para esta data neste horário! Escolher outra data ou horário!")
+                    res.redirect("/usuario/reservaslabcon")
+                } 
+            }
+            //console.log("Bancada do grupo que quer reservar: "+grupo.bancada);
+            console.log("Bancadas são diferentes,pode reservar!")
+            res.redirect("/usuario/reservaslabcon")
+            
+        }).catch((err) => {
+            req.flash("error_msg", "Erro ao procurar o grupo!")
+            res.redirect("/usuario/reservaslabcon")
+        })
+        
+
+
+
     }).catch((err) => {
         console.log("Reserva em OUTRA data!")
         const novaReservaLabCon = {
