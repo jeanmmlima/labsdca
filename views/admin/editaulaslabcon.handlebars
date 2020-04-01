@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Editar Aula</h4>
+        <form action="/admin/aulaslabcon/edit" method="POST">
+            <input type="hidden" name="id" value="{{aula._id}}">
+            <label for="dia_semana">Dia: </label>
+            <input type="text" name="dia_semana" class="form-control" value="{{grupo.descricao}}">
+            <label for="horario">Horário: </label>
+            <select name="horario" class="custom-select">
+                {{#each horarios}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhum Horário Registrada</option>
+                {{/each}}
+            </select>
+            <label for="comentario">Comentario: </label>
+            <input type="text" name="comentario" class="form-control">
+            <button class="btn btn-success mt-4" type="submit">Editar Grupo</button>
+        </form>
+    </div>
+</div>

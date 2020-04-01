@@ -289,7 +289,7 @@ router.get("/grupos/edit/:id", (req,res) => {
         })
     }).catch((err) => {
         req.flash("error_msg", "Não conseguiu encontrar o grupo")
-        res.redirect("/admin/postagens")
+        res.redirect("/admin/grupos")
     })
 })
 
@@ -360,5 +360,55 @@ router.post("/aulaslabcon/novo", (req,res) => {
     })
 
 })
+
+router.get("/aulaslabcon/edit/:id", (req,res) => {
+    AulasLabCon.findOne({_id: req.params.id}).then((aula) => {
+        Horarios.find().then((horarios) => {
+                res.render("admin/editaulaslabcon", 
+                {aula: aula, 
+                 horarios: horarios})
+        }).catch((err) => {
+                req.flash("error_msg", "Não conseguiu listar horários")
+                res.redirect("/admin/aulaslabcon")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Não conseguiu encontrar a aula")
+        res.redirect("/admin/aulaslabcon")
+    })
+})
+
+router.post("/aulaslabcon/edit/", (req, res) => {
+    AulasLabCon.findOne({_id: req.body.id}).then((aula) => {
+
+        aula.dia_semana = req.body.dia_semana,
+        aula.horario = req.body.horario,
+        aula.comentario = req.body.comentario
+
+        aula.save().then(() => {
+            req.flash("success_msg", "Aula editada com sucesso!")
+            res.redirect("/admin/aulaslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao editar a aula")
+            res.redirect("/admin/aulaslabcon")
+        })
+    }).catch((err) => {
+        console.log("Erro: "+err)
+        req.flash("error_msg", "Houve erro ao editar aula")
+        res.redirect("/admin/aulaslabcon")
+    })
+})
+
+
+
+router.get("/aulaslabcon/deletar/:id", (req,res) => {
+    AulasLabCon.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Aula deletada com sucesso!")
+        res.redirect("/admin/aulaslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao deletar aula")
+        res.redirect("/admin/aulaslabcon")
+    })
+})
+
 
 module.exports = router
