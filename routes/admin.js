@@ -16,6 +16,10 @@ const Horarios = mongoose.model("horarios")
 require("../models/Grupo")
 const Grupos = mongoose.model("grupos")
 
+require("../models/AulaLabCon")
+const AulasLabCon = mongoose.model("aulaslabcon")
+
+
 router.get('/', (req, res) => {
     res.render("admin/index")
 })
@@ -318,6 +322,43 @@ router.get("/grupos/deletar/:id", (req,res) => {
         req.flash("error_msg", "Houve erro ao deletar grupo")
         res.redirect("/admin/grupos")
     })
+})
+
+router.get("/aulaslabcon", (req, res) => {
+    AulasLabCon.find().populate("horario").then((aulaslabcon) => {
+        res.render("admin/aulaslabcon",{aulaslabcon: aulaslabcon})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao listar aulas!")
+        res.redirect("/admin")
+    })
+})
+
+router.get("/aulaslabcon/add", (req,res) => {
+    
+    Horarios.find().then((horarios) => {
+        res.render("admin/addaulaslabcon",{horarios: horarios})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro carregar horários")
+        res.redirect("/admin")
+    })
+})
+
+router.post("/aulaslabcon/novo", (req,res) => {
+
+    const novoAulaLabCon = {
+        horario: req.body.horario,
+        dia_semana: req.body.dia_semana,
+        comentario: req.body.comentario
+    } 
+    
+    new AulasLabCon(novoAulaLabCon).save().then(() => {
+        req.flash("success_msg", "Horário de aula cadastrado com sucesso!")
+        res.redirect("/admin/aulaslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao cadastrar horário de aula. Tente novamente!")
+        res.redirect("/admin/aulaslabcon")
+    })
+
 })
 
 module.exports = router

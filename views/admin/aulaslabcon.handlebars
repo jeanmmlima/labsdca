@@ -1,0 +1,18 @@
+<h2>Horários de Aula</h2>
+<hr>
+<a href="/admin/aulaslabcon/add"><button class="btn btn-success">Nova Aula</button></a>
+
+{{#each aulaslabcon}}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <small>Horário: {{horario.descricao}}</small><br>
+        <small>Dia: {{dia_semana}}</small><br>
+        <a href="/admin/aulaslabcon/edit/{{_id}}"><button class="btn btn-success mt-2">Editar Aula</button></a>
+        <a href="/admin/aulaslabcon/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar Aula</button></a>
+    </div>
+</div>
+
+{{else}}
+<h4>Nenhuma aula cadastrada</h4>
+{{/each}}

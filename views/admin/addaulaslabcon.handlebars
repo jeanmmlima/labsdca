@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Nova Aula</h4>
+        <form action="/admin/aulaslabcon/novo" method="POST">
+            <label for="dia_semana">Dia da semana: </label>
+            <input type="text" name="dia_semana" class="form-control" required>
+            <label for="horario">Horário: </label>
+            <select name="horario" class="custom-select">
+                {{#each horarios}}
+                <option value="{{_id}}">{{descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Horario Registrado</option>
+                {{/each}}
+            </select>
+            <label for="comentario">Comentario: </label>
+            <input type="text" name="comentario" class="form-control">
+
+            <button class="btn btn-success mt-4" type="submit">Criar Aula</button>
+        </form>
+    </div>
+</div>
