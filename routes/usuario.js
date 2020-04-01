@@ -13,6 +13,9 @@ const Horarios = mongoose.model("horarios")
 require("../models/Grupo")
 const Grupos = mongoose.model("grupos")
 
+require("../models/Bancada")
+const Bancadas = mongoose.model("bancadas")
+
 router.get("/reservaslabcon",(req, res) => {
     //population em multiniveis de relacionamento
     //population across multi-level 
@@ -57,48 +60,53 @@ router.post("/reservaslabcon/novo", (req,res) => {
     d.setMilliseconds(0);
     d.setSeconds(0);
 
-    //verifica condições de reserva:
+    //verifica a bancada do grupo que tenta reservar
+    var bancada;
+    Grupos.findOne({_id: req.body.grupo}).then((grupo) => {
+        bancada = grupo.bancada;
+    }).catch((err) => {
+        console.log("Não pode encontrar o grupo")
+    })
+
+    /*
+    Revifica se a bancada já está reservada para o mesmo horario e dia
+    se tiver, não cadastra reserva (flag 1). Se estiver disponivel
+    cadastra a reserva (flag 0).
+    */
+
 
     ReservaLabCon.find({data: d, horario: req.body.horario}).populate("grupo").then((reservas) => {
-        //console.log("Reserva na mesma data!: "+reserva.data)
-        //console.log("Bancada reservada: "+reserva.grupo.bancada);
-       // console.log(reservas.length);
-
-        Grupos.findOne({_id: req.body.grupo}).then((grupo) => {
-
-            for(reserva in reservas){
-                if(grupo.bancada.equals(reserva.grupo.bancada)){
-                    req.flash("error_msg", "Bancada já reservada para esta data neste horário! Escolher outra data ou horário!")
-                    res.redirect("/usuario/reservaslabcon")
-                } 
+    
+        var i, flag = 0;
+        for(i = 0; i < reservas.length; i++){
+            if(reservas[i].grupo.bancada.equals(bancada)){
+                flag = 1;
+                break;
             }
-            //console.log("Bancada do grupo que quer reservar: "+grupo.bancada);
-            console.log("Bancadas são diferentes,pode reservar!")
-            res.redirect("/usuario/reservaslabcon")
             
-        }).catch((err) => {
-            req.flash("error_msg", "Erro ao procurar o grupo!")
+        }
+        if(flag){
+            //console.log("Flag: "+flag+ " NÃO PODE RESERVAR");
+            req.flash("error_msg", "Reserva já existe para data e horario escolhidos. Escolher outra data ou horário");
             res.redirect("/usuario/reservaslabcon")
-        })
-        
-
-
+        } else {
+            const novaReservaLabCon = {
+                grupo: req.body.grupo,
+                horario: req.body.horario,
+                data: d
+            }
+            new ReservaLabCon(novaReservaLabCon).save().then(() => {
+                req.flash("success_msg", "Reserva realizada com sucesso!")
+                res.redirect("/usuario/reservaslabcon")
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
+                res.redirect("/usuario/reservaslabcon")
+            })
+        }
 
     }).catch((err) => {
-        console.log("Reserva em OUTRA data!")
-        const novaReservaLabCon = {
-            grupo: req.body.grupo,
-            horario: req.body.horario,
-            data: d
-        }
-        new ReservaLabCon(novaReservaLabCon).save().then(() => {
-            req.flash("success_msg", "Reserva realizada com sucesso!")
-            res.redirect("/usuario/reservaslabcon")
-        }).catch((err) => {
-            req.flash("error_msg", "Houve erro ao salvar a reserva! Tente novamente!")
-            console.log("Erro ao inserir dado: "+err)
-            res.redirect("/usuario/reservaslabcon")
-        })
+        req.flash("error_msg", "Houve erro ao buscar reserva. Tente novamente!")
+        res.redirect("/usuario/reservaslabcon")
     })
 
    
