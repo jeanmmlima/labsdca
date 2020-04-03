@@ -1,17 +1,42 @@
 <h2>Reservas</h2>
 <hr>
-<a href="/usuario/reservaslabcon/add"><button class="btn btn-success">Nova Reserva</button></a>
+<a href="/usuario/reservaslabcon/add"><button class="btn btn-dark"><i class="icon-plus"></i> Reservar</button></a>
+<br><br>
+<div class="card-header">
+    <div class="row">
+        <div class="col-sm-4">
+            <p><b>Grupo e Turma</b></p>
+        </div>
+        <div class="col-sm-4">
+            <p><b>Horário e Data</b></p>
+        </div>
+        <div class="col-sm-4">
+            <p><b>Gerenciar</b></p>
+        </div>
+    </div>
+</div>
+
 
 {{#each reservas}}
 
 <div class="card mt-4">
     <div class="card-body">
-        <p>{{grupo.descricao}}</p>
-        <small>{{grupo.turma.descricao}} - {{grupo.turma.subturma}}</small><br>
-        <small>{{horario.descricao}}</small><br>
-        <small>{{data}}</small><br>
-        <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-success mt-2">Editar Reserva</button></a>
-        <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar Reserva</button></a>
+        <div class="row">
+            <div class="col-sm-4">
+                <p>{{grupo.descricao}}</p>
+                <small>{{grupo.turma.descricao}} - {{grupo.turma.subturma}}</small><br>
+            </div>
+            <div class="col-sm-4">
+                <p>{{horario.descricao}}</p>
+                <p>{{format_data data}}</p>
+            </div>
+            <div class="col-sm-4">
+                <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            </div>
+
+        </div>
+        
     </div>
 </div>
 

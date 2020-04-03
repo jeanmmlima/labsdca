@@ -12,6 +12,9 @@ const bodyParsers = require('body-parser')
 const app = express()
 const utf8 = require('utf8')
 
+const Handlebars = require('handlebars')
+var moment = require('moment')
+
 //1.1 Riqueres routes
 const admin = require('./routes/admin')
 const usuario = require('./routes/usuario')
@@ -90,6 +93,15 @@ app.get('/', function(req, res) {
 
 app.get("/404", (req,res) => {
     res.send('Erro 404!')
+})
+
+Handlebars.registerHelper('upper', function (aString) {
+    return aString.toUpperCase()
+})
+
+Handlebars.registerHelper('format_data', function(data){
+    var fd = moment(data).format('DD/MM/YYYY');
+    return fd
 })
 
 //4. Others
