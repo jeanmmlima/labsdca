@@ -12,11 +12,15 @@ const Usuario = new Schema({
     },
     Admin:{
         type: Number,
-        default: 0
+        default: 1
     },
     senha: {
         type: String,
         required: true
+    },
+    ativo:{
+        type: Number,
+        default: 0
     }
 })
 mongoose.model("usuarios", Usuario)
