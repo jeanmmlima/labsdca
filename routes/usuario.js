@@ -2,6 +2,8 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require('mongoose')
 
+const passport = require("passport")
+
 //require models
 
 require("../models/ReservaLabCon")
@@ -18,6 +20,9 @@ const Bancadas = mongoose.model("bancadas")
 
 require("../models/AulaLabCon")
 const AulasLabCon = mongoose.model("aulaslabcon")
+
+require("../models/Usuario")
+const Usuarios = mongoose.model("usuarios")
 
 var moment = require('moment')
 

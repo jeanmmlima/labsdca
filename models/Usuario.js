@@ -10,7 +10,7 @@ const Usuario = new Schema({
         type: String,
         required: true
     },
-    Admin:{
+    admin:{
         type: Number,
         default: 1
     },
@@ -20,7 +20,7 @@ const Usuario = new Schema({
     },
     ativo:{
         type: Number,
-        default: 0
+        default: 1
     }
 })
 mongoose.model("usuarios", Usuario)

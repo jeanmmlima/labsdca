@@ -2,6 +2,9 @@ const express = require("express")
 const router = express.Router()
 const mongoose = require('mongoose')
 
+const passport = require("passport")
+const bcrypt = require('bcryptjs')
+
 //require models
 
 require("../models/Turma")
@@ -18,6 +21,9 @@ const Grupos = mongoose.model("grupos")
 
 require("../models/AulaLabCon")
 const AulasLabCon = mongoose.model("aulaslabcon")
+
+require("../models/Usuario")
+const Usuarios = mongoose.model("usuarios")
 
 
 router.get('/', (req, res) => {
@@ -226,6 +232,8 @@ router.post("/horarios/deletar", (req, res) => {
     })
 })
 
+
+//Grupos 
 router.get("/grupos", (req,res) => {
 
     Grupos.find().populate("bancada").populate("turma").then((grupos) => {
@@ -324,6 +332,8 @@ router.get("/grupos/deletar/:id", (req,res) => {
     })
 })
 
+
+//AULAS
 router.get("/aulaslabcon", (req, res) => {
     AulasLabCon.find().populate("horario").then((aulaslabcon) => {
         res.render("admin/aulaslabcon",{aulaslabcon: aulaslabcon})
@@ -410,5 +420,59 @@ router.get("/aulaslabcon/deletar/:id", (req,res) => {
     })
 })
 
+
+// Registro de usuário
+router.get("/registro", (req, res) => {
+    res.render("admin/registro")
+})
+
+router.post("/registro", (req, res) => {
+
+    if(req.body.senha < 4){
+        req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
+        res.redirect("/admin/registro")
+    }
+    else if(req.body.senha != req.body.senha2){
+        req.flash("error_msg", "Senha são diferentes")
+        res.redirect("/admin/registro")
+    }
+    else {
+
+        Usuarios.findOne({email: req.body.email}).then((usuario) => {
+            if(usuario){
+                req.flash("error_msg", "Já existe uma conta com esse email no sistema")
+                res.redirect("/admin/registro")
+            } else {
+                const novoUsuario = new Usuarios({
+                    nome: req.body.nome,
+                    email: req.body.email,
+                    senha: req.body.senha
+                })
+                bcrypt.genSalt(10,(erro,salt) => {
+                    bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
+                        if(erro){
+                            req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                            eq.redirect("/")
+                        } else {
+                            novoUsuario.senha = hash
+                            novoUsuario.save().then(() => {
+                                req.flash("success_msg", "Usuário criado com sucesso!")
+                                res.redirect("/")
+                            }).catch((erro) => {
+                                req.flash("error_msg", "Erro ao criar usuário")
+                                res.redirect("/admin/registro")
+                            })
+                        }
+                    })
+                })
+            }
+        }).catch((err) => {
+            req.flash("error_msg", "Erro interno ao procurar usuario")
+            res.redirect("/admin")
+        })
+
+    }
+
+})
 
 module.exports = router

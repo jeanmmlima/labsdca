@@ -36,6 +36,10 @@ const db = require("./config/db")
 const session = require("express-session")
 const flash = require("connect-flash")
 
+//1.7 passport - autenticação user
+const passport = require("passport")
+require("./config/auth")(passport)
+
 
 //2. Settings
 
@@ -46,8 +50,8 @@ app.use(session({
     saveUninitialized: true
 
 }))
-//app.use(passport.initialize())
-//app.use(passport.session())
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(flash())
 
@@ -60,7 +64,7 @@ app.use((req,res,next) => {
     res.locals.error_msg = req.flash("error_msg")
     res.locals.error = req.flash("error")
     //passport implementa user com dados do usuario autenticado
-   // res.locals.user = req.user || null
+    res.locals.user = req.user || null
     next()
 })
 
