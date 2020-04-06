@@ -197,4 +197,21 @@ router.post("/reservaslabcon/edit", (req, res) => {
 
 })
 
+//Login
+
+router.get("/login", (req,res) => {
+    res.render("usuario/login")
+})
+
+router.post("/login", (req, res, next) => {
+
+    passport.authenticate("local", {
+
+        successRedirect: "/",
+        failureRedirect: "/usuario/login",
+        failureFlash: true
+    })(req, res,next)
+})
+
+
 module.exports = router
