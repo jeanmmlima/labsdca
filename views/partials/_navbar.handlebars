@@ -12,11 +12,26 @@
         <a class="nav-link" href="/usuario/reservaslabcon">Sistemas de Controle</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Login</a>
+        <a class="nav-link" href="/usuario/login">Login</a>
       </li>
     </ul>
+    {{#if user}}
+      <span class="navbar-text">
+        <table>
+          <tr>
+          <th><small class="nav-link disabled"> Bem-vindo, {{user.nome}}!</small></th>
+          <th><small><a class="nav-link" href="/usuario/logout">Sair</a></small></th>
+          </tr>
+          
+        </table>
+          
+      </span>
+    {{else}}
     <span class="navbar-text">
-      Navbar text with an inline element
+      <a class="nav-link" href="/usuario/login">Login</a>
     </span>
+    {{/if}}
+
+    
   </div>
 </nav>
