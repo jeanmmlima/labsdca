@@ -2,21 +2,32 @@
 
 <h2>Lista de Turmas</h2>
 <hr>
-<a href="/admin/turmas/add"><button class="btn btn-success">Nova Turma</button></a>
+<a href="/admin/turmas/add"><button class="btn btn-dark"><i class="icon-plus"></i> Nova Turma</button></a>
+
+
+<div class="row">
 
 {{#each turmas}}
+
+<div class="col-sm-3">
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{descricao}}</h4>
-            <small>{{subturma}}</small><br>
-            <a href="/admin/turmas/edit/{{_id}}"><button class="btn btn-success mt-4">Editar Turma</button></a>
+            <small>Subturma: {{subturma}}</small><br>
+            <a href="/admin/turmas/edit/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+            <a href="/admin/turmas/deletar/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            <!--
             <form action="/admin/turmas/deletar" method="POST">
                 <input type="hidden" name="id" value="{{_id}}">
-                <button type="submit" class="btn btn-danger mt-2">Deletar Turma</button>
-            </form>
+                <button type="submit" class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button>
+            </form>!-->
         </div>
     </div>
+</div>
 {{else}}
 <h4 class="mt-3">Nenhuma Turma Cadastrada</h4>
 
 {{/each}}
+
+
+</div>

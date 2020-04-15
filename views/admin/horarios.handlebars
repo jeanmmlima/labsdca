@@ -2,20 +2,29 @@
 
 <h2>Horários</h2>
 <hr>
-<a href="/admin/horarios/add"><button class="btn btn-success">Novo Horário</button></a>
+<a href="/admin/horarios/add"><button class="btn btn-dark"><i class="icon-plus"></i> Novo Horário</button></a>
+
+
+<div class="row">
 
 {{#each horarios}}
+<div class="col-sm-4">
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{descricao}}</h4><br>
-            <a href="/admin/horarios/edit/{{_id}}"><button class="btn btn-success mt-4">Editar Horário</button></a>
+            <a href="/admin/horarios/edit/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+            <a href="/admin/horarios/deletar/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            <!--
             <form action="/admin/horarios/deletar" method="POST">
                 <input type="hidden" name="id" value="{{_id}}">
                 <button type="submit" class="btn btn-danger mt-2">Deletar Horário</button>
-            </form>
+            </form>!-->
         </div>
     </div>
+</div>
 {{else}}
 <h4 class="mt-3">Nenhuma Horário Cadastrado</h4>
 
 {{/each}}
+
+</div>

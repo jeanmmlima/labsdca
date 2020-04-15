@@ -3,21 +3,30 @@
     
     <h2>Lista de Grupos</h2>
     <hr>
-    <a href="/admin/grupos/add"><button class="btn btn-success">Novo Grupo</button></a>
+    <a href="/admin/grupos/add"><button class="btn btn-dark"><i class="icon-plus"></i> Novo Grupo</button></a>
 
-    {{#each grupos}}
+    <div class="row">
+        {{#each grupos}}
+        <div class="col-sm-4">
 
-    <div class="card mt-4">
-        <div class="card-body">
-            <p>{{descricao}}</p>
-            <small>{{bancada.descricao}}</small><br>
-            <small>Turma: {{turma.descricao}} - {{turma.subturma}}</small><br>
-            <a href="/admin/grupos/edit/{{_id}}"><button class="btn btn-success mt-2">Editar Grupo</button></a>
-            <a href="/admin/grupos/deletar/{{_id}}"><button class="btn btn-danger mt-2">Deletar Grupo</button></a>
+        <div class="card mt-4">
+            <div class="card-body">
+                <p>{{descricao}}</p>
+                <small>{{bancada.descricao}}</small><br>
+                <small>Turma: {{turma.descricao}} - {{turma.subturma}}</small><br>
+                <a href="/admin/grupos/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                <a href="/admin/grupos/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            </div>
+            </div>
         </div>
+        {{else}}
+        <h4>Nenhuma grupo criado!</h4>
+
+        {{/each}}
+
+        
+
+
     </div>
 
-    {{else}}
-    <h4>Nenhuma grupo criado!</h4>
-
-    {{/each}}
+  

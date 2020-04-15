@@ -108,6 +108,12 @@ Handlebars.registerHelper('format_data', function(data){
     return fd
 })
 
+Handlebars.registerHelper('format_dia_semana', function(dia_semana){
+    var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+    return semana[dia_semana];
+
+})
+
 //4. Others
 //local port - 8081
 //process.env.PORT - porta ambiente do HEROKU
