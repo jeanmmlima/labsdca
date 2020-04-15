@@ -1,3 +1,5 @@
+{{>_navlabcon}}
+
 <h2>Horários</h2>
 <hr>
 <a href="/admin/horarios/add"><button class="btn btn-success">Novo Horário</button></a>
@@ -5,7 +7,7 @@
 {{#each horarios}}
     <div class="card mt-4">
         <div class="card-body">
-            <h4>{{descricao}}</h4>
+            <h4>{{descricao}}</h4><br>
             <a href="/admin/horarios/edit/{{_id}}"><button class="btn btn-success mt-4">Editar Horário</button></a>
             <form action="/admin/horarios/deletar" method="POST">
                 <input type="hidden" name="id" value="{{_id}}">

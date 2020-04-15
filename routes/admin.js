@@ -475,4 +475,8 @@ router.post("/registro", (req, res) => {
 
 })
 
+router.get('/labcontrole',(req,res)=> {
+    res.render("admin/labcontrole")
+})
+
 module.exports = router
