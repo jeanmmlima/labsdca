@@ -92,8 +92,8 @@ router.post("/turmas/edit", (req,res) => {
     })
 })
 
-router.post("/turmas/deletar", (req, res) => {
-    Turmas.deleteOne({_id: req.body.id}).then(() => {
+router.get('/turmas/deletar/:id', (req, res) => {
+    Turmas.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Turma deletada com sucesso!")
         res.redirect("/admin/turmas")
     }).catch((err) => {
@@ -222,9 +222,9 @@ router.post("/horarios/edit", (req, res) => {
     })
 })
 
-router.post("/horarios/deletar", (req, res) => {
-    Horarios.deleteOne({_id: req.body.id}).then(() => {
-        req.flash("success_msg", "Horário excluída com sucesso!")
+router.get('/horarios/deletar/:id', (req, res) => {
+    Horarios.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Horário excluído com sucesso!")
         res.redirect("/admin/horarios")
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao excluir horário!")
@@ -346,7 +346,7 @@ router.get("/aulaslabcon", (req, res) => {
 router.get("/aulaslabcon/add", (req,res) => {
     
     Horarios.find().then((horarios) => {
-        res.render("admin/addaulaslabcon",{horarios: horarios})
+        res.send({horarios: horarios})
     }).catch((err) => {
         req.flash("error_msg", "Houve erro carregar horários")
         res.redirect("/admin")
