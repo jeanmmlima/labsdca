@@ -343,10 +343,11 @@ router.get("/aulaslabcon", (req, res) => {
     })
 })
 
-router.get("/aulaslabcon/add", (req,res) => {
-    
+router.get('/aulaslabcon/add', (req,res) => {
+
     Horarios.find().then((horarios) => {
-        res.send({horarios: horarios})
+        //res.render("admin/aulaslabcon", {horarios: horarios});
+        res.render({horarios: horarios});
     }).catch((err) => {
         req.flash("error_msg", "Houve erro carregar horários")
         res.redirect("/admin")

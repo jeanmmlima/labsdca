@@ -99,6 +99,7 @@ app.get("/404", (req,res) => {
     res.send('Erro 404!')
 })
 
+
 Handlebars.registerHelper('upper', function (aString) {
     return aString.toUpperCase()
 })
