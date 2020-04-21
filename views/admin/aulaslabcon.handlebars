@@ -39,7 +39,7 @@
       </div>
       <div class="modal-body">
         
-<div class="card">
+<div class="card" id="cadAula">
     <div class="card-body">
         <h4>Nova Aula</h4>
         <form action="/admin/aulaslabcon/novo" method="POST">
@@ -47,7 +47,7 @@
             <input type="text" name="dia_semana" class="form-control" required>
             <label for="horario">Horário: </label>
             <select name="horario" class="custom-select">
-                {{#each horario}}
+                {{#each horarios}}
                 <option value="{{_id}}">{{descricao}}</option>
                 {{else}}
                 <option value="0">Nenhuma Horario Registrado</option>
@@ -57,6 +57,14 @@
             <input type="text" name="comentario" class="form-control">
 
             <button class="btn btn-success mt-4" type="submit">Criar Aula</button>
+            <div class="dados">
+              {{#each horarios}}
+                  <p value="{{_id}}">{{descricao}}</option>
+            {{else}}
+                  <p value="0">Nenhuma Horario Registrado</option>
+            {{/each}}
+            </div>
+            
         </form>
     </div>
 </div>
@@ -70,29 +78,76 @@
   </div>
 </div>
 
-
-<div class="modal fade" id="modal-mensagem">
-    <div class="modal-dialog">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
-                <h4 class="modal-title">Título da mensagem</h4>
-             </div>
-             <div class="modal-body">
-                 <p>Conteúdo da mensagem</p>
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
-             </div>
-         </div>
-     </div>
+<div class="sl"> {{#each horarios}}
+                  <p value="{{_id}}">{{descricao}}</option>
+                  {{else}}
+                  <p value="0">Nenhuma Horario Registrado</option>
+                  {{/each}}</div>
+<div id="sltemplate" class="handlebars">
+  <div class="modal fade" id="modal-mensagem">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                  <h4 class="modal-title">Título da mensagem</h4>
+              </div>
+              <div class="modal-body">
+                  {{#each horarios}}
+                  <p value="{{_id}}">{{descricao}}</option>
+                  {{else}}
+                  <p value="0">Nenhuma Horario Registrado</option>
+                  {{/each}}
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+              </div>
+          </div>
+      </div>
+  </div>
  </div>
 
 <!-- Button trigger modal -->
 <button class="btn btn-primary" id="btn-mensagem">Exibir modal via JavaScript</button>
 
 <script>
-$("#btn-mensagem").click(function(){
-    $("#exampleModal").modal();
+$('#btn-mensagem').click(function(){
+
+    var modal = $('#exampleModal');
+    
+    $.getJSON('/admin/aulaslabcon/add', function(horarios) {
+      console.log("entrou no JSON");
+      //var mysource = $('#sltemplate').html();
+      //var mytemplate = Handlebars.compile(mysource);
+      //var myresult = mytemplate(horarios);
+      //console.log(myresult).
+      //$('#sl').html(myresult);
+      
+      //modal.find('form').attr('action','/admin/aulaslabcon/add');
+      //modal.html(horarios)
+      //modal.html(horarios);
+      //modal.find('[name=comentario]').val(horarios[0].descricao);
+      modal.find('[name=horario]').val(horarios);
+      $("#dados").html(horarios);
+      
+    });
+    modal.modal('show');
+    
+
+    /*
+    $.ajax({
+      type: 'POST',
+      url: '/user',
+      dataType: 'jsonp',
+      data: data,
+      sucess: function(data,textStatus){
+        if(textStatus.statusCode = 200){
+          console.log("Sucesso");
+        } else {
+          console.log("Falha");
+        }
+      }
+    });
+    */
+
   });
 </script>
