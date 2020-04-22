@@ -1,1 +1,21 @@
-<h1>Bem-vindo ao Labs DCA!</h1>
+
+  <h1 class="display-4">LabsDCA</h1>
+  <p class="lead">Sistema de Gerenciamento dos laboratórios do Departamento de Engenharia de Computação e Automação - DCA/UFRN.</p>
+  <hr class="my-4">
+  {{#if user}}
+  <p>Acesse a área do Administrador</p>
+  <p class="lead">
+    <a class="btn btn-dark btn-lg" href="/admin" role="button">Área do Administrador</a>
+  </p>
+  {{else}}
+
+  {{/if}}
+
+  
+    <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+        <div class="card-body">
+            <b><h5 class="card-title">Sistemas de Controle</h5></b>
+            <small><p class="card-text">Click para acessar a área de Sistemas de Controle.</p></small><br>
+            <button type="button" class="btn btn-outline-light btn-lg btn-block">Acessar</button>
+        </div>
+    </div>

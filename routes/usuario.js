@@ -204,13 +204,14 @@ router.get("/login", (req,res) => {
 })
 
 router.post("/login", (req, res, next) => {
-
+    
     passport.authenticate("local", {
 
         successRedirect: "/",
         failureRedirect: "/usuario/login",
         failureFlash: true
     })(req, res,next)
+ 
 })
 
 router.get("/logout", (req,res) => {

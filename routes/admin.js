@@ -344,11 +344,11 @@ router.get("/aulaslabcon", (req, res) => {
 })
 
 router.get('/aulaslabcon/add', (req,res) => {
-    console.log("Entro na rota!");
+    
     Horarios.find().then((horarios) => {
-        //res.render("admin/aulaslabcon", {horarios: horarios});
-        console.log(horarios[0].descricao);
-        res.json(horarios);
+        res.render("admin/addaulaslabcon", {horarios: horarios});
+        
+        //res.json(horarios);
         
     }).catch((err) => {
         req.flash("error_msg", "Houve erro carregar horários")
