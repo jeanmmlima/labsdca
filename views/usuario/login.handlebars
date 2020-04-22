@@ -1,12 +1,43 @@
-<h4>Login</h4>
+<div class="container">
+  <div class="row">
+    <div class="col align-self-start">
+      
+    </div>
+    <div class="col align-self-center">
+      <h5 align="center">DCALabs</h5>
 <div class="card">
     <div class="card-body">
-        <form action="/usuario/login" method="post">
+        <form action="/usuario/login" method="post" class="form-signin">
             <label for="email">Email: </label>
-            <input type="email" class="form-control" name="email" required>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-user"></i></span>
+                </div>
+                <input type="email" class="form-control" name="email" required>
+            </div>
+
+
             <label for="senha"> Senha: </label>
-            <input type="password" class="form-control" name="senha" required>
-            <button class="btn btn-dark mt-4" type="submit">Entrar</button>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-lock"></i></span>
+                </div>
+                <input type="password" class="form-control" name="senha" required>
+            </div>
+            <br>
+
+            
+            <button class="btn btn-dark btn-block" type="submit">Entrar</button>
+            <button class="btn btn-secondary btn-block" type="reset">Cancelar</button>
+
         </form >
     </div>
 </div>
+    </div>
+    <div class="col align-self-end">
+    </div>
+  </div>
+</div>
+
+
+
