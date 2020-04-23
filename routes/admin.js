@@ -25,15 +25,17 @@ const AulasLabCon = mongoose.model("aulaslabcon")
 require("../models/Usuario")
 const Usuarios = mongoose.model("usuarios")
 
+const {Admin} =require("../helper/Admin");
 
-router.get('/', (req, res) => {
+
+router.get('/', Admin, (req, res) => {
     res.render("admin/index")
 })
 
 
 //1. TURMAS
 
-router.get('/turmas', (req, res) => {
+router.get('/turmas', Admin, (req, res) => {
     Turmas.find().then((turmas) => {
         res.render("admin/turmas",{turmas: turmas})
     }).catch((err) => {
@@ -42,11 +44,11 @@ router.get('/turmas', (req, res) => {
     })
 })
 
-router.get('/turmas/add', (req,res) => {
+router.get('/turmas/add', Admin, (req,res) => {
     res.render("admin/addturma")
 })
 
-router.post("/turmas/nova", (req,res) => {
+router.post("/turmas/nova", Admin, (req,res) => {
     
     const novaTurma = {
         descricao: req.body.descricao,
@@ -64,7 +66,7 @@ router.post("/turmas/nova", (req,res) => {
     })
 })
 
-router.get("/turmas/edit/:id", (req,res) => {
+router.get("/turmas/edit/:id", Admin, (req,res) => {
     
     Turmas.findOne({_id: req.params.id}).then((turma) => {
         res.render("admin/editturmas",{turma: turma})
@@ -74,7 +76,7 @@ router.get("/turmas/edit/:id", (req,res) => {
     })
 })
 
-router.post("/turmas/edit", (req,res) => {
+router.post("/turmas/edit", Admin,(req,res) => {
     Turmas.findOne({_id: req.body.id}).then((turma) => {
         turma.descricao = req.body.descricao
         turma.subturma = req.body.subturma
@@ -92,7 +94,7 @@ router.post("/turmas/edit", (req,res) => {
     })
 })
 
-router.get('/turmas/deletar/:id', (req, res) => {
+router.get('/turmas/deletar/:id', Admin, (req, res) => {
     Turmas.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Turma deletada com sucesso!")
         res.redirect("/admin/turmas")
@@ -104,7 +106,7 @@ router.get('/turmas/deletar/:id', (req, res) => {
 
 //2. BANCADAS
 
-router.get('/bancadas', (req, res) => {
+router.get('/bancadas', Admin, (req, res) => {
     Bancadas.find().then((bancadas) => {
         res.render("admin/bancadas",{bancadas: bancadas})
     }).catch((err) => {
@@ -113,11 +115,11 @@ router.get('/bancadas', (req, res) => {
     })
 })
 
-router.get('/bancadas/add', (req,res) => {
+router.get('/bancadas/add', Admin, (req,res) => {
     res.render("admin/addbancada")
 })
 
-router.post("/bancadas/nova", (req,res)=> {
+router.post("/bancadas/nova", Admin, (req,res)=> {
     
     const novaBancada = {
         descricao: req.body.descricao
@@ -131,7 +133,7 @@ router.post("/bancadas/nova", (req,res)=> {
     })
 })
 
-router.get('/bancadas/edit/:id', (req, res) => {
+router.get('/bancadas/edit/:id', Admin, (req, res) => {
     Bancadas.findOne({_id: req.params.id}).then((bancada) => {
         res.render("admin/editbancadas", {bancada: bancada})
     }).catch((err) => {
@@ -140,7 +142,7 @@ router.get('/bancadas/edit/:id', (req, res) => {
     })
 })
 
-router.post("/bancadas/edit", (req, res) => {
+router.post("/bancadas/edit", Admin,(req, res) => {
     Bancadas.findOne({_id: req.body.id}).then((bancada) => {
         bancada.descricao = req.body.descricao
 
@@ -157,7 +159,7 @@ router.post("/bancadas/edit", (req, res) => {
     })
 })
 
-router.post("/bancadas/deletar", (req, res) => {
+router.post("/bancadas/deletar", Admin, (req, res) => {
     Bancadas.deleteOne({_id: req.body.id}).then(() => {
         req.flash("success_msg", "Bancada excluída com sucesso!")
         res.redirect("/admin/bancadas")
@@ -168,7 +170,7 @@ router.post("/bancadas/deletar", (req, res) => {
 })
 
 //3. HORARIOS
-router.get('/horarios', (req,res) => {
+router.get('/horarios', Admin,(req,res) => {
     Horarios.find().then((horarios) => {
         res.render("admin/horarios",{horarios: horarios})
     }).catch((err) => {
@@ -177,11 +179,11 @@ router.get('/horarios', (req,res) => {
     })
 })
 
-router.get('/horarios/add', (req,res) => {
+router.get('/horarios/add', Admin,(req,res) => {
     res.render("admin/addhorarios")
 })
 
-router.post("/horarios/novo", (req,res) => {
+router.post("/horarios/novo", Admin,(req,res) => {
 
     const novoHorario = {
         descricao: req.body.descricao
@@ -196,7 +198,7 @@ router.post("/horarios/novo", (req,res) => {
     })
 })
 
-router.get('/horarios/edit/:id', (req, res) => {
+router.get('/horarios/edit/:id', Admin,(req, res) => {
     Horarios.findOne({_id: req.params.id}).then((horario) => {
         res.render("admin/edithorarios", {horario: horario})
     }).catch((err) => {
@@ -205,7 +207,7 @@ router.get('/horarios/edit/:id', (req, res) => {
     })
 })
 
-router.post("/horarios/edit", (req, res) => {
+router.post("/horarios/edit", Admin,(req, res) => {
     Horarios.findOne({_id: req.body.id}).then((horario) => {
         horario.descricao = req.body.descricao
 
@@ -222,7 +224,7 @@ router.post("/horarios/edit", (req, res) => {
     })
 })
 
-router.get('/horarios/deletar/:id', (req, res) => {
+router.get('/horarios/deletar/:id', Admin, (req, res) => {
     Horarios.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Horário excluído com sucesso!")
         res.redirect("/admin/horarios")
@@ -234,7 +236,7 @@ router.get('/horarios/deletar/:id', (req, res) => {
 
 
 //Grupos 
-router.get("/grupos", (req,res) => {
+router.get("/grupos", Admin, (req,res) => {
 
     Grupos.find().populate("bancada").populate("turma").then((grupos) => {
         res.render("admin/grupos",{grupos: grupos})
@@ -245,7 +247,7 @@ router.get("/grupos", (req,res) => {
 
 })
 
-router.get("/grupos/add", (req,res) => {
+router.get("/grupos/add", Admin, (req,res) => {
     
     Bancadas.find().then((bancadas) => {
         Turmas.find().then((turmas) => {
@@ -260,7 +262,7 @@ router.get("/grupos/add", (req,res) => {
     })
 })
 
-router.post("/grupos/novo", (req,res) => {
+router.post("/grupos/novo", Admin, (req,res) => {
 
     const novoGrupo = {
         descricao: req.body.descricao,
@@ -278,7 +280,7 @@ router.post("/grupos/novo", (req,res) => {
 
 })
 
-router.get("/grupos/edit/:id", (req,res) => {
+router.get("/grupos/edit/:id", Admin, (req,res) => {
     Grupos.findOne({_id: req.params.id}).then((grupo) => {
         Bancadas.find().then((bancadas) => {
             Turmas.find().then((turmas) => {
@@ -301,7 +303,7 @@ router.get("/grupos/edit/:id", (req,res) => {
     })
 })
 
-router.post("/grupos/edit/", (req, res) => {
+router.post("/grupos/edit/", Admin, (req, res) => {
     Grupos.findOne({_id: req.body.id}).then((grupo) => {
 
         grupo.descricao = req.body.descricao,
@@ -322,7 +324,7 @@ router.post("/grupos/edit/", (req, res) => {
     })
 })
 
-router.get("/grupos/deletar/:id", (req,res) => {
+router.get("/grupos/deletar/:id", Admin, (req,res) => {
     Grupos.remove({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Grupo deletado com sucesso!")
         res.redirect("/admin/grupos")
@@ -334,7 +336,7 @@ router.get("/grupos/deletar/:id", (req,res) => {
 
 
 //AULAS
-router.get("/aulaslabcon", (req, res) => {
+router.get("/aulaslabcon", Admin, (req, res) => {
     AulasLabCon.find().populate("horario").then((aulaslabcon) => {
         res.render("admin/aulaslabcon",{aulaslabcon: aulaslabcon})
     }).catch((err) => {
@@ -343,7 +345,7 @@ router.get("/aulaslabcon", (req, res) => {
     })
 })
 
-router.get('/aulaslabcon/add', (req,res) => {
+router.get('/aulaslabcon/add', Admin, (req,res) => {
     
     Horarios.find().then((horarios) => {
         res.render("admin/addaulaslabcon", {horarios: horarios});
@@ -356,7 +358,7 @@ router.get('/aulaslabcon/add', (req,res) => {
     })
 })
 
-router.post("/aulaslabcon/novo", (req,res) => {
+router.post("/aulaslabcon/novo", Admin, (req,res) => {
 
     const novoAulaLabCon = {
         horario: req.body.horario,
@@ -374,7 +376,7 @@ router.post("/aulaslabcon/novo", (req,res) => {
 
 })
 
-router.get("/aulaslabcon/edit/:id", (req,res) => {
+router.get("/aulaslabcon/edit/:id", Admin, (req,res) => {
     AulasLabCon.findOne({_id: req.params.id}).then((aula) => {
         Horarios.find().then((horarios) => {
                 res.render("admin/editaulaslabcon", 
@@ -390,7 +392,7 @@ router.get("/aulaslabcon/edit/:id", (req,res) => {
     })
 })
 
-router.post("/aulaslabcon/edit/", (req, res) => {
+router.post("/aulaslabcon/edit/", Admin, (req, res) => {
     AulasLabCon.findOne({_id: req.body.id}).then((aula) => {
 
         aula.dia_semana = req.body.dia_semana,
@@ -413,7 +415,7 @@ router.post("/aulaslabcon/edit/", (req, res) => {
 
 
 
-router.get("/aulaslabcon/deletar/:id", (req,res) => {
+router.get("/aulaslabcon/deletar/:id", Admin, (req,res) => {
     AulasLabCon.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Aula deletada com sucesso!")
         res.redirect("/admin/aulaslabcon")
@@ -425,11 +427,11 @@ router.get("/aulaslabcon/deletar/:id", (req,res) => {
 
 
 // Registro de usuário
-router.get("/registro", (req, res) => {
+router.get("/registro", Admin, (req, res) => {
     res.render("admin/registro")
 })
 
-router.post("/registro", (req, res) => {
+router.post("/registro", Admin, (req, res) => {
 
     if(req.body.senha < 4){
         req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
@@ -478,7 +480,7 @@ router.post("/registro", (req, res) => {
 
 })
 
-router.get('/labcontrole',(req,res)=> {
+router.get('/labcontrole', Admin, (req,res)=> {
     res.render("admin/labcontrole")
 })
 
