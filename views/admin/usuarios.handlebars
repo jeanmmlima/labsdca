@@ -1,0 +1,31 @@
+{{>_navlabcon}}
+
+<h2>Usuários</h2>
+<hr>
+<a href="/admin/registro"><button class="btn btn-dark"><i class="icon-plus"></i> Novo Usuário</button></a>
+
+
+<div class="row">
+
+{{#each usuarios}}
+<div class="col-sm-4">
+    <div class="card mt-4">
+        <div class="card-body">
+            <h5>{{nome}}</h5><br>
+            <h6>{{email}}</h6><br>
+            <a href="/admin/usuarios/edit/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+            <a href="/admin/usuarios/deletar/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            <!--
+            <form action="/admin/horarios/deletar" method="POST">
+                <input type="hidden" name="id" value="{{_id}}">
+                <button type="submit" class="btn btn-danger mt-2">Deletar Horário</button>
+            </form>!-->
+        </div>
+    </div>
+</div>
+{{else}}
+<h4 class="mt-3">Nenhuma Usuário Cadastrado</h4>
+
+{{/each}}
+
+</div>

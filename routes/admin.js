@@ -428,6 +428,18 @@ router.get("/aulaslabcon/deletar/:id", Admin, (req,res) => {
 
 // Usuários
 
+router.get("/usuarios", (req, res) => {
+    Usuarios.find().then((usuarios) => {
+        res.render("admin/usuarios",{usuarios: usuarios});
+    }).catch((err) =>{
+        req.flash("error_msg", "Houve erro ao listar aulas!")
+        res.redirect("/admin")
+    })
+})
+
+router.get("/usuarios/edit/:id", (req, res) => {
+    
+})
 
 
 
