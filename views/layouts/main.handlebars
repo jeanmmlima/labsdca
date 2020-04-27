@@ -16,11 +16,17 @@
   </head>
   <body>
     {{>_navbar}}
+    <div id="page-container">
     <div class="container mt-4">
-        {{>_msg}}
-        {{{body}}}
+      
+        <div id="content-wrap">
+          {{>_msg}}
+          {{{body}}}
+        </div>
+        {{>_footer}}
+      </div>
+        
     </div>
-    {{>_footer}}
   </body>
 
 </html>

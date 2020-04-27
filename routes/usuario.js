@@ -64,7 +64,6 @@ router.post("/reservaslabcon/novo", (req,res) => {
     //var d = new Date(req.body.data);
     //  var picked_data = new Date(r);
     var fd = moment(req.body.data).format('DD/MM/YYYY');
-    console.log(fd);
     var d = new Date(req.body.data);
     d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
     d.setHours(0);

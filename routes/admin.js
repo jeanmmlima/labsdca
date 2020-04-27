@@ -426,6 +426,11 @@ router.get("/aulaslabcon/deletar/:id", Admin, (req,res) => {
 })
 
 
+// Usuários
+
+
+
+
 // Registro de usuário
 router.get("/registro", Admin, (req, res) => {
     res.render("admin/registro")
@@ -451,7 +456,8 @@ router.post("/registro", Admin, (req, res) => {
                 const novoUsuario = new Usuarios({
                     nome: req.body.nome,
                     email: req.body.email,
-                    senha: req.body.senha
+                    senha: req.body.senha,
+                    admin: req.body.admin
                 })
                 bcrypt.genSalt(10,(erro,salt) => {
                     bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
