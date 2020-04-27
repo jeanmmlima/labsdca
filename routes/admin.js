@@ -432,13 +432,75 @@ router.get("/usuarios", (req, res) => {
     Usuarios.find().then((usuarios) => {
         res.render("admin/usuarios",{usuarios: usuarios});
     }).catch((err) =>{
-        req.flash("error_msg", "Houve erro ao listar aulas!")
+        req.flash("error_msg", "Houve erro ao listar usuarios!")
         res.redirect("/admin")
     })
 })
 
 router.get("/usuarios/edit/:id", (req, res) => {
-    
+    Usuarios.findOne({_id: req.params.id}).then((usuario) => {
+        res.render("admin/editusuarios", {usuario: usuario});
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao encontrar o usuario!")
+        res.redirect("/admin")
+    })
+})
+
+router.post("/usuarios/edit", (req, res) => {
+
+
+    if(req.body.senha < 4){
+        req.flash("error_msg", "Senha deve conter no mínimo 4 caracteres!")
+        res.redirect("/admin/usuarios")
+    } else if(req.body.senha != req.body.senha2){
+        req.flash("error_msg", "Senha são diferentes")
+        res.redirect("/admin/usuarios")
+    } else {
+
+        Usuarios.findOne({_id: req.body.id}).then((usuario) => {
+            usuario.nome = req.body.nome,
+            usuario.email = req.body.email,
+            usuario.admin = req.body.admin,
+            usuario.senha = req.body.senha
+
+            bcrypt.genSalt(10,(erro,salt) => {
+
+                bcrypt.hash(usuario.senha,salt,(erro,hash) => {
+                    if(erro){
+                        req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                        req.redirect("/admin/usuarios")
+                    } else {
+                        usuario.senha = hash
+                        usuario.save().then(() => {
+                            req.flash("success_msg", "Usuário editado com sucesso!")
+                            res.redirect("/admin/usuarios")
+                        }).catch((erro) => {
+                            req.flash("error_msg", "Erro ao editar usuário")
+                            res.redirect("/admin/usuarios")
+                        })
+                    }
+                })
+
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro encontrar o usuario")
+            res.redirect("/admin/usuarios")
+        })
+
+    }
+
+
+   
+})
+
+router.get("/usuarios/deletar/:id", (req, res) => {
+    Usuarios.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Usuário excluído com sucesso!")
+        res.redirect("/admin/usuarios")
+    }).catch((err) => {
+        req.flash("error_msg", "Erro interno ao excluir usuário!")
+        res.redirect("/admin/usuarios")
+    })
 })
 
 
@@ -475,7 +537,7 @@ router.post("/registro", Admin, (req, res) => {
                     bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
                         if(erro){
                             req.flash("error_msg", "Houve erro durante salvamento o usuario!")
-                            eq.redirect("/")
+                            req.redirect("/")
                         } else {
                             novoUsuario.senha = hash
                             novoUsuario.save().then(() => {
