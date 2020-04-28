@@ -2,8 +2,12 @@
 
 <h2>Reservas</h2>
 <hr>
+{{#if user}}
 <a href="/usuario/reservaslabcon/add"><button class="btn btn-dark"><i class="icon-plus"></i> Reservar</button></a>
 <br><br>
+{{else}}
+
+{{/if}}
 <div class="card-header">
     <div class="row">
         <div class="col-sm-4">
@@ -13,7 +17,11 @@
             <p><b>Horário e Data</b></p>
         </div>
         <div class="col-sm-4">
-            <p><b>Gerenciar</b></p>
+            {{#if user}}
+                <p><b>Gerenciar</b></p>
+            {{else}}
+
+            {{/if}}
         </div>
     </div>
 </div>
@@ -33,8 +41,12 @@
                 <p>{{format_data data}}</p>
             </div>
             <div class="col-sm-4">
-                <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-                <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                {{#if ../user}}
+                 <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                {{else}}
+                
+                {{/if}}
             </div>
 
         </div>

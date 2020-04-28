@@ -121,6 +121,13 @@ Handlebars.registerHelper('tipo_usuario', function(admin){
 
 })
 
+Handlebars.registerHelper('ifCond', function(v1, options) {
+    if(v1) {
+      return options.fn(this);
+    }
+    return options.inverse(this);
+  });
+
 //4. Others
 //local port - 8081
 //process.env.PORT - porta ambiente do HEROKU
