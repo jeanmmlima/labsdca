@@ -11,8 +11,10 @@
 <div class="col-sm-4">
     <div class="card mt-4">
         <div class="card-body">
-            <h5>{{nome}}</h5><br>
-            <h6>{{email}}</h6><br>
+            <h5>{{nome}}</h5>
+            <h6>{{email}}</h6>
+            <small>{{tipo_usuario admin}}</small>
+            <br>
             <a href="/admin/usuarios/edit/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
             <a href="/admin/usuarios/deletar/{{_id}}"><button class="btn btn-outline-dark mt-4"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
             <!--

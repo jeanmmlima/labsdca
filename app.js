@@ -115,6 +115,12 @@ Handlebars.registerHelper('format_dia_semana', function(dia_semana){
 
 })
 
+Handlebars.registerHelper('tipo_usuario', function(admin){
+    var tipo = ["Padrão", "Administrador"];
+    return tipo[admin];
+
+})
+
 //4. Others
 //local port - 8081
 //process.env.PORT - porta ambiente do HEROKU

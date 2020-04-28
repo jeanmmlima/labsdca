@@ -4,7 +4,7 @@ module.exports = {
         if(req.isAuthenticated() && req.user.admin == 1){
             return next();
         }
-        req.flash("error_msg", "Voce precisa ser admin!")
+        req.flash("error_msg", "Acesso restrito!")
         res.redirect("/")
 
     }

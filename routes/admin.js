@@ -428,7 +428,7 @@ router.get("/aulaslabcon/deletar/:id", Admin, (req,res) => {
 
 // Usuários
 
-router.get("/usuarios", (req, res) => {
+router.get("/usuarios", Admin, (req, res) => {
     Usuarios.find().then((usuarios) => {
         res.render("admin/usuarios",{usuarios: usuarios});
     }).catch((err) =>{
@@ -437,7 +437,7 @@ router.get("/usuarios", (req, res) => {
     })
 })
 
-router.get("/usuarios/edit/:id", (req, res) => {
+router.get("/usuarios/edit/:id", Admin, (req, res) => {
     Usuarios.findOne({_id: req.params.id}).then((usuario) => {
         res.render("admin/editusuarios", {usuario: usuario});
     }).catch((err) => {
@@ -446,7 +446,7 @@ router.get("/usuarios/edit/:id", (req, res) => {
     })
 })
 
-router.post("/usuarios/edit", (req, res) => {
+router.post("/usuarios/edit", Admin, (req, res) => {
 
 
     if(req.body.senha < 4){
@@ -493,7 +493,7 @@ router.post("/usuarios/edit", (req, res) => {
    
 })
 
-router.get("/usuarios/deletar/:id", (req, res) => {
+router.get("/usuarios/deletar/:id", Admin, (req, res) => {
     Usuarios.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Usuário excluído com sucesso!")
         res.redirect("/admin/usuarios")
