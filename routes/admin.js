@@ -448,8 +448,7 @@ router.get("/usuarios/edit/:id", Admin, (req, res) => {
 
 router.post("/usuarios/edit", Admin, (req, res) => {
 
-
-    if(req.body.senha < 4){
+    if(req.body.senha.toString().length < 4){
         req.flash("error_msg", "Senha deve conter no mínimo 4 caracteres!")
         res.redirect("/admin/usuarios")
     } else if(req.body.senha != req.body.senha2){
@@ -512,7 +511,7 @@ router.get("/registro", Admin, (req, res) => {
 
 router.post("/registro", Admin, (req, res) => {
 
-    if(req.body.senha < 4){
+    if(req.body.senha.toString().length < 4){
         req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
         res.redirect("/admin/registro")
     }
