@@ -25,6 +25,10 @@ const AulasLabCon = mongoose.model("aulaslabcon")
 require("../models/Usuario")
 const Usuarios = mongoose.model("usuarios")
 
+require("../models/AlunoLabCon")
+const AlunoLabCon = mongoose.model("alunoslabcon")
+
+
 const {Admin} =require("../helper/Admin");
 
 
@@ -331,6 +335,38 @@ router.get("/grupos/deletar/:id", Admin, (req,res) => {
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao deletar grupo")
         res.redirect("/admin/grupos")
+    })
+})
+
+router.get("/alunoslabcon", (req,res) => {
+    AlunoLabCon.find().populate("usuario").populate("grupo").then((alunoslabcon) => {
+        res.render("admin/alunoslabcon",{alunoslabcon: alunoslabcon})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao listar Alunos!")
+        res.redirect("/admin")
+    })
+})
+
+router.get("/alunoslabcon/add", (req,res) => {
+    Usuarios.find().then((usuarios) => {
+        Grupos.find().populate("turma").populate("bancada").then((grupos) => {
+            
+        })
+    })
+})
+
+router.post("/alunoslabcon/novo", (req,res)=> {
+    const novoAluno = {
+        usuario: req.body.usuario,
+        grupo: req.body.grupo
+    }
+
+    new AlunoLabCon(novoAluno).save().then(() => {
+        req.flash("success_msg", "Aluno registrado com sucesso!")
+        res.redirect("/admin/alunoslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao listar Alunos!")
+        res.redirect("/admin")
     })
 })
 
