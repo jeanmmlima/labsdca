@@ -376,6 +376,59 @@ router.post("/alunoslabcon/novo", (req,res)=> {
     })
 })
 
+router.get("/alunoslabcon/edit/:id", Admin, (req,res) => {
+    AlunoLabCon.findOne({_id: req.params.id}).then((aluno) => {
+        Usuarios.find().then((usuarios) => {
+            Grupos.find().populate("turma").populate("bancada").then((grupos) => {
+                res.render("admin/editalunoslabcon", 
+                {aluno: aluno, 
+                 usuarios: usuarios, 
+                 grupos: grupos})
+            }).catch((err) => {
+                req.flash("error_msg", "Não conseguiu listar Grupos")
+                console.log("Erro: "+err)
+                res.redirect("/admin/alunoslabcon")
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Não conseguiu listar Usuários")
+            res.redirect("/admin/alunoslabcon")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Não conseguiu encontrar Aluno")
+        res.redirect("/admin/alunoslabcon")
+    })
+})
+
+router.post("/alunoslabcon/edit/", Admin, (req, res) => {
+    AlunoLabCon.findOne({_id: req.body.id}).then((aluno) => {
+
+        aluno.usuario = req.body.usuario,
+        aluno.grupo = req.body.grupo
+
+        aluno.save().then(() => {
+            req.flash("success_msg", "Aluno editado com sucesso!")
+            res.redirect("/admin/alunoslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao editar o aluno")
+            res.redirect("/admin/alunoslabcon")
+        })
+    }).catch((err) => {
+        console.log("Erro: "+err)
+        req.flash("error_msg", "Houve erro ao procurar o aluno")
+        res.redirect("/admin/alunoslabcon")
+    })
+})
+
+router.get("/alunoslabcon/deletar/:id", Admin, (req,res) => {
+    AlunoLabCon.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Aluno excluído com sucesso!")
+        res.redirect("/admin/alunoslabcon")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao excluir aluno!")
+        res.redirect("/admin/alunoslabcon")
+    })
+})
+
 
 //AULAS
 router.get("/aulaslabcon", Admin, (req, res) => {
