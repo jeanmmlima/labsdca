@@ -338,7 +338,7 @@ router.get("/grupos/deletar/:id", Admin, (req,res) => {
     })
 })
 
-router.get("/alunoslabcon", (req,res) => {
+router.get("/alunoslabcon", Admin, (req,res) => {
     AlunoLabCon.find().populate("usuario").populate("grupo").then((alunoslabcon) => {
         res.render("admin/alunoslabcon",{alunoslabcon: alunoslabcon})
     }).catch((err) => {
@@ -347,7 +347,7 @@ router.get("/alunoslabcon", (req,res) => {
     })
 })
 
-router.get("/alunoslabcon/add", (req,res) => {
+router.get("/alunoslabcon/add", Admin, (req,res) => {
     Usuarios.find().then((usuarios) => {
         Grupos.find().populate("turma").populate("bancada").then((grupos) => {
             res.render("admin/addalunoslabcon", {usuarios: usuarios, grupos: grupos})
@@ -361,7 +361,7 @@ router.get("/alunoslabcon/add", (req,res) => {
     })
 })
 
-router.post("/alunoslabcon/novo", (req,res)=> {
+router.post("/alunoslabcon/novo", Admin, (req,res)=> {
     const novoAluno = {
         usuario: req.body.usuario,
         grupo: req.body.grupo
