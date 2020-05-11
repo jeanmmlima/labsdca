@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Nova Aluno</h4>
+        <form action="/admin/alunoslabcon/novo" method="POST">
+            <label for="usuario">Usuario: </label>
+             <select name="usuario" class="custom-select">
+                {{#each usuarios}}
+                <option value="{{_id}}">{{nome}} - {{email}}</option>
+                {{else}}
+                <option value="0">Nenhum Usuário Registrado</option>
+                {{/each}}
+            </select>
+             <label for="grupo">Grupo: </label>
+             <select name="grupo" class="custom-select">
+                {{#each grupos}}
+                <option value="{{_id}}">{{descricao}} - {{turma.descricao}} {{turma.subturma}} - {{bancada.descricao}}</option>
+                {{else}}
+                <option value="0">Nenhuma Turma Registrada</option>
+                {{/each}}
+            </select>
+
+            <button class="btn btn-dark mt-4" type="submit">Cadastrar Aluno</button>
+        </form>
+    </div>
+</div>
