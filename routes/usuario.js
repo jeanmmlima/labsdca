@@ -24,11 +24,27 @@ const AulasLabCon = mongoose.model("aulaslabcon")
 require("../models/Usuario")
 const Usuarios = mongoose.model("usuarios")
 
+require("../models/AlunoLabCon")
+const AlunosLabCon = mongoose.model("alunoslabcon")
+
 var moment = require('moment')
 
 router.get("/reservaslabcon",(req, res) => {
     //population em multiniveis de relacionamento
     //population across multi-level 
+    if(req.isAuthenticated()){
+        console.log(req.user._id)
+    
+        AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
+            if(aluno){
+                console.log("Encontoru Aluno")
+            } else {
+                console.log("Não encontrou!")
+            }
+        }).catch((err) => {
+            console.log("não encontrou "+err)
+        })
+    }
     ReservaLabCon.find().populate("horario").populate({
         path: "grupo",
         populate: {path: "turma"}
