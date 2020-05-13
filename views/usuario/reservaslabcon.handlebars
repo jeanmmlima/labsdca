@@ -41,12 +41,12 @@
                 <p>{{format_data data}}</p>
             </div>
             <div class="col-sm-4">
-                {{#if ../user}}
+                {{#ifCond ../user.admin}}
                  <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
                  <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
                 
-                {{/if}}
+                {{/ifCond}}
             </div>
 
         </div>

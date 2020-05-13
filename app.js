@@ -121,8 +121,9 @@ Handlebars.registerHelper('tipo_usuario', function(admin){
 
 })
 
-Handlebars.registerHelper('ifCond', function(v1, options) {
-    if(v1) {
+Handlebars.registerHelper('ifCond', function(conditional, options) {
+    console.log(conditional)
+    if(conditional == 0) {
       return options.fn(this);
     }
     return options.inverse(this);
