@@ -33,18 +33,20 @@ router.get("/reservaslabcon",(req, res) => {
     //population em multiniveis de relacionamento
     //population across multi-level 
     if(req.isAuthenticated()){
-        console.log(req.user._id)
-    
         AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
-            if(aluno){
-                console.log("Encontoru Aluno")
-            } else {
-                console.log("Não encontrou!")
-            }
+            ReservaLabCon.find().populate("horario").populate({
+                path: "grupo",
+                populate: {path: "turma"}
+            }).then((reservas) => {
+                res.render("usuario/reservaslabcon", {reservas: reservas, aluno: aluno})
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao listar reservas!")
+                res.redirect("/usuario/")
+            })
         }).catch((err) => {
             console.log("não encontrou "+err)
         })
-    }
+    } else {
     ReservaLabCon.find().populate("horario").populate({
         path: "grupo",
         populate: {path: "turma"}
@@ -54,9 +56,8 @@ router.get("/reservaslabcon",(req, res) => {
         req.flash("error_msg", "Houve erro ao listar reservas!")
         res.redirect("/usuario/")
     })
-
+    }
 })
-
 router.get("/reservaslabcon/add", (req,res) => {
     
     Grupos.find().populate("turma").then((grupos) => {

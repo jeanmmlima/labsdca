@@ -121,13 +121,35 @@ Handlebars.registerHelper('tipo_usuario', function(admin){
 
 })
 
-Handlebars.registerHelper('ifCond', function(conditional, options) {
-    console.log(conditional)
-    if(conditional == 0) {
-      return options.fn(this);
+Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+    
+    switch (operator) {
+        case 'equals':
+            return (v1.equals(v2)) ? options.fn(this) : options.inverse(this);
+        case '==':
+            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+        case '===':
+            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+        case '!=':
+            return (v1 != v2) ? options.fn(this) : options.inverse(this);
+        case '!==':
+            return (v1 !== v2) ? options.fn(this) : options.inverse(this);
+        case '<':
+            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+        case '<=':
+            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+        case '>':
+            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+        case '>=':
+            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+        case '&&':
+            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+        case '||':
+            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+        default:
+            return options.inverse(this);
     }
-    return options.inverse(this);
-  });
+});
 
 //4. Others
 //local port - 8081
