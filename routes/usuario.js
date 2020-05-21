@@ -154,17 +154,58 @@ router.post("/reservaslabcon/novo", (req,res) => {
 
 router.get("/reservaslabcon/deletar/:id", (req, res) => {
 
-    ReservaLabCon.deleteOne({_id: req.params.id}).then(() => {
-        req.flash("success_msg", "Reserva excluída com sucesso!")
+    if(req.isAuthenticated() && req.user.admin == 0){
+        AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
+            ReservaLabCon.findOne({_id: req.params.id}).then((reserva) => {
+                if(aluno.grupo.equals(reserva.grupo)){
+                    ReservaLabCon.deleteOne({_id: req.params.id}).then(() => {
+                        req.flash("success_msg", "Reserva excluída com sucesso!")
+                        res.redirect("/usuario/reservaslabcon")
+                    }).catch((err) => {
+                        req.flash("error_msg", "Houve erro ao excluir a reserva! Tente novamente!")
+                        res.redirect("/usuario/reservaslabcon")
+                    })
+                } else {
+                    req.flash("error_msg", "Usuário só pode excluir reservas do seu grupo!")
+                    res.redirect("/usuario/reservaslabcon")
+                }
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro procurar a reserva selecionada!")
+                res.redirect("/usuario/")
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro procurar usuário aluno!")
+            res.redirect("/usuario/")
+        })
+    } else if(req.isAuthenticated && req.user.admin == 1){
+        ReservaLabCon.deleteOne({_id: req.params.id}).then(() => {
+            req.flash("success_msg", "Reserva excluída com sucesso!")
+            res.redirect("/usuario/reservaslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro ao excluir a reserva! Tente novamente!")
+            res.redirect("/usuario/reservaslabcon")
+        })
+    } else {
+        req.flash("error_msg", "Usuário precisa estar logado para executar excluir reservas! Tente novamente!")
         res.redirect("/usuario/reservaslabcon")
-    }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao excluir a reserva! Tente novamente!")
-        res.redirect("/usuario/reservaslabcon")
-    })
+    }
+
+    
 
 })
 
 router.get("/reservaslabcon/edit/:id", (req, res) => {
+
+    if(req.isAuthenticated() && req.user.admin == 0){
+
+    } else if(req.isAuthenticated() && req.user.admin == 1){
+
+    } else {
+        
+    }
+
+
+
     ReservaLabCon.findOne({_id: req.params.id}).then((reservalabcon) => {
         Grupos.find().populate("turma").then((grupos) => {
             Horarios.find().then((horarios) => {
@@ -185,6 +226,9 @@ router.get("/reservaslabcon/edit/:id", (req, res) => {
         req.flash("error_msg", "A reserva não foi encontrada!")
         res.redirect("/usuario/reservaslabcon")
     })
+
+
+
 })
 
 router.post("/reservaslabcon/edit", (req, res) => {
