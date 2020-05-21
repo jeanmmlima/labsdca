@@ -197,37 +197,66 @@ router.get("/reservaslabcon/deletar/:id", (req, res) => {
 router.get("/reservaslabcon/edit/:id", (req, res) => {
 
     if(req.isAuthenticated() && req.user.admin == 0){
-
-    } else if(req.isAuthenticated() && req.user.admin == 1){
-
-    } else {
-        
-    }
-
-
-
-    ReservaLabCon.findOne({_id: req.params.id}).then((reservalabcon) => {
-        Grupos.find().populate("turma").then((grupos) => {
-            Horarios.find().then((horarios) => {
-                res.render("usuario/editreservaslabcon",{
-                    reservalabcon: reservalabcon,
-                    grupos: grupos,
-                    horarios: horarios
-                })
+        AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
+            ReservaLabCon.findOne({_id: req.params.id}).then((reserva) => {
+                if(aluno.grupo.equals(reserva.grupo)){
+                    ReservaLabCon.findOne({_id: req.params.id}).then((reservalabcon) => {
+                        Grupos.find().populate("turma").then((grupos) => {
+                            Horarios.find().then((horarios) => {
+                                res.render("usuario/editreservaslabcon",{
+                                    reservalabcon: reservalabcon,
+                                    grupos: grupos,
+                                    horarios: horarios
+                                })
+                            }).catch((err) => {
+                                req.flash("error_msg", "Houve erro ao listar horários")
+                                res.redirect("/usuario/reservaslabcon")
+                            })
+                        }).catch((err) => {
+                            req.flash("error_msg", "Houve erro ao grupos")
+                            res.redirect("/usuario/reservaslabcon")
+                        })
+                    }).catch((err) => {
+                        req.flash("error_msg", "A reserva não foi encontrada!")
+                        res.redirect("/usuario/reservaslabcon")
+                    })
+                } else {
+                    req.flash("error_msg", "Usuário só pode editar reservas do seu grupo!")
+                    res.redirect("/usuario/reservaslabcon")
+                }
             }).catch((err) => {
-                req.flash("error_msg", "Houve erro ao listar horários")
+                req.flash("error_msg", "Houve erro procurar a reserva selecionada!")
                 res.redirect("/usuario/reservaslabcon")
             })
         }).catch((err) => {
-            req.flash("error_msg", "Houve erro ao grupos")
+            req.flash("error_msg", "Houve erro procurar aluno logado!")
             res.redirect("/usuario/reservaslabcon")
         })
-    }).catch((err) => {
-        req.flash("error_msg", "A reserva não foi encontrada!")
+    } else if(req.isAuthenticated() && req.user.admin == 1){
+        ReservaLabCon.findOne({_id: req.params.id}).then((reservalabcon) => {
+            Grupos.find().populate("turma").then((grupos) => {
+                Horarios.find().then((horarios) => {
+                    res.render("usuario/editreservaslabcon",{
+                        reservalabcon: reservalabcon,
+                        grupos: grupos,
+                        horarios: horarios
+                    })
+                }).catch((err) => {
+                    req.flash("error_msg", "Houve erro ao listar horários")
+                    res.redirect("/usuario/reservaslabcon")
+                })
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao grupos")
+                res.redirect("/usuario/reservaslabcon")
+            })
+        }).catch((err) => {
+            req.flash("error_msg", "A reserva não foi encontrada!")
+            res.redirect("/usuario/reservaslabcon")
+        })
+    } else {
+        req.flash("error_msg", "Usuário precisa estar logado para executar editar reservas! Tente novamente!")
         res.redirect("/usuario/reservaslabcon")
-    })
-
-
+    }
 
 })
 
