@@ -59,18 +59,25 @@ router.get("/reservaslabcon",(req, res) => {
     }
 })
 router.get("/reservaslabcon/add", (req,res) => {
-    
-    Grupos.find().populate("turma").then((grupos) => {
-        Horarios.find().then((horarios) => {
-            res.render("usuario/addreservalabcon",{grupos: grupos,horarios: horarios})
+
+    if(req.isAuthenticated()){
+        Grupos.find().populate("turma").then((grupos) => {
+            Horarios.find().then((horarios) => {
+                res.render("usuario/addreservalabcon",{grupos: grupos,horarios: horarios})
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao listar horários!")
+                res.redirect("/usuario/reservaslabcon")
+            })
         }).catch((err) => {
-            req.flash("error_msg", "Houve erro ao listar horários!")
-            res.redirect("/usuario")
+            req.flash("error_msg", "Houve erro ao listar grupos!")
+            res.redirect("/usuario/reservaslabcon")
         })
-    }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao listar grupos!")
-        res.redirect("/usuario")
-    })
+    } else {
+        req.flash("error_msg", "Você precisa estar logado para cadastrar uma reserva!")
+        res.redirect("/usuario/reservaslabcon")
+    }
+    
+   
 
 })
 
