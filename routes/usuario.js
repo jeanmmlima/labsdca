@@ -34,7 +34,7 @@ router.get("/reservaslabcon",(req, res) => {
     //population across multi-level 
     if(req.isAuthenticated()){
         AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
-            ReservaLabCon.find().populate("horario").populate({
+            ReservaLabCon.find({ativo: 1}).sort("data").populate("horario").populate({
                 path: "grupo",
                 populate: {path: "turma"}
             }).then((reservas) => {
@@ -47,7 +47,7 @@ router.get("/reservaslabcon",(req, res) => {
             console.log("não encontrou "+err)
         })
     } else {
-    ReservaLabCon.find().populate("horario").populate({
+    ReservaLabCon.find({ativo: 1}).sort("data").sort("horario").populate("horario").populate({
         path: "grupo",
         populate: {path: "turma"}
     }).then((reservas) => {
