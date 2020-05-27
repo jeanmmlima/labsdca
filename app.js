@@ -11,6 +11,8 @@ const handlebars = require('express-handlebars')
 const bodyParsers = require('body-parser')
 const app = express()
 const utf8 = require('utf8')
+const cron = require('node-cron')
+const shell = require('shelljs')
 
 const Handlebars = require('handlebars')
 var moment = require('moment')
@@ -151,6 +153,16 @@ Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
     }
 });
 
+cron.schedule("00 01 * * *", function() {
+    console.log("---------------------");
+    console.log("Running Cron Job");
+    if (shell.exec("mongo --eval 'db.reservaslabcons.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
+      shell.exit(1);
+    }
+    else{
+      shell.echo("reservas atualizadas!");
+    }
+  });
 //4. Others
 //local port - 8081
 //process.env.PORT - porta ambiente do HEROKU
