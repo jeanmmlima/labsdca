@@ -348,7 +348,7 @@ router.get("/alunoslabcon", Admin, (req,res) => {
 })
 
 router.get("/alunoslabcon/add", Admin, (req,res) => {
-    Usuarios.find().then((usuarios) => {
+    Usuarios.find({admin: 0}).then((usuarios) => {
         Grupos.find().populate("turma").populate("bancada").then((grupos) => {
             res.render("admin/addalunoslabcon", {usuarios: usuarios, grupos: grupos})
         }).catch((err) => {
@@ -611,7 +611,7 @@ router.post("/registro", Admin, (req, res) => {
         res.redirect("/admin/registro")
     }
     else if(req.body.senha != req.body.senha2){
-        req.flash("error_msg", "Senha são diferentes")
+        req.flash("error_msg", "Senha diferentes")
         res.redirect("/admin/registro")
     }
     else {
@@ -636,7 +636,7 @@ router.post("/registro", Admin, (req, res) => {
                             novoUsuario.senha = hash
                             novoUsuario.save().then(() => {
                                 req.flash("success_msg", "Usuário criado com sucesso!")
-                                res.redirect("/")
+                                res.redirect("/admin/usuarios")
                             }).catch((erro) => {
                                 req.flash("error_msg", "Erro ao criar usuário")
                                 res.redirect("/admin/registro")
