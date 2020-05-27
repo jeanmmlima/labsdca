@@ -3,7 +3,13 @@
         <h4>Nova Aula</h4>
         <form action="/admin/aulaslabcon/novo" method="POST">
             <label for="dia_semana">Dia da semana: </label>
-            <input type="text" name="dia_semana" class="form-control" required>
+            <select name="dia_semana" class="custom-select">
+                <option value="1">Segunda-feira</option>
+                <option value="2">Terça-feira</option>
+                <option value="3">Quarta-feira</option>
+                <option value="4">Quinta-feira</option>
+                <option value="5">Sexta-feira</option>
+            </select>
             <label for="horario">Horário: </label>
             <select name="horario" class="custom-select">
                 {{#each horarios}}
@@ -15,7 +21,7 @@
             <label for="comentario">Comentario: </label>
             <input type="text" name="comentario" class="form-control">
 
-            <button class="btn btn-success mt-4" type="submit">Criar Aula</button>
+            <button class="btn btn-dark mt-4" type="submit">Criar Aula</button>
         </form>
     </div>
 </div>
