@@ -375,7 +375,7 @@ router.post("/forgot/edit", (req, res, next) => {
                 subject: 'Alteração de Senha - DCALabs',
                 text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
                 'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
-                'http://' + req.headers.host + 'usuario/reset/' + token + '\n\n' +
+                'http://' + req.headers.host + '/usuario/reset/' + token + '\n\n' +
                 'If you did not request this, please ignore this email and your password will remain unchanged.\n'
             };
             smtpTransport.sendMail(mailOptions, function(err){
@@ -389,5 +389,15 @@ router.post("/forgot/edit", (req, res, next) => {
         res.redirect('/')
     });
 });
+
+router.get("/reset/:token", (req, res) => {
+    Usuarios.findOne({token_senha: req.params.token}, function(err, user) {
+        if(!user){
+            req.flash("error_msg","O token de alteração de senha é inválido!");
+            return res.redirect("/")
+        }
+        res.render("usuarios/reset", {usuario: user})
+    })
+})
 
 module.exports = router
