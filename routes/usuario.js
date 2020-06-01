@@ -3,6 +3,10 @@ const router = express.Router()
 const mongoose = require('mongoose')
 
 const passport = require("passport")
+const async = require("async")
+const crypto = require('crypto')
+const nodemailer = require("nodemailer")
+const xoauth2 = require('xoauth2');
 
 //require models
 
@@ -316,5 +320,74 @@ router.get("/logout", (req,res) => {
     res.redirect("/")
 })
 
+//Esqueceu a senha
+
+router.get("/forgot", (req, res) => {
+    res.render("usuario/forgot")
+})
+
+router.post("/forgot/edit", (req, res, next) => {
+    async.waterfall([
+        function(done) {
+            crypto.randomBytes(20, function(err, buf) {
+                var token = buf.toString('hex');
+                done(err,token);
+            });
+        },
+        function(token, done){
+            Usuarios.findOne({email: req.body.email}, function(err, user) {
+                if(!user){
+                    req.flash("error_msg", "Nenhuma conta encontrada com este endereço de email")
+                    return res.redirect("/usuario/forgot")
+                }
+                user.token_senha = token;
+
+                user.save(function(err) {
+                    done(err,token,user);
+                });
+            });
+        },
+        function(token, user, done){
+            var smtpTransport = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'user@gmail.com',
+                  pass: 'passwd'
+                }
+              })
+            /*
+           let smtpTransport = nodemailer.createTransport({
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true,
+            auth: {
+                type: 'OAuth2',
+                user: 'user@example.com',
+                clientId: '000000000000-xxx0.apps.googleusercontent.com',
+                clientSecret: 'XxxxxXXxX0xxxxxxxx0XXxX0',
+                refreshToken: '1/XXxXxsss-xxxXXXXXxXxx0XXXxxXXx0x00xxx',
+                accessToken: 'ya29.Xx_XX0xxxxx-xX0X0XxXXxXxXXXxX0x'
+            }
+        });*/
+            var mailOptions = {
+                to: user.email,
+                from: 'DCA Labs',
+                subject: 'Alteração de Senha - DCALabs',
+                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
+                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                'http://' + req.headers.host + 'usuario/reset/' + token + '\n\n' +
+                'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function(err){
+                req.flash("success_msg", "Um email foi enviado para "+user.email+" com instruções para alteração da senha!");
+                done(err, 'done');
+            });
+        }
+        
+    ], function(err) {
+        if(err) return next(err);
+        res.redirect('/')
+    });
+});
 
 module.exports = router

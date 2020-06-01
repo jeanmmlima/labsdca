@@ -21,6 +21,10 @@ const Usuario = new Schema({
     ativo:{
         type: Number,
         default: 1
+    },
+    token_senha:{
+        type: String,
+        default: 0
     }
 })
 mongoose.model("usuarios", Usuario)
