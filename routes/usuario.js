@@ -7,6 +7,7 @@ const async = require("async")
 const crypto = require('crypto')
 const nodemailer = require("nodemailer")
 const xoauth2 = require('xoauth2');
+const bcrypt = require('bcryptjs')
 
 //require models
 
@@ -351,8 +352,8 @@ router.post("/forgot/edit", (req, res, next) => {
             var smtpTransport = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: 'user@gmail.com',
-                  pass: 'passwd'
+                  user: 'email@gmail.com',
+                  pass: 'senha'
                 }
               })
             /*
@@ -373,10 +374,11 @@ router.post("/forgot/edit", (req, res, next) => {
                 to: user.email,
                 from: 'DCA Labs',
                 subject: 'Alteração de Senha - DCALabs',
-                text: 'You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n' +
-                'Please click on the following link, or paste this into your browser to complete the process:\n\n' +
+                text: 'Olá \n\n' + 
+                'Você está recebendo esse e-mail porque você (ou alguém) solicitou alteração de senha da sua conta.\n\n' +
+                'Por favor, clique no link abaixo para completar o processo de alteração de senha:\n\n' +
                 'http://' + req.headers.host + '/usuario/reset/' + token + '\n\n' +
-                'If you did not request this, please ignore this email and your password will remain unchanged.\n'
+                'Se você não requisitou a mudança, por favor ingorar o e-mail.\n'
             };
             smtpTransport.sendMail(mailOptions, function(err){
                 req.flash("success_msg", "Um email foi enviado para "+user.email+" com instruções para alteração da senha!");
@@ -391,12 +393,77 @@ router.post("/forgot/edit", (req, res, next) => {
 });
 
 router.get("/reset/:token", (req, res) => {
-    Usuarios.findOne({token_senha: req.params.token}, function(err, user) {
-        if(!user){
+    Usuarios.findOne({token_senha: req.params.token}, function(err, usuario) {
+        if(!usuario){
             req.flash("error_msg","O token de alteração de senha é inválido!");
             return res.redirect("/")
         }
-        res.render("usuarios/reset", {usuario: user})
+        res.render("usuario/reset", {usuario: usuario})
+    })
+})
+
+router.post("/reset/edit", (req, res) => {
+    async.waterfall([
+        function(done){
+            Usuarios.findOne({_id: req.body.id}, function(err,usuario){
+                if(!usuario){
+                    req.flash("error_msg", "Usuário não foi encontrado")
+                    return res.redirect("/")
+                }
+                if(req.body.senha.toString().length < 4){
+                    req.flash("error_msg", "Senha deve conter no mínimo 4 caracteres!")
+                    res.redirect("/")
+                } 
+                else if(req.body.senha == req.body.senha2){
+                    usuario.senha = req.body.senha;
+                    usuario.token_senha = undefined;
+
+                    bcrypt.genSalt(10,(erro,salt) => {
+
+                        bcrypt.hash(usuario.senha,salt,(erro,hash) => {
+                            if(erro){
+                                req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                                req.redirect("/")
+                            } else {
+                                usuario.senha = hash
+                                usuario.save(function(err) {
+                                    req.logIn(usuario, function(err) {
+                                        done(err, usuario);
+                                      });
+                                })
+                            }
+                        })
+        
+                    })
+                }
+                else {
+                    req.flash("error_msg", "Senhas não conferem. Devem ser iguais")
+                    res.redirect("/")
+                }
+            });
+        },
+        function(usuario, done){
+            var smtpTransport = nodemailer.createTransport({
+                service: 'gmail',
+                auth: {
+                  user: 'email@gmail.com',
+                  pass: 'senha'
+                }
+              })
+            var mailOptions = {
+                to: usuario.email,
+                from: 'DCA Labs',
+                subject: 'Senha atualizada - DCALabs',
+                text: 'Olá,\n\n' +
+                'Confirmamos que a senha para a conta ' + usuario.email + ' foi alterada com sucesso!.\n'
+            };
+            smtpTransport.sendMail(mailOptions, function(err){
+                req.flash("success_msg", "Sua senha foi alterada com sucesso!");
+                done(err, 'done');
+            });
+        }
+    ], function(err){
+        res.redirect("/")
     })
 })
 

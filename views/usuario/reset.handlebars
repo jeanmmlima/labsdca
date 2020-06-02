@@ -1,0 +1,14 @@
+<h4>Altere sua senha</h4>
+<div class="card">
+    <div class="card-body">
+        <form action="/usuario/reset/edit" method="POST">
+            <input type="hidden" name="id" value="{{usuario._id}}">
+            <label for="senha">Nova Senha: </label>
+            <input type="password" name="senha" class="form-control" required><br>
+            <label for="senha2">Confirmar Senha: </label>
+            <input type="password" name="senha2" class="form-control" required><br>
+            <button class="btn btn-dark mt-2" type="submit">Atualizar Senha</button>
+            <button class="btn btn-secondary mt-2" type="reset">Cancelar</button>
+        </form>
+    </div>
+</div>
