@@ -1,12 +1,12 @@
 <h2>Bancadas</h2>
 <hr>
-<a href="/admin/bancadas/add"><button class="btn btn-success">Nova Bancada</button></a>
+<a href="/admin/bancadas/add"><button class="btn btn-dark">Nova Bancada</button></a>
 
 {{#each bancadas}}
     <div class="card mt-4">
         <div class="card-body">
             <h4>{{descricao}}</h4>
-            <a href="/admin/bancadas/edit/{{_id}}"><button class="btn btn-success mt-4">Editar Bancada</button></a>
+            <a href="/admin/bancadas/edit/{{_id}}"><button class="btn btn-dark mt-4">Editar Bancada</button></a>
             <form action="/admin/bancadas/deletar" method="POST">
                 <input type="hidden" name="id" value="{{_id}}">
                 <button type="submit" class="btn btn-danger mt-2">Deletar Bancada</button>
