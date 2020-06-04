@@ -7,7 +7,7 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
 module.exports = function(passport){
-    passport.use(new estrategiaLocal({usernameField: 'email', passwordField: 'senha'}, (email, senha, done) => {
+    passport.use('local',new estrategiaLocal({usernameField: 'email', passwordField: 'senha'}, (email, senha, done) => {
 
         Usuario.findOne({email: email}).then((usuario) => {
             if(!usuario){

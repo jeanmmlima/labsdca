@@ -306,11 +306,14 @@ router.get("/login", (req,res) => {
 
 router.post("/login", (req, res, next) => {
     
-    passport.authenticate("local", {
+    passport.authenticate('local', {
 
         successRedirect: "/",
         failureRedirect: "/usuario/login",
-        failureFlash: true
+        badRequestMessage : 'Missing username or password.',
+        failureFlash: true,
+        successFlash: true,            
+        failureFlash: req.flash("error_msg",'Usuário ou senha inválidos! Tente novamente.')
     })(req, res,next)
  
 })
