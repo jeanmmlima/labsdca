@@ -587,7 +587,7 @@ router.post("/usuarios/edit", Admin, (req, res) => {
    
 })
 
-router.get("/usuarios/deletar/:id", Admin, (req, res) => {
+router.post("/usuarios/deletar/:id", Admin, (req, res) => {
     Usuarios.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Usuário excluído com sucesso!")
         res.redirect("/admin/usuarios")
