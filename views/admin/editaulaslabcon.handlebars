@@ -1,12 +1,18 @@
 <div class="card">
     <div class="card-body">
         <h4>Editar Aula</h4>
-        <form action="/admin/aulaslabcon/edit" method="POST">
+        <form action="/admin/aulaslabcon/edit" method="POST" class="needs-validation" novalidate>
             <input type="hidden" name="id" value="{{aula._id}}">
             <label for="dia_semana">Dia: </label>
-            <input type="text" name="dia_semana" class="form-control" value="{{grupo.descricao}}">
+            <select name="dia_semana" class="custom-select" required>
+                <option value="1">Segunda-feira</option>
+                <option value="2">Terça-feira</option>
+                <option value="3">Quarta-feira</option>
+                <option value="4">Quinta-feira</option>
+                <option value="5">Sexta-feira</option>
+            </select>
             <label for="horario">Horário: </label>
-            <select name="horario" class="custom-select">
+            <select name="horario" class="custom-select" required>
                 {{#each horarios}}
                 <option value="{{_id}}">{{descricao}}</option>
                 {{else}}

@@ -3,7 +3,7 @@
         <h4>Nova Aluno</h4>
         <form action="/admin/alunoslabcon/novo" method="POST" class="needs-validation" novalidate>
             <label for="usuario">Usuario: </label>
-             <select name="usuario" class="custom-select">
+             <select name="usuario" class="custom-select" required>
                 {{#each usuarios}}
                 <option value="{{_id}}">{{nome}} - {{email}}</option>
                 {{else}}
@@ -11,7 +11,7 @@
                 {{/each}}
             </select>
              <label for="grupo">Grupo: </label>
-             <select name="grupo" class="custom-select">
+             <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
                 <option value="{{_id}}">{{descricao}} - {{turma.descricao}} {{turma.subturma}} - {{bancada.descricao}}</option>
                 {{else}}

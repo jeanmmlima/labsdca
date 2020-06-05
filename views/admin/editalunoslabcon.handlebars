@@ -1,9 +1,9 @@
 <div class="card">
     <div class="card-body">
         <h4>Editar Aluno</h4>
-        <form action="/admin/alunoslabcon/edit" method="POST">
+        <form action="/admin/alunoslabcon/edit" method="POST" class="needs-validation" novalidate>
             <input type="hidden" name="id" value="{{aluno._id}}">
-            <select name="usuario" class="custom-select">
+            <select name="usuario" class="custom-select" required>
                 {{#each usuarios}}
                 <option value="{{_id}}">{{nome}} - {{email}}</option>
                 {{else}}
@@ -11,7 +11,7 @@
                 {{/each}}
             </select>
              <label for="grupo">Grupo: </label>
-             <select name="grupo" class="custom-select">
+             <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
                 <option value="{{_id}}">{{descricao}} - {{turma.descricao}} {{turma.subturma}} - {{bancada.descricao}}</option>
                 {{else}}

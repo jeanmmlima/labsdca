@@ -1,11 +1,11 @@
 <h2>Nova Turma</h2>
 <div class="card">
     <div class="card-body">
-        <form action="/admin/turmas/nova" method="POST">
+        <form action="/admin/turmas/nova" method="POST" class="needs-validation" novalidate>
             <label for="nome">Nome</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Nome da Turma" class="form-control">
+                <input type="text" id="descricao" name="descricao" placeholder="Nome da Turma" class="form-control" required>
             <label for="slug">Subturma:</label>
-                <input type="text" id="subturma" name="subturma" placeholder="Subturma" class="form-control">
+                <input type="text" id="subturma" name="subturma" placeholder="Subturma" class="form-control" required> 
                 <br>
             <button type="submit" class="btn btn-dark">Criar Turma</button>
         </form>

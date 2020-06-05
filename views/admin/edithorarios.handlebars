@@ -1,10 +1,10 @@
 <h2>Editar Horários</h2>
 <div class="card">
     <div class="card-body">
-        <form action="/admin/horarios/edit" method="POST">
+        <form action="/admin/horarios/edit" method="POST" class="needs-validation" novalidate>
         <input type="hidden" name="id" value="{{horario._id}}">
             <label for="nome">Descrição</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Horário" class="form-control" value="{{horario.descricao}}">
+                <input type="text" id="descricao" name="descricao" placeholder="Horário" class="form-control" value="{{horario.descricao}}" required>
                 <br>
             <button type="submit" class="btn btn-dark">Editar Horário</button>
         </form>

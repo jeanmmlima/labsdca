@@ -1,12 +1,12 @@
 <div class="card">
     <div class="card-body">
         <h4>Editar Grupo</h4>
-        <form action="/admin/grupos/edit" method="POST">
+        <form action="/admin/grupos/edit" method="POST" class="needs-validation" novalidate>
             <input type="hidden" name="id" value="{{grupo._id}}">
             <label for="descricao">Nome: </label>
-            <input type="text" name="descricao" class="form-control" value="{{grupo.descricao}}">
+            <input type="text" name="descricao" class="form-control" value="{{grupo.descricao}}" required>
             <label for="bancada">Bancada: </label>
-            <select name="bancada" class="custom-select">
+            <select name="bancada" class="custom-select" required>
                 {{#each bancadas}}
                 <option value="{{_id}}">{{descricao}}</option>
                 {{else}}
@@ -14,7 +14,7 @@
                 {{/each}}
             </select>
             <label for="turma">Turma: </label>
-            <select name="turma" class="custom-select">
+            <select name="turma" class="custom-select" required>
                 {{#each turmas}}
                 <option value="{{_id}}">{{descricao}} - {{subturma}}</option>
                 {{else}}
