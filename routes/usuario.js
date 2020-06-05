@@ -310,10 +310,8 @@ router.post("/login", (req, res, next) => {
 
         successRedirect: "/",
         failureRedirect: "/usuario/login",
-        badRequestMessage : 'Missing username or password.',
-        failureFlash: true,
-        successFlash: true,            
-        failureFlash: req.flash("error_msg",'Usuário ou senha inválidos! Tente novamente.')
+        passReqToCallback: true,
+        failureFlash: true
     })(req, res,next)
  
 })

@@ -7,18 +7,18 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
 module.exports = function(passport){
-    passport.use('local',new estrategiaLocal({usernameField: 'email', passwordField: 'senha'}, (email, senha, done) => {
+    passport.use('local',new estrategiaLocal({usernameField: 'email', passwordField: 'senha', passReqToCallback: true}, (req, email, senha, done) => {
 
         Usuario.findOne({email: email}).then((usuario) => {
             if(!usuario){
                 //done recebe 3 parametros - null conta null, false - autenticacao sem sucesso
-                return done(null, false,{message: "Está conta não existe!"})
+                return done(null, false,req.flash("error_msg","Esta conta não existe!"))
             }
             bcrypt.compare(senha, usuario.senha, (erro, batem) => {
                 if(batem){
                     return done(null, usuario)
                 } else {
-                    return done(null, false, {message: "Senha inválida!"})
+                    return done(null, false, req.flash("error_msg","Senha inválida!"))
                 }
             })
         })
