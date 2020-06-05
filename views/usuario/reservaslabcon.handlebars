@@ -43,13 +43,15 @@
             <div class="col-sm-4">
                 {{#ifCond grupo._id 'equals' ../aluno.grupo}}
                  <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-                 <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                 <!-- <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
+                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
                 
                 {{/ifCond}}
                 {{#if ../user.admin}}
                      <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-                 <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                 <!--<a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
+                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
 
                 {{/if}}
@@ -65,3 +67,36 @@
 
 {{/each}}
 
+
+<!-- start: Delete Coupon Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                
+            </div>
+            <div class="modal-body">
+        <form action="" method="GET" id="deleteForm">
+            <h5 class="text-center">Você tem certeza que deseja deletar?</h5>
+           </div>
+           <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-danger">Deletar</button>
+        </form>
+
+            </div>
+            <!--/modal-footer-collapse -->
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script>
+    $(document).on('click', '.deleter', function(e) {
+        e.preventDefault();
+        const id = $(this).data('id');
+        $('#deleteForm').attr('action', '/usuario/reservaslabcon/deletar/'+ id);
+    })
+</script>
