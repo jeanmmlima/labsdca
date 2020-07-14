@@ -378,7 +378,7 @@ router.post("/alunoslabcon/novo", Admin, (req,res)=> {
 
 router.get("/alunoslabcon/edit/:id", Admin, (req,res) => {
     AlunoLabCon.findOne({_id: req.params.id}).then((aluno) => {
-        Usuarios.find().then((usuarios) => {
+        Usuarios.find({admin: 0}).then((usuarios) => {
             Grupos.find().populate("turma").populate("bancada").then((grupos) => {
                 res.render("admin/editalunoslabcon", 
                 {aluno: aluno, 

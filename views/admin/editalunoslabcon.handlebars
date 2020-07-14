@@ -5,7 +5,7 @@
             <input type="hidden" name="id" value="{{aluno._id}}">
             <select name="usuario" class="custom-select" required>
                 {{#each usuarios}}
-                <option value="{{_id}}">{{nome}} - {{email}}</option>
+                    <option value="{{_id}}" {{selected _id ../aluno.usuario}}>{{nome}} - {{email}}</option>
                 {{else}}
                 <option value="0">Nenhum Usuário Registrado</option>
                 {{/each}}
@@ -13,7 +13,7 @@
              <label for="grupo">Grupo: </label>
              <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
-                <option value="{{_id}}">{{descricao}} - {{turma.descricao}} {{turma.subturma}} - {{bancada.descricao}}</option>
+                <option value="{{_id}}" {{selected _id ../aluno.grupo}}>{{descricao}} - {{turma.descricao}} {{turma.subturma}} - {{bancada.descricao}}</option>
                 {{else}}
                 <option value="0">Nenhuma Turma Registrada</option>
                 {{/each}}
