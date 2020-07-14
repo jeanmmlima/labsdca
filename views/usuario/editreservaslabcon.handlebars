@@ -6,7 +6,7 @@
             <label for="grupo">Grupo: </label>
             <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
-                <option value="{{_id}}">{{descricao}} 
+                <option value="{{_id}}" {{selected _id ../reservalabcon.grupo}}>{{descricao}} 
                     - {{turma.descricao}} {{turma.subturma}}</option>
                 {{else}}
                 <option value="0">Nenhum Grupo Registrado</option>
@@ -16,7 +16,7 @@
             <label for="horario">Horário: </label>
             <select name="horario" class="custom-select" required>
                 {{#each horarios}}
-                <option value="{{_id}}">{{descricao}}</option>
+                <option value="{{_id}}" {{selected _id ../reservalabcon.horario}}>{{descricao}}</option>
                 {{else}}
                 <option value="0">Nenhum Horário Registrada</option>
                 {{/each}}

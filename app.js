@@ -154,13 +154,9 @@ Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
 });
 
 Handlebars.registerHelper('selected', function(option, value){
-    console.log(option);
-    console.log(value);
     if (option.equals(value)) {
-        console.log("TRUE");
         return ' selected';
     } else {
-        console.log("FALSE");
         return ''
     }
 });
