@@ -371,7 +371,7 @@ router.post("/alunoslabcon/novo", Admin, (req,res)=> {
         req.flash("success_msg", "Aluno registrado com sucesso!")
         res.redirect("/admin/alunoslabcon")
     }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao listar Alunos!")
+        req.flash("error_msg", "Houve erro ao salvar aluno!")
         res.redirect("/admin")
     })
 })

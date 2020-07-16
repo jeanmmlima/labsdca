@@ -63,6 +63,21 @@ router.get("/usuariosimp3d/add", (req, res) => {
     })
 })
 
+router.post("/usuariosimp3d/novo", (req, res) => {
+    const novoUsuarioImp3D = {
+        usuario: req.body.usuario,
+        comentario: req.body.comentario
+    }
+
+    new UsuarioImp3D(novoUsuarioImp3D).save().then(() => {
+        req.flash("success_msg", "Usuario da impressora 3D registrado com sucesso!")
+        res.redirect("/imp3d/usuariosimp3d")
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao salvar usuário!")
+        res.redirect("/admin")
+    })
+})
+
 
 
 module.exports = router
