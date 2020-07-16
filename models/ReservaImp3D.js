@@ -3,9 +3,9 @@ const Schema = mongoose.Schema
 
 const ReservaImp3D = new Schema({
 
-    usuario: {
+    usuario3d: {
         type: Schema.Types.ObjectId,
-        ref: "usuarios",
+        ref: "usuariosimp3d",
         required: true
     },
     data: {

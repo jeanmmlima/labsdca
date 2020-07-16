@@ -9,6 +9,10 @@ const UsuarioImp3D = new Schema({
         required: true
     },
 
+    comentario:{
+        type: String,
+    },
+
     ativo: {
         type: Number,
         default: 1

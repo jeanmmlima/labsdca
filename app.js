@@ -20,6 +20,7 @@ var moment = require('moment')
 //1.1 Riqueres routes
 const admin = require('./routes/admin')
 const usuario = require('./routes/usuario')
+const imp3d = require('./routes/imp3d')
 
 //1.2 path para diretorios
 const path = require("path")
@@ -92,6 +93,7 @@ app.use(express.static(path.join(__dirname,"public")))
 //3. Routes
 app.use('/admin',admin)
 app.use('/usuario',usuario)
+app.use('/imp3d',imp3d)
 
 app.get('/', function(req, res) {
     res.render('home')

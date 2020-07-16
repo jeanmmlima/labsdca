@@ -1,0 +1,67 @@
+<h2>Reservas</h2>
+<hr>
+{{#if user}}
+<a href="/imp3d/reservasimp3d/add"><button class="btn btn-dark"><i class="icon-plus"></i> Reservar</button></a>
+<br><br>
+{{else}}
+
+{{/if}}
+
+<div class="card-header">
+    <div class="row">
+        <div class="col-sm-4">
+            <b>Usuário</b>
+        </div>
+        <div class="col-sm-4">
+            <b>Data</b>
+        </div>
+        <div class="col-sm-4">
+            {{#if user}}
+                <b>Gerenciar</b>
+            {{else}}
+
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+
+{{#each reservasimp3d}}
+
+<div class="card mt-4">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <p>{{usuario3d.usuario.nome}}</p>
+                <small>{{usuario3d.usuario.email}}</small><br>
+            </div>
+            <div class="col-sm-4">
+                <p>{{format_data data}}</p>
+            </div>
+            <div class="col-sm-4">
+                {{#ifCond usuario3d.usuario 'equals' ../user._id}}
+                 <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <!-- <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
+                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                {{else}}
+                
+                {{/ifCond}}
+                {{#if ../user.admin}}
+                     <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <!--<a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
+                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                {{else}}
+
+                {{/if}}
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+{{else}}
+<br>
+<h4>Nenhuma reserva feita</h4>
+
+{{/each}}
