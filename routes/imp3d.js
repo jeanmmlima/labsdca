@@ -79,5 +79,50 @@ router.post("/usuariosimp3d/novo", (req, res) => {
 })
 
 
+router.get("/usuariosimp3d/deletar/:id", (req, res) => {
+    UsuarioImp3D.deleteOne({_id: req.params.id}).then(() => {
+        req.flash("success_msg", "Usuário Impressora 3D excluído com sucesso!")
+        res.redirect("/imp3d/usuariosimp3d")
+    }).catch((err) => {
+        req.flash("error_msg", "Erro interno ao excluir usuário!")
+        res.redirect("/imp3d/usuariosimp3d")
+    })
+})
+
+router.get("/usuariosimp3d/edit/:id", (req, res) => {
+    UsuarioImp3D.findOne({_id: req.params.id}).then((usuarioimp3d) => {
+        Usuario.find().then((usuarios) => {
+            res.render("imp3d/editusuariosimp3d",
+            {usuarioimp3d: usuarioimp3d,
+            usuarios: usuarios})
+        }).catch((err) => {
+            req.flash("error_msg", "Não conseguiu listar usuários")
+            res.redirect("/imp3d/usuariosimp3d")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Não conseguiu encontrar o Usuário da Impressora 3D")
+        res.redirect("/imp3d/usuariosimp3d")
+    })
+})
+
+router.post("/usuariosimp3d/edit/",(req, res) => {
+    UsuarioImp3D.findOne({_id: req.body.id}).then((usuarioimp3d) => {
+        
+        usuarioimp3d.usuario = req.body.usuario,
+        usuarioimp3d.comentario = req.body.comentario
+
+        usuarioimp3d.save().then(() => {
+            req.flash("success_msg", "Usuário Impressora 3D editado com sucesso")
+            res.redirect("/imp3d/usuariosimp3d")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro interno ao editar usuário impressora 3D")
+            res.redirect("/imp3d/usuariosimp3d")
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Não foi possível encontrar o usuário impressora 3D")
+        res.redirect("/imp3d/usuariosimp3d")
+    })
+})
+
 
 module.exports = router
