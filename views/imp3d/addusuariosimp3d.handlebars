@@ -1,0 +1,20 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Nova Usuário Impressora 3D</h4>
+        <form action="/imp3d/usuariosimp3d/novo" method="POST" class="needs-validation" novalidate>
+            <label for="usuario">Usuario: </label>
+             <select name="usuario" class="custom-select" required>
+                {{#each usuarios}}
+                <option value="{{_id}}">{{nome}} - {{email}}</option>
+                {{else}}
+                <option value="0">Nenhum Usuário Registrado</option>
+                {{/each}}
+            </select>
+             <label for="comentario">Comentário: </label>
+             <input type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
+             <br>
+
+            <button class="btn btn-dark mt-4" type="submit">Cadastrar Usuário Impressora 3D</button>
+        </form>
+    </div>
+</div>
