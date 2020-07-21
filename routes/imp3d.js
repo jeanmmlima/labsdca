@@ -59,13 +59,52 @@ router.post("/reservasimp3d/novo", (req, res) => {
 
 router.get("/reservasimp3d/deletar/:id", (req, res) => {
 
+    ReservaImp3D.deleteOne({_id: req.params._id}).then(() => {
+        req.flash("success_msg", "Reserva excluída com sucesso!")
+        res.redirect("/imp3d/reservasimp3d")
+    }).catch((err) => {
+        req.flash("error_msg", "Erro ao tentar excluir reserva!")
+        res.redirect("/imp3d/reservasimp3d")
+    })
+
 })
 
 router.get("/reservasimp3d/edit/:id", (req, res) => {
 
+    ReservaImp3D.findOne({_id: req.params._id}).then((reserva) => {
+        UsuarioImp3D.find().populate("usuario").then((usuariosimp3d) => {
+            res.render("imp3d/editreservasimp3d", {reserva: reserva, usuariosimp3d: usuariosimp3d})
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro ao listar usuários impressora 3D!")
+            res.redirect("/imp3d/reservasimp3d")
+        })
+        
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao buscar reserva!")
+        res.redirect("/imp3d/reservasimp3d")
+    })
+
 })
 
 router.post("/reservasimp3d/edit", (req, res) => {
+
+    ReservaImp3D.findOne({_id: req.params._id}).then((reservaimp3d) => {
+        reservaimp3d.usuario3d = req.body.usuario3d,
+        reservaimp3d.data = req.body.data,
+        reservaimp3d.comentario = req.body.comentario
+
+        reservaimp3d.save().then(() => {
+            req.flash("success_msg", "Reserva alterada com sucesso!")
+            res.redirect("/imp3d/reservasimp3d")
+        }).catch((err) => {
+            req.flash("error_msg", "Houve erro ao alterar reserva!")
+            res.redirect("/imp3d/reservasimp3d")    
+        })
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao buscar reserva!")
+        res.redirect("/imp3d/reservasimp3d")
+    })
+
     
 })
 
