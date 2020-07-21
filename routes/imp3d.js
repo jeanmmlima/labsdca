@@ -27,9 +27,33 @@ router.get("/reservasimp3d", (req, res) => {
 
 router.get("/reservasimp3d/add", (req, res) => {
 
+    UsuarioImp3D.find().then((usuariosimp3d) => {
+        res.render("imp3d/addreservasimp3d", {usuariosimp3d: usuariosimp3d})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro porcurar usuários impressora 3D reservas!")
+        res.redirect("/reservasimp3d/")
+    })
+
 })
 
 router.post("/reservasimp3d/novo", (req, res) => {
+    
+    const novaRerservaImp3d = {
+        usuario3d: req.body.usuario3d,
+        data: req.body.data,
+        comentario: req.body.comentario
+    }
+
+    new ReservaImp3D(novaRerservaImp3d).save().then(() => {
+
+        req.flash("success_msg", "Reserva realizada com sucesso!")
+        res.redirect("/imp3d/reservasimp3d")
+
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao realizar reserva!")
+        res.redirect("/reservasimp3d/")
+    })
+
 
 }) 
 

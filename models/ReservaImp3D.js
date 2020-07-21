@@ -20,6 +20,9 @@ const ReservaImp3D = new Schema({
         type: Date,
         default: Date.now()
     },
+    comentario: {
+        type: String
+    }
 })
 
 mongoose.model("reservasimp3d", ReservaImp3D)
