@@ -2,7 +2,7 @@
     <div class="card-body">
         <h4>Nova Usuário Impressora 3D</h4>
         <form action="/imp3d/usuariosimp3d/edit" method="POST" class="needs-validation" novalidate>
-            <input type="hidden" name="id" value="{{usuarioimp3d._id}}"
+            <input type="hidden" name="id" value="{{usuarioimp3d._id}}">
             <label for="usuario">Usuario: </label>
              <select name="usuario" class="custom-select" required>
                 {{#each usuarios}}
