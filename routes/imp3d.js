@@ -58,8 +58,8 @@ router.post("/reservasimp3d/novo", (req, res) => {
 }) 
 
 router.get("/reservasimp3d/deletar/:id", (req, res) => {
-
-    ReservaImp3D.deleteOne({_id: req.params._id}).then(() => {
+    console.log("Entrou no delete: "+req.params.id);
+    ReservaImp3D.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Reserva excluída com sucesso!")
         res.redirect("/imp3d/reservasimp3d")
     }).catch((err) => {
