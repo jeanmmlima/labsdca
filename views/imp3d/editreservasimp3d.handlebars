@@ -1,0 +1,25 @@
+<div class="card">
+    <div class="card-body">
+        <h4>Editar Reserva da Impressora</h4>
+        <form action="/imp3d/reservasimp3d/edit" method="POST" class="needs-validation" novalidate>
+             <input type="hidden" name="id" value="{{reservaimp3d._id}}">
+             <label for="usuario3d">Usuario: </label>
+             <select name="usuario3d" class="custom-select" required>
+                {{#each usuariosimp3d}}
+                <option value="{{_id}}" {{selected _id ../usuarioimp3d.usuario}}>{{usuario.nome}} - {{usuario.email}}</option>
+                {{else}}
+                <option value="0">Nenhum Usuário Registrado</option>
+                {{/each}}
+            </select>
+            <label for="data">Data: </label>
+            <input type="date" id="data" name="data" min="2020-01-01" max="2020-12-31" class="form-control" required>
+            <br>
+             <label for="comentario">Comentário: </label>
+             <input value="{{reservaimp3d.comentario}}" type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
+             <br>
+
+            <button class="btn btn-dark mt-4" type="submit">Editar Reserva</button>
+            <button class="btn btn-secondary mt-4" type="reset">Cancelar</button>
+        </form>
+    </div>
+</div>

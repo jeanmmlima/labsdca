@@ -58,7 +58,6 @@ router.post("/reservasimp3d/novo", (req, res) => {
 }) 
 
 router.get("/reservasimp3d/deletar/:id", (req, res) => {
-    console.log("Entrou no delete: "+req.params.id);
     ReservaImp3D.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Reserva excluída com sucesso!")
         res.redirect("/imp3d/reservasimp3d")
@@ -71,9 +70,9 @@ router.get("/reservasimp3d/deletar/:id", (req, res) => {
 
 router.get("/reservasimp3d/edit/:id", (req, res) => {
 
-    ReservaImp3D.findOne({_id: req.params._id}).then((reserva) => {
+    ReservaImp3D.findOne({_id: req.params.id}).then((reserva) => {
         UsuarioImp3D.find().populate("usuario").then((usuariosimp3d) => {
-            res.render("imp3d/editreservasimp3d", {reserva: reserva, usuariosimp3d: usuariosimp3d})
+            res.render("imp3d/editreservasimp3d", {reservaimp3d: reserva, usuariosimp3d: usuariosimp3d})
         }).catch((err) => {
             req.flash("error_msg", "Houve erro ao listar usuários impressora 3D!")
             res.redirect("/imp3d/reservasimp3d")
@@ -88,7 +87,7 @@ router.get("/reservasimp3d/edit/:id", (req, res) => {
 
 router.post("/reservasimp3d/edit", (req, res) => {
 
-    ReservaImp3D.findOne({_id: req.params._id}).then((reservaimp3d) => {
+    ReservaImp3D.findOne({_id: req.body.id}).then((reservaimp3d) => {
         reservaimp3d.usuario3d = req.body.usuario3d,
         reservaimp3d.data = req.body.data,
         reservaimp3d.comentario = req.body.comentario
