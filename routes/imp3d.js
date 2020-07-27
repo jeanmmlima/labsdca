@@ -11,6 +11,8 @@ const UsuarioImp3D = mongoose.model("usuariosimp3d")
 require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
+const {Admin} =require("../helper/Admin");
+
 router.get("/reservasimp3d", (req, res) => {
 
     ReservaImp3D.find({ativo: 1}).sort("data").populate({
@@ -107,7 +109,7 @@ router.post("/reservasimp3d/edit", (req, res) => {
     
 })
 
-router.get("/usuariosimp3d", (req, res) => {
+router.get("/usuariosimp3d", Admin, (req, res) => {
     UsuarioImp3D.find({ativo: 1}).populate("usuario").then((usuariosimp3d) => {
         res.render("imp3d/usuariosimp3d", {usuariosimp3d: usuariosimp3d});
     }).catch((err) => {
@@ -116,7 +118,7 @@ router.get("/usuariosimp3d", (req, res) => {
     })
 })
 
-router.get("/usuariosimp3d/add", (req, res) => {
+router.get("/usuariosimp3d/add", Admin, (req, res) => {
     Usuario.find().then((usuarios) => {
         res.render("imp3d/addusuariosimp3d", {usuarios: usuarios})
     }).catch((err) => {
@@ -125,7 +127,7 @@ router.get("/usuariosimp3d/add", (req, res) => {
     })
 })
 
-router.post("/usuariosimp3d/novo", (req, res) => {
+router.post("/usuariosimp3d/novo", Admin, (req, res) => {
     const novoUsuarioImp3D = {
         usuario: req.body.usuario,
         comentario: req.body.comentario
@@ -141,7 +143,7 @@ router.post("/usuariosimp3d/novo", (req, res) => {
 })
 
 
-router.get("/usuariosimp3d/deletar/:id", (req, res) => {
+router.get("/usuariosimp3d/deletar/:id", Admin, (req, res) => {
     UsuarioImp3D.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Usuário Impressora 3D excluído com sucesso!")
         res.redirect("/imp3d/usuariosimp3d")
@@ -151,7 +153,7 @@ router.get("/usuariosimp3d/deletar/:id", (req, res) => {
     })
 })
 
-router.get("/usuariosimp3d/edit/:id", (req, res) => {
+router.get("/usuariosimp3d/edit/:id", Admin, (req, res) => {
     UsuarioImp3D.findOne({_id: req.params.id}).then((usuarioimp3d) => {
         Usuario.find().then((usuarios) => {
             res.render("imp3d/editusuariosimp3d",
@@ -167,7 +169,7 @@ router.get("/usuariosimp3d/edit/:id", (req, res) => {
     })
 })
 
-router.post("/usuariosimp3d/edit/",(req, res) => {
+router.post("/usuariosimp3d/edit/", Admin, (req, res) => {
     UsuarioImp3D.findOne({_id: req.body.id}).then((usuarioimp3d) => {
         
         usuarioimp3d.usuario = req.body.usuario,
