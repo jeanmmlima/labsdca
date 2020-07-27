@@ -34,6 +34,8 @@ const AlunosLabCon = mongoose.model("alunoslabcon")
 
 var moment = require('moment')
 
+const getData = require('../helper/getData')
+
 router.get("/reservaslabcon",(req, res) => {
     //population em multiniveis de relacionamento
     //population across multi-level 
@@ -92,14 +94,7 @@ router.post("/reservaslabcon/novo", (req,res) => {
 
     //var d = new Date(req.body.data);
     //  var picked_data = new Date(r);
-    var fd = moment(req.body.data).format('DD/MM/YYYY');
-    var d = new Date(req.body.data);
-    d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
-    d.setHours(0);
-    d.setMinutes(0);
-    d.setMilliseconds(0);
-    d.setSeconds(0);
-
+    var d = getData(req.body.data);
 
     AulasLabCon.findOne({horario: req.body.horario, dia_semana: d.getDay()}).then((aula) => {
         if(aula){

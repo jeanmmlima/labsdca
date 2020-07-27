@@ -12,6 +12,7 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
 const {Admin} =require("../helper/Admin");
+const getData = require('../helper/getData')
 
 router.get("/reservasimp3d", (req, res) => {
 
@@ -39,10 +40,13 @@ router.get("/reservasimp3d/add", (req, res) => {
 })
 
 router.post("/reservasimp3d/novo", (req, res) => {
+
+    //corrigindo formato da data
+    var d = getData(req.body.data);
     
     const novaRerservaImp3d = {
         usuario3d: req.body.usuario3d,
-        data: req.body.data,
+        data: d,
         comentario: req.body.comentario
     }
 
