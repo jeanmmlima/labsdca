@@ -43,23 +43,33 @@ router.post("/reservasimp3d/novo", (req, res) => {
 
     //corrigindo formato da data
     var d = getData(req.body.data);
-    
-    const novaRerservaImp3d = {
-        usuario3d: req.body.usuario3d,
-        data: d,
-        comentario: req.body.comentario
-    }
 
-    new ReservaImp3D(novaRerservaImp3d).save().then(() => {
-
-        req.flash("success_msg", "Reserva realizada com sucesso!")
-        res.redirect("/imp3d/reservasimp3d")
-
+    ReservaImp3D.findOne({data: d}).then((reserva) => {
+        if(reserva){
+            req.flash("error_msg", "Impressora 3D reservada na data escolhida! Por favor, escolher outra data")
+            res.redirect("/imp3d/reservasimp3d/add"); 
+        } 
+        else {
+            const novaRerservaImp3d = {
+                usuario3d: req.body.usuario3d,
+                data: d,
+                comentario: req.body.comentario
+            }
+        
+            new ReservaImp3D(novaRerservaImp3d).save().then(() => {
+        
+                req.flash("success_msg", "Reserva realizada com sucesso!")
+                res.redirect("/imp3d/reservasimp3d")
+        
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao realizar reserva!")
+                res.redirect("/imp3d/reservasimp3d/")
+            })
+        }
     }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao realizar reserva!")
-        res.redirect("/imp3d/reservasimp3d/")
+        req.flash("error_msg", "Houve erro ao buscar reserva. Tente novamente!")
+        res.redirect("/imp3d/reservasimp3d")
     })
-
 
 }) 
 
