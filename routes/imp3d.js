@@ -12,6 +12,7 @@ require("../models/Usuario")
 const Usuario = mongoose.model("usuarios")
 
 const {Admin} =require("../helper/Admin");
+const {UserImp3D} = require("../helper/UserImp3D")
 const getData = require('../helper/getData')
 
 router.get("/reservasimp3d", (req, res) => {
@@ -28,7 +29,7 @@ router.get("/reservasimp3d", (req, res) => {
 
 })
 
-router.get("/reservasimp3d/add", (req, res) => {
+router.get("/reservasimp3d/add", UserImp3D, (req, res) => {
 
     UsuarioImp3D.find().populate("usuario").then((usuariosimp3d) => {
         res.render("imp3d/addreservasimp3d", {usuariosimp3d: usuariosimp3d})
@@ -39,7 +40,7 @@ router.get("/reservasimp3d/add", (req, res) => {
 
 })
 
-router.post("/reservasimp3d/novo", (req, res) => {
+router.post("/reservasimp3d/novo", UserImp3D, (req, res) => {
 
     //corrigindo formato da data
     var d = getData(req.body.data);
@@ -73,7 +74,7 @@ router.post("/reservasimp3d/novo", (req, res) => {
 
 }) 
 
-router.get("/reservasimp3d/deletar/:id", (req, res) => {
+router.get("/reservasimp3d/deletar/:id", UserImp3D, (req, res) => {
     ReservaImp3D.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Reserva excluída com sucesso!")
         res.redirect("/imp3d/reservasimp3d")
@@ -84,7 +85,7 @@ router.get("/reservasimp3d/deletar/:id", (req, res) => {
 
 })
 
-router.get("/reservasimp3d/edit/:id", (req, res) => {
+router.get("/reservasimp3d/edit/:id", UserImp3D, (req, res) => {
 
     ReservaImp3D.findOne({_id: req.params.id}).then((reserva) => {
         UsuarioImp3D.find().populate("usuario").then((usuariosimp3d) => {
@@ -101,7 +102,7 @@ router.get("/reservasimp3d/edit/:id", (req, res) => {
 
 })
 
-router.post("/reservasimp3d/edit", (req, res) => {
+router.post("/reservasimp3d/edit", UserImp3D, (req, res) => {
 
     ReservaImp3D.findOne({_id: req.body.id}).then((reservaimp3d) => {
         reservaimp3d.usuario3d = req.body.usuario3d,
