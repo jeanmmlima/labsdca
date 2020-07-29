@@ -47,7 +47,7 @@ router.post("/reservasimp3d/novo", UserImp3D, (req, res) => {
 
     ReservaImp3D.findOne({data: d}).then((reserva) => {
         if(reserva){
-            req.flash("error_msg", "Impressora 3D reservada na data escolhida! Por favor, escolher outra data")
+            req.flash("error_msg", "Impressora 3D já foi reservada na data escolhida! Por favor, escolher outra data")
             res.redirect("/imp3d/reservasimp3d/add"); 
         } 
         else {
@@ -104,21 +104,36 @@ router.get("/reservasimp3d/edit/:id", UserImp3D, (req, res) => {
 
 router.post("/reservasimp3d/edit", UserImp3D, (req, res) => {
 
-    ReservaImp3D.findOne({_id: req.body.id}).then((reservaimp3d) => {
-        reservaimp3d.usuario3d = req.body.usuario3d,
-        reservaimp3d.data = req.body.data,
-        reservaimp3d.comentario = req.body.comentario
+    var d = getData(req.body.data);
 
-        reservaimp3d.save().then(() => {
-            req.flash("success_msg", "Reserva alterada com sucesso!")
-            res.redirect("/imp3d/reservasimp3d")
-        }).catch((err) => {
-            req.flash("error_msg", "Houve erro ao alterar reserva!")
-            res.redirect("/imp3d/reservasimp3d")    
-        })
+    ReservaImp3D.findOne({data: d}).then((reserva) => {
+        if(reserva){
+            req.flash("error_msg", "Impressora 3D já foi reservada na data escolhida! Por favor, escolher outra data")
+            res.redirect("/imp3d/reservasimp3d/"); 
+        }
+        else {
+
+            ReservaImp3D.findOne({_id: req.body.id}).then((reservaimp3d) => {
+                reservaimp3d.usuario3d = req.body.usuario3d,
+                reservaimp3d.data = d,
+                reservaimp3d.comentario = req.body.comentario
+        
+                reservaimp3d.save().then(() => {
+                    req.flash("success_msg", "Reserva alterada com sucesso!")
+                    res.redirect("/imp3d/reservasimp3d")
+                }).catch((err) => {
+                    req.flash("error_msg", "Houve erro ao alterar reserva!")
+                    res.redirect("/imp3d/reservasimp3d")    
+                })
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao buscar reserva!")
+                res.redirect("/imp3d/reservasimp3d")
+            })
+
+        }
     }).catch((err) => {
-        req.flash("error_msg", "Houve erro ao buscar reserva!")
-        res.redirect("/imp3d/reservasimp3d")
+        req.flash("error_msg", "Houve erro interno. Comunicar ao administrador do sistema!")
+        res.redirect("/")
     })
 
     
