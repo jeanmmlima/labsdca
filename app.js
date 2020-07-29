@@ -163,15 +163,35 @@ Handlebars.registerHelper('selected', function(option, value){
     }
 });
 
-cron.schedule("00 01 * * *", function() {
+/* 
+Seconds: 0-59
+Minutes: 0-59
+Hours: 0-23
+Day of Month: 1-31
+Months: 0-11 (Jan-Dec)
+Day of Week: 0-6 (Sun-Sat)
+
+'01 01 00 * * *'
+*/
+
+cron.schedule("01 41 10 * * *", function() {
     console.log("---------------------");
     console.log("Running Cron Job");
+
     if (shell.exec("mongo --eval 'db.reservaslabcons.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
       shell.exit(1);
     }
     else{
       shell.echo("reservas atualizadas!");
     }
+    if (shell.exec("mongo --eval 'db.reservasimp3ds.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
+        shell.exit(1);
+      }
+      else{
+        shell.echo("reservas atualizadas!");
+      }
+
+   
   });
 //4. Others
 //local port - 8081
