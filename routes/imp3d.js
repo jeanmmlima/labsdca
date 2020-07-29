@@ -44,7 +44,7 @@ router.post("/reservasimp3d/novo", UserImp3D, (req, res) => {
 
     //corrigindo formato da data
     var d = getData(req.body.data);
-    var today = getData(Date());
+    var today = getData(new Date());
 
    if (d.getTime() < today.getTime()){
         req.flash("error_msg", "Data escolhida não pode ser anterior a data atual (óbvio rs)! Por favor, escolher outra data")
@@ -112,7 +112,7 @@ router.get("/reservasimp3d/edit/:id", UserImp3D, (req, res) => {
 router.post("/reservasimp3d/edit", UserImp3D, (req, res) => {
 
     var d = getData(req.body.data);
-    var today = getData(Date());
+    var today = getData(new Date());
 
     if(d.getTime() < today.getTime()){
         req.flash("error_msg", "Data escolhida não pode ser anterior a data atual (óbvio rs)! Por favor, escolher outra data")
