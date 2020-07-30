@@ -10,8 +10,13 @@
                 <option value="0">Nenhum Usuário Registrado</option>
                 {{/each}}
             </select>
+            <br><br>
             <label for="data">Data: </label>
-            <input type="date" id="data" name="data" min="2020-01-01" max="2020-12-31" class="form-control" required>
+            <!--<input type="date" id="data" name="data" {{setDatasMinMax}} class="form-control" placeholder="dd/mm/aaaa" required>-->
+
+            <input type="text" id="datapicker" class="form-control" required>
+            <input type="hidden" name="data" id="data" />
+
             <br>
              <label for="comentario">Comentário: </label>
              <input type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
@@ -22,3 +27,26 @@
         </form>
     </div>
 </div>
+
+ <script>
+  $( function() {
+    $( "#datapicker" ).datepicker({
+        dateFormat: "dd/mm/yy",
+        altFormat: "mm/dd/yy",
+        altField: "#data",
+        minDate: new Date(),
+        maxDate: "+1m",
+        monthNames: [ "Janeiro", "Fevereiro", "Março", 
+        "Abril", "Maio", "Junho", "Julho", "Agosto", "Septembro", 
+        "Outubro", "Novembro", "Dezembro" ],
+        dayNamesShort: [ "D", "S", "T", "Q", "Q", "S", "S" ],
+        dayNamesMin: [ "D", "S", "T", "Q", "Q", "S", "S" ]
+        /*
+        https://api.jqueryui.com/datepicker/#utility-formatDate
+        */
+    });
+  } );
+  </script>
+</head>
+<body>
+ 

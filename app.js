@@ -163,6 +163,10 @@ Handlebars.registerHelper('selected', function(option, value){
     }
 });
 
+Handlebars.registerHelper('setDatasMinMax', function(option, value) {
+    return "min\=2020-01-30 max=2020-12-31"
+});
+
 /* 
 Seconds: 0-59
 Minutes: 0-59
