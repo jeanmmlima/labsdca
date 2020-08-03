@@ -23,7 +23,8 @@
             </select>
             <div class="invalid-feedback">Escolher o horário.</div>
             <label for="data">Data: </label>
-            <input value={{reservalabcon.data}} type="date" id="data" name="data" min="2020-01-01" max="2020-12-31" class="form-control" required>
+            <input type="text" id="datapicker" class="form-control" required>
+            <input type="hidden" name="data" id="data" />
             <div class="invalid-feedback">Escolher a data.</div>
             <br>
             <button class="btn btn-dark mt-4" type="submit">Editar Reserva</button>

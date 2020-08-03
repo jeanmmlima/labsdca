@@ -12,7 +12,8 @@
                 {{/each}}
             </select>
             <label for="data">Data: </label>
-            <input type="date" id="data" name="data" min="2020-01-01" max="2020-12-31" class="form-control" required>
+            <input type="text" id="datapicker" class="form-control" required>
+            <input type="hidden" name="data" id="data" />
             <br>
              <label for="comentario">Comentário: </label>
              <input value="{{reservaimp3d.comentario}}" type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
