@@ -23,10 +23,14 @@
             <div class="invalid-feedback">Escolher um horário.</div>
             <br>
             <label for="data">Data: </label>
-            <input type="text" id="datapicker" class="form-control" required>
-            <input type="hidden" name="data" id="data" />
-            <div class="invalid-feedback">Escolher uma data.</div>
-            <br>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-calendar"></i></span> 
+                </div>
+                <input type="text" id="datapicker" class="form-control" required>
+                <input type="hidden" name="data" id="data" />
+                <div class="invalid-feedback">Escolher a data.</div>
+            </div>
             <button class="btn btn-dark mt-4" type="submit">Cadastrar</button>
             <button class="btn btn-secondary mt-4" type="reset">Cancelar</button>
         </form>

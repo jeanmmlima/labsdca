@@ -3,50 +3,44 @@
         <h4>Nova Reserva da Impressora</h4>
         <form action="/imp3d/reservasimp3d/novo" method="POST" class="needs-validation" novalidate>
              <label for="usuario3d">Usuario: </label>
-             <select name="usuario3d" class="custom-select" required>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-user"></i></span> 
+                </div>
+                <select name="usuario3d" class="custom-select" required>
                 {{#each usuariosimp3d}}
                 <option value="{{_id}}">{{usuario.nome}} - {{usuario.email}}</option>
                 {{else}}
                 <option value="0">Nenhum Usuário Registrado</option>
                 {{/each}}
-            </select>
-            <br><br>
+                </select>
+            <div class="invalid-feedback">Escolher o usuário.</div>
+            </div>
+           
             <label for="data">Data: </label>
             <!--<input type="date" id="data" name="data" {{setDatasMinMax}} class="form-control" placeholder="dd/mm/aaaa" required>-->
 
-            <input type="text" id="datapicker" class="form-control" required>
-            <input type="hidden" name="data" id="data" />
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-calendar"></i></span> 
+                </div>
+                <input type="text" id="datapicker" class="form-control" required>
+                <input type="hidden" name="data" id="data" />
+                <div class="invalid-feedback">Escolher a data.</div>
+            </div>
 
-            <br>
              <label for="comentario">Comentário: </label>
-             <input type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
-             <br>
+             <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-comment"></i></span> 
+                </div>
+                <input type="text" id="comentario" name="comentario" placeholder="Comentário" class="form-control">            
+            </div>
+             
 
             <button class="btn btn-dark mt-4" type="submit">Cadastrar Reserva</button>
             <button class="btn btn-secondary mt-4" type="reset">Cancelar</button>
         </form>
     </div>
 </div>
-
- <script>
-  $( function() {
-    $( "#datapicker" ).datepicker({
-        dateFormat: "dd/mm/yy",
-        altFormat: "mm/dd/yy",
-        altField: "#data",
-        minDate: new Date(),
-        maxDate: "+1m",
-        monthNames: [ "Janeiro", "Fevereiro", "Março", 
-        "Abril", "Maio", "Junho", "Julho", "Agosto", "Septembro", 
-        "Outubro", "Novembro", "Dezembro" ],
-        dayNamesShort: [ "D", "S", "T", "Q", "Q", "S", "S" ],
-        dayNamesMin: [ "D", "S", "T", "Q", "Q", "S", "S" ]
-        /*
-        https://api.jqueryui.com/datepicker/#utility-formatDate
-        */
-    });
-  } );
-  </script>
-</head>
-<body>
  
