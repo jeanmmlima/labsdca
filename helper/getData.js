@@ -1,6 +1,6 @@
 module.exports = function(data){
-    var moment = require('moment')
-    var fd = moment(data).format('DD/MM/YYYY');
+    //var moment = require('moment')
+    //var fd = moment(data).format('DD/MM/YYYY');
     var d = new Date(data);
     d.setMinutes(d.getMinutes() + d.getTimezoneOffset());
     d.setHours(0);

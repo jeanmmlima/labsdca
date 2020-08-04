@@ -271,8 +271,7 @@ router.post("/reservaslabcon/edit", (req, res) => {
 
     ReservaLabCon.findOne({_id: req.body.id}).then((reservalabcon) => {
 
-        var d = new Date(req.body.data);
-        d.setMinutes( d.getMinutes() + d.getTimezoneOffset() );
+        var d = getData(req.body.data);
         
         reservalabcon.grupo = req.body.grupo,
         reservalabcon.horario = req.body.horario,

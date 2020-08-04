@@ -4,24 +4,37 @@
         <form action="/usuario/reservaslabcon/edit" method="POST" class="needs-validation" novalidate>
             <input type="hidden" name="id" value="{{reservalabcon._id}}">
             <label for="grupo">Grupo: </label>
-            <select name="grupo" class="custom-select" required>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-group"></i></span> 
+                </div>
+                <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
                 <option value="{{_id}}" {{selected _id ../reservalabcon.grupo}}>{{descricao}} 
                     - {{turma.descricao}} {{turma.subturma}}</option>
                 {{else}}
                 <option value="0">Nenhum Grupo Registrado</option>
                 {{/each}}
-            </select>
-            <div class="invalid-feedback">Escolher o grupo.</div>
+                </select>
+                <div class="invalid-feedback">Escolher o grupo.</div>
+                
+            </div>
+            
             <label for="horario">Horário: </label>
-            <select name="horario" class="custom-select" required>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-time"></i></span> 
+                </div>
+                <select name="horario" class="custom-select" required>
                 {{#each horarios}}
                 <option value="{{_id}}" {{selected _id ../reservalabcon.horario}}>{{descricao}}</option>
                 {{else}}
                 <option value="0">Nenhum Horário Registrada</option>
                 {{/each}}
-            </select>
-            <div class="invalid-feedback">Escolher o horário.</div>
+                </select>
+                <div class="invalid-feedback">Escolher o horário.</div>
+            </div>
+            
             <label for="data">Data: </label>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
