@@ -174,6 +174,12 @@ router.get("/usuariosimp3d/add", Admin, (req, res) => {
 })
 
 router.post("/usuariosimp3d/novo", Admin, (req, res) => {
+
+    if(req.body.usuario == null){
+        req.flash("error_msg", "Usuario não informado!")
+        res.redirect("/imp3d/usuariosimp3d/")
+    }
+
     const novoUsuarioImp3D = {
         usuario: req.body.usuario,
         comentario: req.body.comentario

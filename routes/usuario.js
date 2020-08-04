@@ -269,26 +269,73 @@ router.get("/reservaslabcon/edit/:id", (req, res) => {
 
 router.post("/reservaslabcon/edit", (req, res) => {
 
-    ReservaLabCon.findOne({_id: req.body.id}).then((reservalabcon) => {
+    
+    var d = getData(req.body.data);
 
-        var d = getData(req.body.data);
-        
-        reservalabcon.grupo = req.body.grupo,
-        reservalabcon.horario = req.body.horario,
-        reservalabcon.data = d
+    AulasLabCon.findOne({horario: req.body.horario, dia_semana: d.getDay()}).then((aula) => {
+        if(aula){
+            req.flash("error_msg", "Laboratório em aula no horário e data escolhidos!")
+            res.redirect("/usuario/reservaslabcon/");
+        } else {
+            //verifica a bancada do grupo que tenta reservar
+            var bancada;
+            Grupos.findOne({_id: req.body.grupo}).then((grupo) => {
+                bancada = grupo.bancada;
+            }).catch((err) => {
+                console.log("Não pode encontrar o grupo")
+            })
 
-        reservalabcon.save().then(() => {
-            req.flash("success_msg", "Reserva editada com sucesso!")
-            res.redirect("/usuario/reservaslabcon")
-        }).catch((err) => {
-            req.flash("error_msg", "erro interno ao salvar edição da reserva!")
-            res.redirect("/usuario/reservaslabcon")    
-        })
+            /*
+            Revifica se a bancada já está reservada para o mesmo horario e dia
+            se tiver, não cadastra reserva (flag 1). Se estiver disponivel
+            cadastra a reserva (flag 0).
+            */
+
+
+           ReservaLabCon.find({data: d, horario: req.body.horario}).populate("grupo").then((reservas) => {
+            
+                var i, flag = 0;
+                for(i = 0; i < reservas.length; i++){
+                    if(reservas[i].grupo.bancada.equals(bancada)){
+                        flag = 1;
+                        break;
+                    }
+                    
+                }
+                if(flag){
+                    //console.log("Flag: "+flag+ " NÃO PODE RESERVAR");
+                    req.flash("error_msg", "Reserva já existe para data e horario escolhidos. Escolher outra data ou horário");
+                    res.redirect("/usuario/reservaslabcon/")
+                } else {
+                    ReservaLabCon.findOne({_id: req.body.id}).then((reservalabcon) => {
+                        
+                        reservalabcon.grupo = req.body.grupo,
+                        reservalabcon.horario = req.body.horario,
+                        reservalabcon.data = d
+                
+                        reservalabcon.save().then(() => {
+                            req.flash("success_msg", "Reserva editada com sucesso!")
+                            res.redirect("/usuario/reservaslabcon")
+                        }).catch((err) => {
+                            req.flash("error_msg", "erro interno ao salvar edição da reserva!")
+                            res.redirect("/usuario/reservaslabcon")    
+                        })
+                
+                    }).catch((err) => {
+                        req.flash("error_msg", "A reserva não foi encontrada!")
+                        res.redirect("/usuario/reservaslabcon")
+                    })
+                }
+            }).catch((err) => {
+                req.flash("error_msg", "Houve erro ao buscar reserva. Tente novamente!")
+                res.redirect("/usuario/reservaslabcon")
+            })
+        }
+
 
     }).catch((err) => {
-        req.flash("error_msg", "A reserva não foi encontrada!")
-        res.redirect("/usuario/reservaslabcon")
-    })
+        console.log("Erro ao procurar aula: "+err);
+    })    
 
 })
 

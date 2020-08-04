@@ -551,35 +551,47 @@ router.post("/usuarios/edit", Admin, (req, res) => {
         res.redirect("/admin/usuarios")
     } else {
 
-        Usuarios.findOne({_id: req.body.id}).then((usuario) => {
-            usuario.nome = req.body.nome,
-            usuario.email = req.body.email,
-            usuario.admin = req.body.admin,
-            usuario.senha = req.body.senha
-
-            bcrypt.genSalt(10,(erro,salt) => {
-
-                bcrypt.hash(usuario.senha,salt,(erro,hash) => {
-                    if(erro){
-                        req.flash("error_msg", "Houve erro durante salvamento o usuario!")
-                        req.redirect("/admin/usuarios")
-                    } else {
-                        usuario.senha = hash
-                        usuario.save().then(() => {
-                            req.flash("success_msg", "Usuário editado com sucesso!")
-                            res.redirect("/admin/usuarios")
-                        }).catch((erro) => {
-                            req.flash("error_msg", "Erro ao editar usuário")
-                            res.redirect("/admin/usuarios")
+        Usuarios.findOne({email: req.body.email}).then((usuario) => {
+            if(usuario){
+                req.flash("error_msg", "Já existe uma conta com esse email no sistema")
+                res.redirect("/admin/usuarios")
+            } else {
+                Usuarios.findOne({_id: req.body.id}).then((usuario) => {
+                    usuario.nome = req.body.nome,
+                    usuario.email = req.body.email,
+                    usuario.admin = req.body.admin,
+                    usuario.senha = req.body.senha
+        
+                    bcrypt.genSalt(10,(erro,salt) => {
+        
+                        bcrypt.hash(usuario.senha,salt,(erro,hash) => {
+                            if(erro){
+                                req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                                req.redirect("/admin/usuarios")
+                            } else {
+                                usuario.senha = hash
+                                usuario.save().then(() => {
+                                    req.flash("success_msg", "Usuário editado com sucesso!")
+                                    res.redirect("/admin/usuarios")
+                                }).catch((erro) => {
+                                    req.flash("error_msg", "Erro ao editar usuário")
+                                    res.redirect("/admin/usuarios")
+                                })
+                            }
                         })
-                    }
+        
+                    })
+                }).catch((err) => {
+                    req.flash("error_msg", "Houve erro encontrar o usuario")
+                    res.redirect("/admin/usuarios")
                 })
-
-            })
+            }
         }).catch((err) => {
-            req.flash("error_msg", "Houve erro encontrar o usuario")
-            res.redirect("/admin/usuarios")
+            req.flash("error_msg", "Erro interno ao procurar usuario")
+            res.redirect("/admin")
         })
+
+        
 
     }
 
