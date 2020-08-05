@@ -35,6 +35,7 @@ const AlunosLabCon = mongoose.model("alunoslabcon")
 var moment = require('moment')
 
 const getData = require('../helper/getData')
+const {UserLabCon} = require("../helper/UserLabCon")
 
 router.get("/reservaslabcon",(req, res) => {
     //population em multiniveis de relacionamento
@@ -65,7 +66,7 @@ router.get("/reservaslabcon",(req, res) => {
     })
     }
 })
-router.get("/reservaslabcon/add", (req,res) => {
+router.get("/reservaslabcon/add", UserLabCon, (req,res) => {
 
     if(req.isAuthenticated()){
         Grupos.find().populate("turma").then((grupos) => {
@@ -88,7 +89,7 @@ router.get("/reservaslabcon/add", (req,res) => {
 
 })
 
-router.post("/reservaslabcon/novo", (req,res) => {
+router.post("/reservaslabcon/novo", UserLabCon, (req,res) => {
 
     //corrige time zone offset
 
@@ -159,7 +160,7 @@ router.post("/reservaslabcon/novo", (req,res) => {
 
 })
 
-router.get("/reservaslabcon/deletar/:id", (req, res) => {
+router.get("/reservaslabcon/deletar/:id", UserLabCon, (req, res) => {
 
     if(req.isAuthenticated() && req.user.admin == 0){
         AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
@@ -201,7 +202,7 @@ router.get("/reservaslabcon/deletar/:id", (req, res) => {
 
 })
 
-router.get("/reservaslabcon/edit/:id", (req, res) => {
+router.get("/reservaslabcon/edit/:id", UserLabCon, (req, res) => {
 
     if(req.isAuthenticated() && req.user.admin == 0){
         AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
@@ -267,7 +268,7 @@ router.get("/reservaslabcon/edit/:id", (req, res) => {
 
 })
 
-router.post("/reservaslabcon/edit", (req, res) => {
+router.post("/reservaslabcon/edit", UserLabCon, (req, res) => {
 
     
     var d = getData(req.body.data);
