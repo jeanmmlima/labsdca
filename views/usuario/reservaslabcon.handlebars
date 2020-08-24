@@ -8,39 +8,43 @@
 {{else}}
 
 {{/if}}
-<div class="card-header">
-    <div class="row">
-        <div class="col-sm-4">
-            <p><b>Grupo e Turma</b></p>
-        </div>
-        <div class="col-sm-4">
-            <p><b>Horário e Data</b></p>
-        </div>
-        <div class="col-sm-4">
-            {{#if user}}
-                <p><b>Gerenciar</b></p>
-            {{else}}
+<div class="card-header bg-dark text-white text-center">
+        <div class="row">
+            <div class="col-sm-3">
+                <b>Grupo</b>
+            </div>
+            <div class="col-sm-3">
+                <b>Data</b>
+            </div>
+            <div class="col-sm-3">
+                <b>Horário</b>
+            </div>
+            <div class="col-sm-3">
+                {{#if user}}
+                    <b>Gerenciar</b>
+                {{else}}
 
-            {{/if}}
+                {{/if}}
+            </div>
         </div>
-    </div>
 </div>
-
 
 {{#each reservas}}
 
-<div class="card mt-4">
+<div class="card mt-4 text-center">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-4">
-                <p>{{grupo.descricao}}</p>
+            <div class="col-sm-3">
+                {{grupo.descricao}}&nbsp;
                 <small>{{grupo.turma.descricao}} - {{grupo.turma.subturma}}</small><br>
             </div>
-            <div class="col-sm-4">
-                <p>{{horario.descricao}}</p>
+            <div class="col-sm-3">
                 <p>{{format_data data}}</p>
             </div>
-            <div class="col-sm-4">
+            <div class="col-sm-3">
+                <p>{{horario.descricao}}</p>
+            </div>
+            <div class="col-sm-3">
                 {{#ifCond grupo._id 'equals' ../aluno.grupo}}
                  <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
                  <!-- <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
