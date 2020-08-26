@@ -14,6 +14,9 @@ module.exports = function(passport){
                 //done recebe 3 parametros - null conta null, false - autenticacao sem sucesso
                 return done(null, false,req.flash("error_msg","Esta conta não existe!"))
             }
+            if(!usuario.ativo){
+                return done(null, false,req.flash("error_msg","Esta conta ainda não foi ativada. Contate a administração do sistema!"))
+            }
             bcrypt.compare(senha, usuario.senha, (erro, batem) => {
                 if(batem){
                     return done(null, usuario)

@@ -32,6 +32,9 @@ const Usuarios = mongoose.model("usuarios")
 require("../models/AlunoLabCon")
 const AlunosLabCon = mongoose.model("alunoslabcon")
 
+require("../models/UsuarioImp3D")
+const UsuarioImp3D = mongoose.model("usuariosimp3d")
+
 var moment = require('moment')
 
 const getData = require('../helper/getData')
@@ -337,6 +340,101 @@ router.post("/reservaslabcon/edit", UserLabCon, (req, res) => {
     }).catch((err) => {
         console.log("Erro ao procurar aula: "+err);
     })    
+
+})
+
+//registro usuário
+
+// Registro de usuário
+router.get("/registro", (req, res) => {
+    Grupos.find()
+    .populate("turma")
+    .populate("bancada").then((grupos) => {
+        res.render("usuario/registro", {grupos: grupos})
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro carregar Grupos")
+        res.redirect("/usuario/login") 
+    })
+})
+
+router.post("/registro", (req, res) => {
+    if(req.body.senha.toString().length < 4){
+        req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
+        res.redirect("/usuario/registro")
+    }
+    else if(req.body.senha != req.body.senha2){
+        req.flash("error_msg", "Senha diferentes")
+        res.redirect("/usuario/registro")
+    }
+    else {
+
+        Usuarios.findOne({email: req.body.email}).then((usuario) => {
+            if(usuario){
+                req.flash("error_msg", "Já existe uma conta com esse email no sistema")
+                res.redirect("/usuario/registro")
+            } else {
+                const novoUsuario = new Usuarios({
+                    nome: req.body.nome,
+                    email: req.body.email,
+                    senha: req.body.senha,
+                    ativo: 0
+                })
+                bcrypt.genSalt(10,(erro,salt) => {
+                    bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
+                        if(erro){
+                            req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                            req.redirect("/")
+                        } else {
+                            novoUsuario.senha = hash
+                            novoUsuario.save().then(() => {
+
+                                const usuariolabcon = req.body.labcon;
+                                const usuarioimp3d = req.body.imp3d;
+                                Usuarios.findOne({email: req.body.email}).then((user) => {
+                                    if(usuariolabcon == 1){
+
+                                        const novoAlunoLabCon = {
+                                            usuario: user,
+                                            grupo: req.body.grupo,
+                                            ativo: 1
+                                        }
+                                        new AlunosLabCon(novoAlunoLabCon).save().then(()=> {
+                                            
+                                        }).catch((err) => {
+                                            console.log("erro ao salvar usuario labcon: "+err);
+                                        })
+                                    }
+                                    if(usuarioimp3d == 1){
+                                        const novoUsuarioImp3D = {
+                                            usuario: user,
+                                            ativo: 1
+                                        }
+                                        new UsuarioImp3D(novoUsuarioImp3D).save().then(() => {
+
+                                        }).catch((err) => {
+                                            console.log("erro ao salvar usuario imp3d: "+err)
+                                        })
+                                    }
+                                }).catch((err) => {
+                                    console.log("erro ao achar usuario cadastrado!"+err);
+                                })
+
+                                req.flash("success_msg", "Usuário criado com sucesso!")
+                                res.redirect("/usuario/login")
+                            }).catch((erro) => {
+                                req.flash("error_msg", "Erro ao criar usuário")
+                                res.redirect("/usuario/registro")
+                            })
+                        }
+                    })
+                })
+            }
+        }).catch((err) => {
+            req.flash("error_msg", "Erro interno ao procurar usuario")
+            res.redirect("/usuario/registro")
+        })
+
+    }
 
 })
 

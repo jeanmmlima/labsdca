@@ -349,7 +349,9 @@ router.get("/alunoslabcon", Admin, (req,res) => {
 
 router.get("/alunoslabcon/add", Admin, (req,res) => {
     Usuarios.find({admin: 0}).then((usuarios) => {
-        Grupos.find().populate("turma").populate("bancada").then((grupos) => {
+        Grupos.find()
+        .populate("turma")
+        .populate("bancada").then((grupos) => {
             res.render("admin/addalunoslabcon", {usuarios: usuarios, grupos: grupos})
         }).catch((err) => {
             req.flash("error_msg", "Houve erro carregar Grupos")
