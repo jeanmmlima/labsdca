@@ -13,7 +13,12 @@ module.exports = {
             if(req.isAuthenticated()){
                 AlunoLabCon.findOne({usuario: req.user.id}).then((alunolabcon) => {
                     if(alunolabcon){
-                        return next();
+                        if(alunolabcon.ativo){
+                            return next();
+                        } else {
+                            req.flash("error_msg", "Usuário não está ativo para fazer reservas. Entrar em contato com a administração do sistema!")
+                            return res.redirect("/")
+                        }
                     } else {
                         req.flash("error_msg", "Acesso restrito a usuários do Laboratório de Controle ou Administradores!")
                         return res.redirect("/")

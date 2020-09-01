@@ -377,7 +377,7 @@ router.post("/registro", (req, res) => {
                     nome: req.body.nome,
                     email: req.body.email,
                     senha: req.body.senha,
-                    ativo: 0
+                    ativo: 1
                 })
                 bcrypt.genSalt(10,(erro,salt) => {
                     bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
@@ -396,7 +396,7 @@ router.post("/registro", (req, res) => {
                                         const novoAlunoLabCon = {
                                             usuario: user,
                                             grupo: req.body.grupo,
-                                            ativo: 1
+                                            ativo: 0
                                         }
                                         new AlunosLabCon(novoAlunoLabCon).save().then(()=> {
                                             
@@ -407,7 +407,7 @@ router.post("/registro", (req, res) => {
                                     if(usuarioimp3d == 1){
                                         const novoUsuarioImp3D = {
                                             usuario: user,
-                                            ativo: 1
+                                            ativo: 0
                                         }
                                         new UsuarioImp3D(novoUsuarioImp3D).save().then(() => {
 

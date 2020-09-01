@@ -156,7 +156,7 @@ router.post("/reservasimp3d/edit", UserImp3D, (req, res) => {
 })
 
 router.get("/usuariosimp3d", Admin, (req, res) => {
-    UsuarioImp3D.find({ativo: 1}).populate("usuario").then((usuariosimp3d) => {
+    UsuarioImp3D.find().populate("usuario").then((usuariosimp3d) => {
         res.render("imp3d/usuariosimp3d", {usuariosimp3d: usuariosimp3d});
     }).catch((err) => {
         req.flash("error_msg", "Houve erro ao listar usuarios da impressora 3D!")
@@ -199,6 +199,24 @@ router.get("/usuariosimp3d/deletar/:id", Admin, (req, res) => {
     UsuarioImp3D.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Usuário Impressora 3D excluído com sucesso!")
         res.redirect("/imp3d/usuariosimp3d")
+    }).catch((err) => {
+        req.flash("error_msg", "Erro interno ao excluir usuário!")
+        res.redirect("/imp3d/usuariosimp3d")
+    })
+})
+
+router.get("/usuariosimp3d/ativar/:id", Admin, (req, res) => {
+    UsuarioImp3D.findOne({_id: req.params.id}).then((usuarioimp3d) => {
+
+        usuarioimp3d.ativo = 1;
+        usuarioimp3d.save().then(() => {
+            req.flash("success_msg", "Usuário Impressora 3D ativado com sucesso!")
+            res.redirect("/imp3d/usuariosimp3d")
+        }).catch((err) => {
+            req.flash("error_msg", "Erro interno ao ativar usuário!")
+            res.redirect("/imp3d/usuariosimp3d")
+        })
+        
     }).catch((err) => {
         req.flash("error_msg", "Erro interno ao excluir usuário!")
         res.redirect("/imp3d/usuariosimp3d")

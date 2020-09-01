@@ -8,15 +8,20 @@
 
 {{#each alunoslabcon}}
 <div class="col-sm-3">
-
-<div class="card mt-4">
-    <div class="card-body">
-        <small>Nome: {{usuario.nome}}</small><br>
-        <small>Grupo: {{grupo.descricao}}</small><br>
-        <a href="/admin/alunoslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-        <a href="/admin/alunoslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+    <div class="card mt-4">
+        <div class="card-body">
+            <small>Nome: {{usuario.nome}}</small><br>
+            <small>Grupo: {{grupo.descricao}}</small><br>
+            <a href="/admin/alunoslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+            <a href="/admin/alunoslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+            <br>
+            {{#if ativo}}
+            {{else}}
+            <small>Não ativo</small><br>
+            <a href="/admin/alunoslabcon/ativar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-check-sign"></i>Ativar</button></a>
+            {{/if}}
+        </div>
     </div>
-</div>
 </div>
 {{else}}
 <h4>Nenhuma aluno cadastrado</h4>

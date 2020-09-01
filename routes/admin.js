@@ -431,6 +431,23 @@ router.get("/alunoslabcon/deletar/:id", Admin, (req,res) => {
     })
 })
 
+router.get("/alunoslabcon/ativar/:id", Admin, (req,res) => {
+    AlunoLabCon.findOne({_id: req.params.id}).then((alunolabcon) => {
+        alunolabcon.ativo = 1;
+        alunolabcon.save().then(() => {
+            req.flash("success_msg", "Aluno ativado com sucesso!")
+            res.redirect("/admin/alunoslabcon")
+        }).catch((err) => {
+            req.flash("error_msg", "Erro ao ativar aluno!")
+            res.redirect("/admin/alunoslabcon")
+        })
+        
+    }).catch((err) => {
+        req.flash("error_msg", "Houve erro ao buscar aluno!")
+        res.redirect("/admin/alunoslabcon")
+    })
+})
+
 
 //AULAS
 router.get("/aulaslabcon", Admin, (req, res) => {

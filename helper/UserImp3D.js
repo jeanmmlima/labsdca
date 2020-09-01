@@ -13,7 +13,12 @@ module.exports = {
             if(req.isAuthenticated()){
                 UsuarioImp3D.findOne({usuario: req.user.id}).then((usuarioimp3d) => {
                     if(usuarioimp3d){
-                        return next();
+                        if(usuarioimp3d.ativo){
+                            return next();
+                        } else {
+                            req.flash("error_msg", "Usuário não está ativo para fazer reservas. Entrar em contato com a administração do sistema!")
+                            return res.redirect("/")
+                        }
                     } else {
                         req.flash("error_msg", "Acesso restrito a usuários da impressora 3D ou administradores!")
                         return res.redirect("/")

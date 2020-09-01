@@ -10,9 +10,14 @@
             <div class="card-body">
                 <p>Nome: {{usuario.nome}}</p><br>
                 <small>Email: {{usuario.email}}</small><br>
-                <small>Comentário: {{comentario}}</small>
+                <small>Comentário: {{comentario}}</small><br>
                 <a href="/imp3d/usuariosimp3d/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
                 <a href="/imp3d/usuariosimp3d/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                {{#if ativo}}
+                {{else}}
+                 <small>Não ativo</small><br>
+                 <a href="/imp3d/usuariosimp3d/ativar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-check-sign"></i>Ativar</button></a>
+                {{/if}}
             </div>
         </div>
         </div>
