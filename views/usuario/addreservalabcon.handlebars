@@ -9,8 +9,13 @@
                 </div>
                 <select name="grupo" class="custom-select" required>
                 {{#each grupos}}
-                <option value="{{_id}}">{{descricao}} 
+                    {{#if ../aluno}}
+                    <option value="{{_id}}" {{selected ../aluno.grupo _id}}>{{descricao}} 
                     - {{turma.descricao}} {{turma.subturma}}</option>
+                    {{else}}
+                    <option value="{{_id}}">{{descricao}} 
+                    - {{turma.descricao}} {{turma.subturma}}</option>
+                    {{/if}}
                 {{else}}
                 <option value="0">Nenhum Grupo Registrado</option>
                 {{/each}}

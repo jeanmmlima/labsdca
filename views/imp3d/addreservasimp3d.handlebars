@@ -9,7 +9,7 @@
                 </div>
                 <select name="usuario3d" class="custom-select" required>
                 {{#each usuariosimp3d}}
-                <option value="{{_id}}">{{usuario.nome}} - {{usuario.email}}</option>
+                <option value="{{_id}}" {{selected usuario._id ../user._id}}>{{usuario.nome}} - {{usuario.email}}</option>
                 {{else}}
                 <option value="0">Nenhum Usuário Registrado</option>
                 {{/each}}

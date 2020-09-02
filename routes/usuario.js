@@ -74,7 +74,17 @@ router.get("/reservaslabcon/add", UserLabCon, (req,res) => {
     if(req.isAuthenticated()){
         Grupos.find().populate("turma").then((grupos) => {
             Horarios.find().then((horarios) => {
-                res.render("usuario/addreservalabcon",{grupos: grupos,horarios: horarios})
+                AlunosLabCon.findOne({usuario: req.user._id}).then((aluno) => {
+                    res.render("usuario/addreservalabcon",{
+                        grupos: grupos,
+                        horarios: horarios,
+                        aluno: aluno
+                    })
+                }).catch((err) => {
+                    req.flash("error_msg", "Houve erro ao listar alunos!")
+                    res.redirect("/usuario/reservaslabcon")
+                })
+
             }).catch((err) => {
                 req.flash("error_msg", "Houve erro ao listar horários!")
                 res.redirect("/usuario/reservaslabcon")
