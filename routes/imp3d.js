@@ -196,13 +196,22 @@ router.post("/usuariosimp3d/novo", Admin, (req, res) => {
 
 
 router.get("/usuariosimp3d/deletar/:id", Admin, (req, res) => {
-    UsuarioImp3D.deleteOne({_id: req.params.id}).then(() => {
-        req.flash("success_msg", "Usuário Impressora 3D excluído com sucesso!")
-        res.redirect("/imp3d/usuariosimp3d")
-    }).catch((err) => {
-        req.flash("error_msg", "Erro interno ao excluir usuário!")
-        res.redirect("/imp3d/usuariosimp3d")
-    })
+   
+
+        ReservaImp3D.deleteMany({usuario3d: req.params.id}).then(() => {
+            UsuarioImp3D.deleteOne({_id: req.params.id}).then(() => {
+                req.flash("success_msg", "Usuário Impressora 3D excluído com sucesso!")
+                res.redirect("/imp3d/usuariosimp3d")
+            }).catch((err) => {
+                req.flash("error_msg", "Erro interno ao excluir usuário!")
+                res.redirect("/imp3d/usuariosimp3d")
+            });
+        }).catch((err) => {
+            req.flash("error_msg", "Erro interno ao excluir dependencias do usuário!")
+            res.redirect("/imp3d/usuariosimp3d")
+        })
+
+        
 })
 
 router.get("/usuariosimp3d/ativar/:id", Admin, (req, res) => {
