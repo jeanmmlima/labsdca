@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
+require('./AlunoLabCon')
+const AlunoLabCon = mongoose.model('alunoslabcon')
+
+require('./ReservaLabCon')
+const ReservaLabCon = mongoose.model('reservaslabcon')
+
 const Grupo = new Schema({
     descricao:{
         type: String,
@@ -19,5 +25,12 @@ const Grupo = new Schema({
         required: true
     }
 })
+
+Grupo.pre('deleteOne', function(next) {
+    const id = this.getQuery()['_id'];
+    AlunoLabCon.deleteMany({grupo: id}).exec();
+    ReservaLabCon.deleteMany({grupo: id}).exec();
+    next();
+});
 
 mongoose.model("grupos", Grupo)

@@ -329,7 +329,7 @@ router.post("/grupos/edit/", Admin, (req, res) => {
 })
 
 router.get("/grupos/deletar/:id", Admin, (req,res) => {
-    Grupos.remove({_id: req.params.id}).then(() => {
+    Grupos.deleteOne({_id: req.params.id}).then(() => {
         req.flash("success_msg", "Grupo deletado com sucesso!")
         res.redirect("/admin/grupos")
     }).catch((err) => {
