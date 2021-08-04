@@ -10,7 +10,7 @@
                 </div>
                   <select name="usuario3d" class="custom-select" required>
                 {{#each usuariosimp3d}}
-                <option value="{{_id}}" {{selected _id ../usuarioimp3d.usuario}}>{{usuario.nome}} - {{usuario.email}}</option>
+                <option value="{{_id}}" {{selected _id ../reservaimp3d.usuario3d}}>{{usuario.nome}} - {{usuario.email}}</option>
                 {{else}}
                 <option value="0">Nenhum Usuário Registrado</option>
                 {{/each}}
@@ -23,8 +23,8 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-calendar"></i></span> 
                 </div>
-                <input type="text" id="datapicker" class="form-control" required>
-                <input type="hidden" name="data" id="data" />
+                <input type="text" id="datapicker" class="form-control" value="{{format_data reservaimp3d.data}}" required>
+                <input type="hidden" name="data" id="data" value="{{reservaimp3d.data}}" />
                 <div class="invalid-feedback">Escolher a data.</div>
             </div>
             <label for="comentario">Comentário: </label>
@@ -42,7 +42,7 @@
     
 
             <button class="btn btn-dark mt-4" type="submit">Editar Reserva</button>
-            <button class="btn btn-secondary mt-4" type="reset">Cancelar</button>
+            <a href="/imp3d/reservasimp3d"><button class="btn btn-secondary mt-4" type="button">Cancelar</button></a>
         </form>
     </div>
 </div>
