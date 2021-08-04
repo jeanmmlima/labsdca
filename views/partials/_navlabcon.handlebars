@@ -1,11 +1,14 @@
 {{#if user.admin}}
-<nav class="nav justify-content-center">
-  <a class="nav-link active" href="/usuario/reservaslabcon">Reservas</a>
-  <a class="nav-link" href="/admin/turmas">Turmas</a>
-  <a class="nav-link" href="/admin/grupos">Grupos</a>
-  <a class="nav-link" href="/admin/horarios">Horários</a>
-  <a class="nav-link" href="/admin/aulaslabcon">Aulas</a>
+<nav class="nav justify-content-center navbar-light bg-dark">
+  <a class="nav-link active" href="/usuario/reservaslabcon"><i class="icon-fixed-width icon-pencil"></i>Reservas</a>
+  <a class="nav-link" href="/admin/turmas"><i class="icon-fixed-width icon-book"></i>Turmas</a>
+  <a class="nav-link" href="/admin/grupos"><i class="icon-fixed-width icon-group"></i>Grupos</a>
+  <a class="nav-link" href="/admin/horarios"><i class="icon-fixed-width icon-time"></i>Horários</a>
+  <a class="nav-link" href="/admin/aulaslabcon"><i class="icon-fixed-width icon-bookmark"></i>Aulas</a>
+  <a class="nav-link" href="/admin/alunoslabcon"><i class="icon-fixed-width icon-user"></i>Usuários</a>
+
 </nav>
+<br>
 {{else}}
 
 {{/if}}
