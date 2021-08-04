@@ -40,14 +40,14 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="basic-addon1"><i class="icon-fixed-width icon-calendar"></i></span> 
                 </div>
-                <input type="text" id="datapicker" class="form-control" required>
-                <input type="hidden" name="data" id="data" />
+                <input type="text" id="datapicker" class="form-control" value="{{format_data reservalabcon.data}}" required>
+                <input type="hidden" name="data" id="data" value="{{reservalabcon.data}}"/>
                 <div class="invalid-feedback">Escolher a data.</div>
             </div>
             
             <br>
             <button class="btn btn-dark mt-4" type="submit">Editar Reserva</button>
-            <button class="btn btn-secondary mt-4" type="reset">Cancelar</button>
+            <a href="/usuario/reservaslabcon/"><button class="btn btn-secondary mt-4" type="button">Cancelar</button></a>
         </form>
     </div>
 </div>
