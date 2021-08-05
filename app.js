@@ -103,6 +103,23 @@ app.get("/404", (req,res) => {
     res.send('Erro 404!')
 })
 
+/*
+app.use(function (req, res, next) {
+    res.status(404).send("Sorry can't find that!")
+})*/
+
+// Handle 404
+app.use(function(req, res) {
+    res.status(400);
+   res.render('paginaerro', {title: '404: File Not Found'});
+   });
+   
+   // Handle 500
+   app.use(function(error, req, res, next) {
+     res.status(500);
+   res.render('paginaerro', {title:'500: Internal Server Error', error: error});
+   });
+
 
 Handlebars.registerHelper('upper', function (aString) {
     return aString.toUpperCase()
