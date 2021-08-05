@@ -3,71 +3,60 @@
     <div class="col-sm-6">
         <h2>Reservas Laboratório de Controle</h2>
     </div>
-    <!--
-    <div class="col-sm-6">
-        {{#if user.admin}}
-            <a class="float-right" href="/admin/alunoslabcon/"><button class="btn btn-primary"><i class="icon-group"></i> Usuários LabCon</button></a>
-        {{else}}
-
-        {{/if}}
-    </div>
-    -->
 </div>
 <hr>
+
 {{#if user}}
+
+<!-- #### USER LOGADO ###-->
+
 <a href="/usuario/reservaslabcon/add"><button class="btn btn-dark"><i class="icon-plus"></i> Reservar</button></a>
 <br><br>
-{{else}}
 
-{{/if}}
 <div class="card-header bg-dark text-white text-center">
         <div class="row">
             <div class="col-sm-3">
-                <b>Grupo</b>
+                <b><i class="icon-fixed-width icon-group"></i> Grupo</b>
             </div>
             <div class="col-sm-3">
-                <b>Data</b>
+                <b><i class="icon-fixed-width icon-calendar"></i> Data</b>
             </div>
             <div class="col-sm-3">
-                <b>Horário</b>
+                <b><i class="icon-fixed-width icon-time"></i> Horário</b>
             </div>
             <div class="col-sm-3">
-                {{#if user}}
-                    <b>Gerenciar</b>
-                {{else}}
-
-                {{/if}}
+                    <b><i class="icon-fixed-width icon-gear"></i> Gerenciar</b>
             </div>
         </div>
 </div>
 
 {{#each reservas}}
 
-<div class="card mt-4 text-center">
+<div class="card mt-3 text-center align-middle bg-light border-top-0 border-left-0 border-right-0">
     <div class="card-body">
         <div class="row">
             <div class="col-sm-3">
-                {{grupo.descricao}}&nbsp;
-                <small>{{grupo.turma.descricao}} - {{grupo.turma.subturma}}</small><br>
+                {{grupo.descricao}}:
+                {{grupo.turma.descricao}} - {{grupo.turma.subturma}}
             </div>
             <div class="col-sm-3">
-                <p>{{format_data data}}</p>
+                {{format_data data}}
             </div>
             <div class="col-sm-3">
-                <p>{{horario.descricao}}</p>
+                {{horario.descricao}}
             </div>
             <div class="col-sm-3">
                 {{#ifCond grupo._id 'equals' ../aluno.grupo}}
-                 <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark "><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
                  <!-- <a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
-                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                 <button class="btn btn-outline-dark deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
                 
                 {{/ifCond}}
                 {{#if ../user.admin}}
-                     <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                     <a href="/usuario/reservaslabcon/edit/{{_id}}"><button class="btn btn-outline-dark "><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
                  <!--<a href="/usuario/reservaslabcon/deletar/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a> -->
-                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                 <button class="btn btn-outline-dark deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
 
                 {{/if}}
@@ -82,6 +71,51 @@
 <h4>Nenhuma reserva criada!</h4>
 
 {{/each}}
+
+
+{{else}}
+
+<div class="card-header bg-dark text-white text-center">
+        <div class="row">
+            <div class="col-sm-4">
+                <b><i class="icon-fixed-width icon-group"></i> Grupo</b>
+            </div>
+            <div class="col-sm-4">
+                <b><i class="icon-fixed-width icon-calendar"></i> Data</b>
+            </div>
+            <div class="col-sm-4">
+                <b><i class="icon-fixed-width icon-time"></i> Horário</b>
+            </div>
+        </div>
+</div>
+
+{{#each reservas}}
+
+<div class="card mt-3 text-center bg-light border-top-0 border-left-0 border-right-0">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-4">
+                {{grupo.descricao}}:
+                {{grupo.turma.descricao}} - {{grupo.turma.subturma}}
+            </div>
+            <div class="col-sm-4">
+                {{format_data data}}
+            </div>
+            <div class="col-sm-4">
+                {{horario.descricao}}
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{{else}}
+<h4>Nenhuma reserva criada!</h4>
+
+{{/each}}
+
+{{/if}}
+
 
 
 <!-- start: Delete Coupon Modal -->
