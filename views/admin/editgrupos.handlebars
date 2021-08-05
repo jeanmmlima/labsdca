@@ -8,7 +8,7 @@
             <label for="bancada">Bancada: </label>
             <select name="bancada" class="custom-select" required>
                 {{#each bancadas}}
-                <option value="{{_id}}">{{descricao}}</option>
+                <option value="{{_id}}" {{selected _id ../grupo.bancada}}>{{descricao}}</option>
                 {{else}}
                 <option value="0">Nenhuma Bancada Registrada</option>
                 {{/each}}
@@ -16,7 +16,7 @@
             <label for="turma">Turma: </label>
             <select name="turma" class="custom-select" required>
                 {{#each turmas}}
-                <option value="{{_id}}">{{descricao}} - {{subturma}}</option>
+                <option value="{{_id}}" {{selected _id ../grupo.turma}}>{{descricao}} - {{subturma}}</option>
                 {{else}}
                 <option value="0">Nenhuma Turma Registrada</option>
                 {{/each}}
