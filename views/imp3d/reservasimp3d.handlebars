@@ -10,32 +10,21 @@
         {{/if}}
     </div>
 </div>
-
-
 <hr>
 {{#if user}}
 <a href="/imp3d/reservasimp3d/add"><button class="btn btn-dark"><i class="icon-plus"></i> Reservar Horário</button></a>
 <br><br>
-{{else}}
-
-{{/if}}
-
-
 
 <div class="card-header bg-dark text-white text-center">
     <div class="row">
         <div class="col-sm-4">
-            <b>Usuário</b>
+            <b><i class="icon-fixed-width icon-user"></i> Usuário</b>
         </div>
         <div class="col-sm-4">
-            <b>Data</b>
+            <b><i class="icon-fixed-width icon-calendar"></i>  Data</b>
         </div>
         <div class="col-sm-4">
-            {{#if user}}
-                <b>Gerenciar</b>
-            {{else}}
-
-            {{/if}}
+            <b><i class="icon-fixed-width icon-gear"></i> Gerenciar</b>
         </div>
     </div>
 </div>
@@ -43,27 +32,27 @@
 
 {{#each reservasimp3d}}
 
-<div class="card mt-4">
+<div class="card mt-3 text-center align-middle bg-light border-top-0 border-left-0 border-right-0">
     <div class="card-body text-center">
         <div class="row">
             <div class="col-sm-4">
-                {{usuario3d.usuario.nome}}&nbsp;
-                <small>{{usuario3d.usuario.email}}</small><br>
+                {{usuario3d.usuario.nome}} - 
+                {{usuario3d.usuario.email}}
             </div>
             <div class="col-sm-4">
-                <p>{{format_data data}}</p>
+                {{format_data data}}
             </div>
             <div class="col-sm-4">
                 {{#ifCond usuario3d.usuario 'equals' ../user._id}}
-                 <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                 <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <button class="btn btn-outline-dark deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
                 
                 {{/ifCond}}
                 
                 {{#if ../user.admin}}
-                     <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark mt-2"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
-                 <button class="btn btn-outline-dark mt-2 deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
+                     <a href="/imp3d/reservasimp3d/edit/{{_id}}"><button class="btn btn-outline-dark"><i class="icon-fixed-width icon-pencil"></i>Editar</button></a>
+                 <button class="btn btn-outline-dark deleter" data-id="{{_id}}" data-toggle="modal" data-target="#myModal"><i class="icon-fixed-width icon-ban-circle"></i>Deletar</button></a>
                 {{else}}
 
                 {{/if}}
@@ -79,6 +68,46 @@
 <h4>Nenhuma reserva feita</h4>
 
 {{/each}}
+
+{{else}}
+
+<div class="card-header bg-dark text-white text-center">
+    <div class="row">
+        <div class="col-sm-6">
+            <b><i class="icon-fixed-width icon-user"></i> Usuário</b>
+        </div>
+        <div class="col-sm-6">
+            <b><i class="icon-fixed-width icon-calendar"></i>  Data</b>
+        </div>
+    </div>
+</div>
+
+
+{{#each reservasimp3d}}
+
+<div class="card mt-3 text-center align-middle bg-light border-top-0 border-left-0 border-right-0">
+    <div class="card-body text-center">
+        <div class="row">
+            <div class="col-sm-6">
+                {{usuario3d.usuario.nome}} - 
+                {{usuario3d.usuario.email}}
+            </div>
+            <div class="col-sm-6">
+                {{format_data data}}
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+{{else}}
+<br>
+<h4>Nenhuma reserva feita</h4>
+
+{{/each}}
+
+
+{{/if}}
 
 <!-- start: Delete Coupon Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
