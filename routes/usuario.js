@@ -9,6 +9,8 @@ const nodemailer = require("nodemailer")
 const xoauth2 = require('xoauth2');
 const bcrypt = require('bcryptjs')
 
+var request = require('request')
+
 //require models
 
 require("../models/ReservaLabCon")
@@ -368,83 +370,108 @@ router.get("/registro", (req, res) => {
 })
 
 router.post("/registro", (req, res) => {
-    if(req.body.senha.toString().length < 4){
-        req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
-        res.redirect("/usuario/registro")
+    if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null)
+    {
+        //return res.json({"responseError" : "something goes to wrong"});
+        req.flash("error_msg", "Houve erro ao carregar com verificação reCaptcha. Por favor, realizar a verificação!")
+        res.redirect("registro") 
     }
-    else if(req.body.senha != req.body.senha2){
-        req.flash("error_msg", "Senha diferentes")
-        res.redirect("/usuario/registro")
-    }
-    else {
 
-        Usuarios.findOne({email: req.body.email}).then((usuario) => {
-            if(usuario){
-                req.flash("error_msg", "Já existe uma conta com esse email no sistema")
-                res.redirect("/usuario/registro")
-            } else {
-                const novoUsuario = new Usuarios({
-                    nome: req.body.nome,
-                    email: req.body.email,
-                    senha: req.body.senha,
-                    ativo: 1
-                })
-                bcrypt.genSalt(10,(erro,salt) => {
-                    bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
-                        if(erro){
-                            req.flash("error_msg", "Houve erro durante salvamento o usuario!")
-                            req.redirect("/")
-                        } else {
-                            novoUsuario.senha = hash
-                            novoUsuario.save().then(() => {
+    //localhost
+    const secretKey = "6LeYq-0bAAAAAC4Rid9u7lozn-KYViUi88fEDJvG";
+    var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
+ 
+    request(verificationUrl, function (error, response, body) {
+        body = JSON.parse(body)
+        // Success will be true or false depending upon captcha validation.
+        if (body.success !== undefined && !body.success) {
+            //return res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+            req.flash("error_msg", "Houve erro com verificação reCaptcha. Por favor, realizar a verificação ou contactar o admistrador!")
+            return res.redirect("registro")
+        }
+        //res.json({"responseCode" : 0,"responseDesc" : "Sucess"});
 
-                                const usuariolabcon = req.body.labcon;
-                                const usuarioimp3d = req.body.imp3d;
-                                Usuarios.findOne({email: req.body.email}).then((user) => {
-                                    if(usuariolabcon == 1){
-
-                                        const novoAlunoLabCon = {
-                                            usuario: user,
-                                            grupo: req.body.grupo,
-                                            ativo: 0
-                                        }
-                                        new AlunosLabCon(novoAlunoLabCon).save().then(()=> {
-                                            
-                                        }).catch((err) => {
-                                            console.log("erro ao salvar usuario labcon: "+err);
-                                        })
-                                    }
-                                    if(usuarioimp3d == 1){
-                                        const novoUsuarioImp3D = {
-                                            usuario: user,
-                                            ativo: 0
-                                        }
-                                        new UsuarioImp3D(novoUsuarioImp3D).save().then(() => {
-
-                                        }).catch((err) => {
-                                            console.log("erro ao salvar usuario imp3d: "+err)
-                                        })
-                                    }
-                                }).catch((err) => {
-                                    console.log("erro ao achar usuario cadastrado!"+err);
-                                })
-
-                                req.flash("success_msg", "Usuário criado com sucesso!")
-                                res.redirect("/usuario/login")
-                            }).catch((erro) => {
-                                req.flash("error_msg", "Erro ao criar usuário")
-                                res.redirect("/usuario/registro")
-                            })
-                        }
-                    })
-                })
-            }
-        }).catch((err) => {
-            req.flash("error_msg", "Erro interno ao procurar usuario")
+        if(req.body.senha.toString().length < 4){
+            req.flash("error_msg", "Senha deve conter mínimo de 4 caracteres")
             res.redirect("/usuario/registro")
-        })
+        }
+        else if(req.body.senha != req.body.senha2){
+            req.flash("error_msg", "Senha diferentes")
+            res.redirect("/usuario/registro")
+        }
+        else {
+    
+            Usuarios.findOne({email: req.body.email}).then((usuario) => {
+                if(usuario){
+                    req.flash("error_msg", "Já existe uma conta com esse email no sistema")
+                    res.redirect("/usuario/registro")
+                } else {
+                    const novoUsuario = new Usuarios({
+                        nome: req.body.nome,
+                        email: req.body.email,
+                        senha: req.body.senha,
+                        ativo: 1
+                    })
+                    bcrypt.genSalt(10,(erro,salt) => {
+                        bcrypt.hash(novoUsuario.senha,salt,(erro,hash) => {
+                            if(erro){
+                                req.flash("error_msg", "Houve erro durante salvamento o usuario!")
+                                req.redirect("/")
+                            } else {
+                                novoUsuario.senha = hash
+                                novoUsuario.save().then(() => {
+    
+                                    const usuariolabcon = req.body.labcon;
+                                    const usuarioimp3d = req.body.imp3d;
+                                    Usuarios.findOne({email: req.body.email}).then((user) => {
+                                        if(usuariolabcon == 1){
+    
+                                            const novoAlunoLabCon = {
+                                                usuario: user,
+                                                grupo: req.body.grupo,
+                                                ativo: 0
+                                            }
+                                            new AlunosLabCon(novoAlunoLabCon).save().then(()=> {
+                                                
+                                            }).catch((err) => {
+                                                console.log("erro ao salvar usuario labcon: "+err);
+                                            })
+                                        }
+                                        if(usuarioimp3d == 1){
+                                            const novoUsuarioImp3D = {
+                                                usuario: user,
+                                                ativo: 0
+                                            }
+                                            new UsuarioImp3D(novoUsuarioImp3D).save().then(() => {
+    
+                                            }).catch((err) => {
+                                                console.log("erro ao salvar usuario imp3d: "+err)
+                                            })
+                                        }
+                                    }).catch((err) => {
+                                        console.log("erro ao achar usuario cadastrado!"+err);
+                                    })
+    
+                                    req.flash("success_msg", "Usuário criado com sucesso!")
+                                    res.redirect("/usuario/login")
+                                }).catch((erro) => {
+                                    req.flash("error_msg", "Erro ao criar usuário")
+                                    res.redirect("/usuario/registro")
+                                })
+                            }
+                        })
+                    })
+                }
+            }).catch((err) => {
+                req.flash("error_msg", "Erro interno ao procurar usuario")
+                res.redirect("/usuario/registro")
+            })
+    
+        } 
+    });
+    
 
-    }
+    
 
 })
 

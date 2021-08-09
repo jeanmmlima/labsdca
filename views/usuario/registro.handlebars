@@ -36,6 +36,9 @@
                 {{/each}}
             </select>
 
+            <br>
+            <div class="g-recaptcha" data-sitekey="6LeYq-0bAAAAAIAyOig-SCcOBsc1WzMnQjWfKYrn"></div><br>
+
             <button type="submit" class="btn btn-dark mt-4">Criar conta</button>
             <button type="reset" class="btn btn-secondary mt-4">Cancelar</button>
 
@@ -74,4 +77,18 @@ getImp3D();
             $check1.required = true;
         }
     }
+</script>
+
+<script src='https://www.google.com/recaptcha/api.js'></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script>
+    grecaptcha.ready(function() {
+    // do request for recaptcha token
+    // response is promise with passed token
+        grecaptcha.execute('6Lfnoe0bAAAAADTb7q1dHhh4UJtjtwbpjqn333IT', {action:'validate_captcha'})
+                  .then(function(token) {
+            // add token value to form
+            document.getElementById('g-recaptcha-response').value = token;
+        });
+    });
 </script>
