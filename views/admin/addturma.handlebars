@@ -3,9 +3,9 @@
     <div class="card-body">
         <form action="/admin/turmas/nova" method="POST" class="needs-validation" novalidate>
             <label for="nome">Nome</label>
-                <input type="text" id="descricao" name="descricao" placeholder="Nome da Turma" class="form-control" required>
+                <input type="text" id="descricao" name="descricao" placeholder="Nome da Turma" class="form-control" pattern="[A-Z0-9a-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+" required>
             <label for="slug">Subturma:</label>
-                <input type="text" id="subturma" name="subturma" placeholder="Subturma" class="form-control" required> 
+                <input type="text" id="subturma" name="subturma" placeholder="Subturma" class="form-control" pattern="[A-Z0-9a-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+" required> 
                 <br>
             <button type="submit" class="btn btn-dark">Criar Turma</button>
         </form>

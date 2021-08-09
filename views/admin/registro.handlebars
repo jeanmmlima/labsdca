@@ -4,10 +4,10 @@
     <div class="card-body">
         <form action="" method="post" class="needs-validation" novalidate>
             <label for="nome">Nome: </label>
-                <input type="text" name="nome" class="form-control" required>
+                <input type="text" name="nome" class="form-control" pattern="[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ!#]+[A-Za-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ!# ]+" required>
                 <div class="invalid-feedback">Informar o Nome.</div>
             <label for="email">Email: </label>
-                <input type="email" name="email" class="form-control" required>
+                <input type="email" name="email" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
                 <div class="invalid-feedback">Informar o Email.</div>
             <label for="senha">Senha: </label>
                 <input type="password" name="senha" class="form-control" required>

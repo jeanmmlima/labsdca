@@ -3,7 +3,7 @@
         <h4>Novo Grupo</h4>
         <form action="/admin/grupos/novo" method="POST" class="needs-validation" novalidate>
             <label for="titulo">Nome: </label>
-            <input type="text" name="descricao" class="form-control" required>
+            <input type="text" name="descricao" class="form-control" pattern="[A-Z0-9a-záàâãéèêíïóôõöúçñÁÀÂÃÉÈÍÏÓÔÕÖÚÇÑ]+[A-Z0-9a-záàâãéèêíïóôõöúçñ ]+" placeholder="Ex: Grupo 1" required>
             <label for="categoria">Bancada: </label>
             <select name="bancada" class="custom-select" required>
                 {{#each bancadas}}
