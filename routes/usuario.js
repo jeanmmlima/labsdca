@@ -374,7 +374,7 @@ router.post("/registro", (req, res) => {
     {
         //return res.json({"responseError" : "something goes to wrong"});
         req.flash("error_msg", "Houve erro ao carregar com verificação reCaptcha. Por favor, realizar a verificação!")
-        res.redirect("registro") 
+        return res.redirect("registro") 
     }
 
     //localhost
