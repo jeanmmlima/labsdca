@@ -107,7 +107,7 @@ app.get("/404", (req,res) => {
 app.use(function (req, res, next) {
     res.status(404).send("Sorry can't find that!")
 })*/
-
+3
 // Handle 404
 app.use(function(req, res) {
     res.status(400);
@@ -215,5 +215,5 @@ cron.schedule("01 41 10 * * *", function() {
 //process.env.PORT - porta ambiente do HEROKU
 const PORT = process.env.PORT || 8081
 app.listen(PORT,() => {
-    console.log("Server is running!")
+    console.log("Servidor está rodando!")
 })
