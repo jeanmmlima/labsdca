@@ -191,7 +191,7 @@ Day of Week: 0-6 (Sun-Sat)
 '01 01 00 * * *'
 */
 
-cron.schedule("01 41 10 * * *", function() {
+cron.schedule("00 12 16 * * *", function() {
     console.log("---------------------");
     console.log("Running Cron Job");
 
@@ -199,15 +199,20 @@ cron.schedule("01 41 10 * * *", function() {
       shell.exit(1);
     }
     else{
-      shell.echo("reservas atualizadas!");
+      shell.echo("reservas labcon atualizadas!");
     }
     if (shell.exec("mongo --eval 'db.reservasimp3ds.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
         shell.exit(1);
       }
       else{
-        shell.echo("reservas atualizadas!");
+        shell.echo("reservas impressora3d atualizadas!");
       }
-
+    if (shell.exec("bash /Users/jeanmarioml/Documents/DCA/labsDCA/scripts/dbdumper.sh").code !== 0) {
+        shell.exit(1);
+    }
+    else{
+        shell.echo("Dump realizado com sucesso!");
+    }
    
   });
 //4. Others
