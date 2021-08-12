@@ -17,6 +17,10 @@ const shell = require('shelljs')
 const Handlebars = require('handlebars')
 var moment = require('moment')
 
+require('dotenv').config({
+    path: process.env.NODE_ENV === "production" ? ".env" : ".env.example"
+})
+
 //1.1 Riqueres routes
 const admin = require('./routes/admin')
 const usuario = require('./routes/usuario')
@@ -81,7 +85,8 @@ app.set('view engine', 'handlebars')
 
 //2.3 Mongoose
 mongoose.Promise = global.Promise;
-mongoose.connect(db.mongoURI,{useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
+//mongoose.connect(db.mongoURI,{useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
+mongoose.connect(process.env.MONGOURI,{useUnifiedTopology: true, useNewUrlParser: true }).then(() => {
     console.log("Conectado ao mongo!")
 }).catch((err) => {
     console.log("Erro ao se conectar: "+err)
@@ -191,23 +196,25 @@ Day of Week: 0-6 (Sun-Sat)
 '01 01 00 * * *'
 */
 
-cron.schedule("00 12 16 * * *", function() {
+cron.schedule("00 10 17 * * *", function() {
     console.log("---------------------");
     console.log("Running Cron Job");
 
-    if (shell.exec("mongo --eval 'db.reservaslabcons.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
+    //atualização de reservas
+    if (shell.exec(process.env.UPDATE_RESERVAS_LABCON).code !== 0) {
       shell.exit(1);
     }
     else{
       shell.echo("reservas labcon atualizadas!");
     }
-    if (shell.exec("mongo --eval 'db.reservasimp3ds.updateMany({data: {$lt: ISODate()}},{$set: {ativo: 0}});' labs").code !== 0) {
+    if (shell.exec(process.env.UPDATE_RESERVAS_IMP3D).code !== 0) {
         shell.exit(1);
       }
       else{
         shell.echo("reservas impressora3d atualizadas!");
       }
-    if (shell.exec("bash /Users/jeanmarioml/Documents/DCA/labsDCA/scripts/dbdumper.sh").code !== 0) {
+      //dump do banco
+    if (shell.exec(process.env.PATH_DUMPDB).code !== 0) {
         shell.exit(1);
     }
     else{
@@ -218,7 +225,7 @@ cron.schedule("00 12 16 * * *", function() {
 //4. Others
 //local port - 8081
 //process.env.PORT - porta ambiente do HEROKU
-const PORT = process.env.PORT || 8081
+const PORT = process.env.PORT //||
 app.listen(PORT,() => {
     console.log("Servidor está rodando!")
 })

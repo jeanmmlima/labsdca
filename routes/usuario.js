@@ -378,7 +378,7 @@ router.post("/registro", (req, res) => {
     }
 
     //localhost
-    const secretKey = "6LeYq-0bAAAAAC4Rid9u7lozn-KYViUi88fEDJvG";
+    const secretKey = process.env.RECAPTCHA_SECRET_KEY;
     var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + secretKey + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
  
     request(verificationUrl, function (error, response, body) {
