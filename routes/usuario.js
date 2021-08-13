@@ -530,8 +530,8 @@ router.post("/forgot/edit", (req, res, next) => {
             var smtpTransport = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: 'email@gmail.com',
-                  pass: 'senha'
+                  user: process.env.USER_EMAIL,
+                  pass: process.env.PASSWD_EMAIL
                 }
               })
             /*
@@ -541,7 +541,7 @@ router.post("/forgot/edit", (req, res, next) => {
             secure: true,
             auth: {
                 type: 'OAuth2',
-                user: 'user@example.com',
+                user: 'atendimento@dca.ufrn.br',
                 clientId: '000000000000-xxx0.apps.googleusercontent.com',
                 clientSecret: 'XxxxxXXxX0xxxxxxxx0XXxX0',
                 refreshToken: '1/XXxXxsss-xxxXXXXXxXxx0XXXxxXXx0x00xxx',
@@ -550,13 +550,23 @@ router.post("/forgot/edit", (req, res, next) => {
         });*/
             var mailOptions = {
                 to: user.email,
-                from: 'DCA Labs',
-                subject: 'Alteração de Senha - DCALabs',
+                from: 'Labs DCA',
+                subject: 'Alteração de Senha - LabsDCA',
                 text: 'Olá \n\n' + 
                 'Você está recebendo esse e-mail porque você (ou alguém) solicitou alteração de senha da sua conta.\n\n' +
                 'Por favor, clique no link abaixo para completar o processo de alteração de senha:\n\n' +
-                'http://' + req.headers.host + '/usuario/reset/' + token + '\n\n' +
-                'Se você não requisitou a mudança, por favor ingorar o e-mail.\n'
+                //'http://' + req.headers.host + '/usuario/reset/' + token + '\n\n' +
+                'http://' + process.env.HOST_APP + '/usuario/reset/' + token + '\n\n' +
+                'Se você não requisitou a mudança, por favor ingorar o e-mail.\n\n' +
+
+                '--------------------------------------------------------------------------------------\n'+
+                'LabsDCA\n'+
+                'Departamento de Engenharia de Computação e Automação\n'+
+                'Universidade Federal do Rio Grande do Norte - Centro de Tecnologia\n'+
+                'Campus Universitário Lagoa Nova - 59078-970 - Natal/RN - BRASIL\n'+
+                '+55 (84) 3342-2231 (ext 200 ou 220)\n'+
+                '--------------------------------------------------------------------------------------\n'
+            
             };
             smtpTransport.sendMail(mailOptions, function(err){
                 req.flash("success_msg", "Um email foi enviado para "+user.email+" com instruções para alteração da senha!");
@@ -624,16 +634,24 @@ router.post("/reset/edit", (req, res) => {
             var smtpTransport = nodemailer.createTransport({
                 service: 'gmail',
                 auth: {
-                  user: 'email@gmail.com',
-                  pass: 'senha'
+                  user: process.env.USER_EMAIL,
+                  pass: process.env.PASSWD_EMAIL
                 }
               })
             var mailOptions = {
                 to: usuario.email,
-                from: 'DCA Labs',
-                subject: 'Senha atualizada - DCALabs',
+                from: 'Labs DCA',
+                subject: 'Senha atualizada - LabsDCA',
                 text: 'Olá,\n\n' +
-                'Confirmamos que a senha para a conta ' + usuario.email + ' foi alterada com sucesso!.\n'
+                'Confirmamos que a senha para a conta ' + usuario.email + ' foi alterada com sucesso!.\n\n'+
+
+                '--------------------------------------------------------------------------------------\n'+
+                'LabsDCA\n'+
+                'Departamento de Engenharia de Computação e Automação\n'+
+                'Universidade Federal do Rio Grande do Norte - Centro de Tecnologia\n'+
+                'Campus Universitário Lagoa Nova - 59078-970 - Natal/RN - BRASIL\n'+
+                '+55 (84) 3342-2231 (ext 200 ou 220)\n'+
+                '--------------------------------------------------------------------------------------\n'
             };
             smtpTransport.sendMail(mailOptions, function(err){
                 req.flash("success_msg", "Sua senha foi alterada com sucesso!");
